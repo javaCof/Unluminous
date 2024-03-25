@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon4 : MonoBehaviour
+public class Weapon3 : MonoBehaviour
 {
  
     
