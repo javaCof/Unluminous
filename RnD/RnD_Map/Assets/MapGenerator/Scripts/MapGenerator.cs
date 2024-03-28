@@ -85,6 +85,11 @@ public class MapGenerator : MonoBehaviour
         mapTexture = new Texture2D(mapSize.x, mapSize.y);
     }
 
+    private void Start()
+    {
+        StartCoroutine(GenerateRandomMap());
+    }
+
     public void Run()
     {
         StartCoroutine(LoadLevel());
@@ -96,6 +101,7 @@ public class MapGenerator : MonoBehaviour
         yield return op;
 
         yield return StartCoroutine(GenerateRandomMap());
+        yield return new WaitForSeconds(2);
         
         SceneManager.UnloadSceneAsync("LoadingScene", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
     }
