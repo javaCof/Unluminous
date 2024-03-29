@@ -27,14 +27,15 @@ public class MapGenerator : MonoBehaviour
     public GameObject prefabCorner;
     public GameObject prefabPillar;
 
-    //public enum MapType { MONSTER, TREASURE };
-    //[Header("MAP OBJECT")]
-    //public List<MapType> type;
+    [Header("MAP OBJECT")]
+    public GameObject monsterPref;
 
     [Header("DEBUG")]
     public bool useDebug = false;
     public LineRenderer lineRnd;
     public LineRenderer rectRnd;
+
+    public enum RoomType { MONSTER, TREASURE }
 
     class RoomNode
     {
@@ -72,16 +73,36 @@ public class MapGenerator : MonoBehaviour
             this.line = line;
         }
     }
+    public struct RoomInfo
+    {
+        public RoomType type;
+        public RectInt rect;
+        public Transform pos;
+
+        public RoomInfo(RoomType type, RectInt rect, Transform pos)
+        {
+            this.type = type;
+            this.rect = rect;
+            this.pos = pos;
+        }
+    }
 
     List<RectInt> rooms;
     List<PathInfo> paths;
+    List<RoomInfo> roomInfos;
 
     Texture2D mapTexture;
+
+    Transform tilePos;
+    Transform objectPos;
+    Transform debugPos;
+    
 
     private void Awake()
     {
         rooms = new List<RectInt>();
         paths = new List<PathInfo>();
+        roomInfos = new List<RoomInfo>();
         mapTexture = new Texture2D(mapSize.x, mapSize.y);
     }
 
@@ -101,21 +122,23 @@ public class MapGenerator : MonoBehaviour
         yield return op;
 
         yield return StartCoroutine(GenerateRandomMap());
-        yield return new WaitForSeconds(2);
+        //yield return new WaitForSeconds(1);
         
         SceneManager.UnloadSceneAsync("LoadingScene", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
     }
-
-    public IEnumerator GenerateRandomMap()
+    IEnumerator GenerateRandomMap()
     {
         ClearMap();
+        SetUpMap();
 
         GenerateMapData();
         PaintMapTile();
         GenerateMapTile();
+        GenerateMapObject();
 
         yield return null;
     }
+
     void ClearMap()
     {
         foreach (Transform child in mapPos)
@@ -123,6 +146,13 @@ public class MapGenerator : MonoBehaviour
 
         rooms.Clear();
         paths.Clear();
+        roomInfos.Clear();
+    }
+    void SetUpMap()
+    {
+        (tilePos = new GameObject("tile").transform).parent = mapPos;
+        (objectPos = new GameObject("object").transform).parent = mapPos;
+        (debugPos = new GameObject("debug").transform).parent = mapPos;
     }
 
     /*------------MAP DATA------------*/
@@ -237,6 +267,10 @@ public class MapGenerator : MonoBehaviour
 
             room = new RectInt(x, y, w, h);
             rooms.Add(room);
+
+            Transform roomPos = new GameObject("room_" + (rooms.Count - 1)).transform;
+            roomPos.parent = objectPos;
+            roomInfos.Add(new RoomInfo(RoomType.MONSTER, room, roomPos));
 
             if (useDebug)
             {
@@ -425,9 +459,6 @@ public class MapGenerator : MonoBehaviour
         float multiplierFactor = tileSize + float.Epsilon;
         Color[] pixels = mapTexture.GetPixels();
 
-        Transform tilePos = new GameObject("tile").transform;
-        tilePos.parent = mapPos;
-
         for (int i = 0; i < mapSize.y; i++)
         {
             for (int j = 0; j < mapSize.x; j++)
@@ -509,10 +540,27 @@ public class MapGenerator : MonoBehaviour
         return rotation;
     }
 
+    /*------------MAP OBJECT------------*/
+    void GenerateMapObject()
+    {
+        foreach (RoomInfo info in roomInfos)
+        {
+            switch (info.type)
+            {
+                case RoomType.MONSTER:
+                    Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
+                    GameObject.Instantiate(monsterPref, pos, Quaternion.identity, info.pos);
+                    break;
+                case RoomType.TREASURE:
+                    break;
+            }
+        }
+    }
+
     /*------------DEBUG------------*/
     void DrawLine(Vector2Int from, Vector2Int to, Color col, float zOrder = 0)
     {
-        LineRenderer rnd = Instantiate(lineRnd, transform);
+        LineRenderer rnd = Instantiate(lineRnd, debugPos);
         rnd.material.color = col;
 
         rnd.SetPosition(0, new Vector3(from.x, from.y, zOrder));
@@ -520,7 +568,7 @@ public class MapGenerator : MonoBehaviour
     }
     void DrawRect(RectInt rect, Color col, float zOrder = 0)
     {
-        LineRenderer rnd = Instantiate(rectRnd, transform);
+        LineRenderer rnd = Instantiate(rectRnd, debugPos);
         rnd.material.color = col;
 
         rnd.SetPosition(0, new Vector3(rect.x, rect.y, zOrder));

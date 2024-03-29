@@ -20,3 +20,17 @@ public class Combination
         return n;
     }
 }
+
+public class CombinationRect : Combination
+{
+    int rect_w;
+
+    public CombinationRect(RectInt rect) : base(rect.width * rect.height) { rect_w = rect.width; }
+    
+    public Vector2Int GetRandom(Vector2Int offset)
+    {
+        int n = base.GetRandom();
+        return new Vector2Int(n % rect_w, n / rect_w);
+    }
+    public new Vector2Int GetRandom() => GetRandom(Vector2Int.zero);
+}
