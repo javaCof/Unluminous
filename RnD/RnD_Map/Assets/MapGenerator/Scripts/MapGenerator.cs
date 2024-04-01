@@ -28,6 +28,7 @@ public class MapGenerator : MonoBehaviour
     public GameObject prefabPillar;
 
     [Header("MAP OBJECT")]
+    public GameObject playerPref;
     public GameObject monsterPref;
 
     [Header("DEBUG")]
@@ -35,7 +36,7 @@ public class MapGenerator : MonoBehaviour
     public LineRenderer lineRnd;
     public LineRenderer rectRnd;
 
-    public enum RoomType { MONSTER, TREASURE }
+    public enum RoomType { START, MONSTER, TREASURE, BOSS }
 
     class RoomNode
     {
@@ -96,7 +97,8 @@ public class MapGenerator : MonoBehaviour
     Transform tilePos;
     Transform objectPos;
     Transform debugPos;
-    
+
+    PhotonView pv;
 
     private void Awake()
     {
@@ -104,15 +106,43 @@ public class MapGenerator : MonoBehaviour
         paths = new List<PathInfo>();
         roomInfos = new List<RoomInfo>();
         mapTexture = new Texture2D(mapSize.x, mapSize.y);
+
+        pv = GetComponent<PhotonView>();
     }
 
     private void Start()
     {
+
+
+
+
+        //master -> map data
+        //client -> map gen
+        //all client ready -> player gen (RPC)
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        PhotonNetwork.isMessageQueueRunning = true;
         StartCoroutine(GenerateRandomMap());
     }
 
     public void Run()
     {
+
+        //create new level
         StartCoroutine(LoadLevel());
     }
 
@@ -164,6 +194,7 @@ public class MapGenerator : MonoBehaviour
 
         DivideRect(map);
         CreateRoom(map);
+        DecideRoomType();
         CreatePath(map);
     }
     void DivideRect(RoomNode node, int pDivAxis = -1, int divDepth = 0,
@@ -268,10 +299,6 @@ public class MapGenerator : MonoBehaviour
             room = new RectInt(x, y, w, h);
             rooms.Add(room);
 
-            Transform roomPos = new GameObject("room_" + (rooms.Count - 1)).transform;
-            roomPos.parent = objectPos;
-            roomInfos.Add(new RoomInfo(RoomType.MONSTER, room, roomPos));
-
             if (useDebug)
             {
                 if (rooms.Count == 1)
@@ -289,6 +316,26 @@ public class MapGenerator : MonoBehaviour
         }
 
         return room;
+    }
+    void DecideRoomType()
+    {
+        for (int i = 0; i < (int)Mathf.Pow(2, maxDivideDepth); i++)
+        {
+            RoomType type;
+
+            if (i == (int)Mathf.Pow(2, maxDivideDepth) - 1)
+                type = RoomType.START;
+            else if (i == 0)
+                type = RoomType.BOSS;
+            else
+            {
+                type = RoomType.MONSTER;
+            }
+
+            Transform roomPos = new GameObject("room_" + (rooms.Count - 1)).transform;
+            roomPos.parent = objectPos;
+            roomInfos.Add(new RoomInfo(type, rooms[i], roomPos));
+        }
     }
     void CreatePath(RoomNode node, int n = 0)
     {
@@ -547,9 +594,20 @@ public class MapGenerator : MonoBehaviour
         {
             switch (info.type)
             {
+                case RoomType.START:
+                    {
+                        Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
+
+                        //GameObject.Instantiate(playerPref, pos, Quaternion.identity, info.pos);
+                        GameObject player = PhotonNetwork.Instantiate("PhotonPlayer", pos, Quaternion.identity, 0);
+                        player.transform.parent = info.pos;
+                    }
+                    break;
                 case RoomType.MONSTER:
-                    Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
-                    GameObject.Instantiate(monsterPref, pos, Quaternion.identity, info.pos);
+                    {
+                        Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
+                        GameObject.Instantiate(monsterPref, pos, Quaternion.identity, info.pos);
+                    }
                     break;
                 case RoomType.TREASURE:
                     break;

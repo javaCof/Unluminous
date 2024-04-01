@@ -15,9 +15,8 @@ public class PhotonInit : MonoBehaviour
     public InputField roomNameInput;
 
     [Header("ROOM UI")]
-    public GameObject roomListContents;
+    public GridLayoutGroup roomListGrid;
     public GameObject roomItem;
-    public int RoomUIHeight = 80;
 
     private void Awake()
     {
@@ -74,12 +73,13 @@ public class PhotonInit : MonoBehaviour
         }
 
         int rowCount = 0;
-        roomListContents.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
+        RectTransform gridRect = roomListGrid.GetComponent<RectTransform>();
+        gridRect.sizeDelta = new Vector2(0, roomListGrid.padding.top);
 
         foreach (RoomInfo _room in PhotonNetwork.GetRoomList())
         {
             GameObject room = Instantiate(roomItem);
-            room.transform.SetParent(roomListContents.transform, false);
+            room.transform.SetParent(gridRect, false);
 
             PhotonRoomData roomData = room.GetComponent<PhotonRoomData>();
             roomData.roomName = _room.Name;
@@ -91,8 +91,8 @@ public class PhotonInit : MonoBehaviour
                 ()=> OnClickJoinRoom(roomData.roomName)
                 );
 
-            roomListContents.GetComponent<GridLayoutGroup>().constraintCount = ++rowCount;
-            roomListContents.GetComponent<RectTransform>().sizeDelta += new Vector2(0, RoomUIHeight);
+            roomListGrid.constraintCount = ++rowCount;
+            gridRect.sizeDelta += new Vector2(0, roomListGrid.cellSize.y + roomListGrid.spacing.y);
         }
     }
 

@@ -98,16 +98,21 @@ public class MapGenerator : MonoBehaviour
     Transform objectPos;
     Transform debugPos;
 
+    PhotonView pv;
+
     private void Awake()
     {
         rooms = new List<RectInt>();
         paths = new List<PathInfo>();
         roomInfos = new List<RoomInfo>();
         mapTexture = new Texture2D(mapSize.x, mapSize.y);
+
+        pv = GetComponent<PhotonView>();
     }
 
     private void Start()
     {
+        PhotonNetwork.isMessageQueueRunning = true;
         StartCoroutine(GenerateRandomMap());
     }
 
@@ -567,7 +572,10 @@ public class MapGenerator : MonoBehaviour
                 case RoomType.START:
                     {
                         Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
-                        GameObject.Instantiate(playerPref, pos, Quaternion.identity, info.pos);
+
+                        //GameObject.Instantiate(playerPref, pos, Quaternion.identity, info.pos);
+                        GameObject player = PhotonNetwork.Instantiate("PhotonPlayer", pos, Quaternion.identity, 0);
+                        player.transform.parent = info.pos;
                     }
                     break;
                 case RoomType.MONSTER:
