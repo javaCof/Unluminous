@@ -118,7 +118,7 @@ public class PhotonInit : MonoBehaviour
     IEnumerator LoadStage()
     {
         PhotonNetwork.isMessageQueueRunning = false;
-        AsyncOperation ao = SceneManager.LoadSceneAsync("GameScene");
+        AsyncOperation ao = SceneManager.LoadSceneAsync("RoomScene");
         yield return ao;
     }
 

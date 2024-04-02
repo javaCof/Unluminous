@@ -694,7 +694,7 @@ MonoBehaviour:
   pillarPrefab: {fileID: 1332032387223852, guid: 7f951c1ab0c98544dbb2241f27da4db5, type: 3}
   playerPrefab: {fileID: 3505134323789400778, guid: e3696286dda244d4ca75a348c6501860, type: 3}
   monsterPrefab: {fileID: 5554168257691849301, guid: b193b2bdb37728244acadc792b85b072, type: 3}
-  useDebug: 0
+  useDebug: 1
   lineRnd: {fileID: 4447601975305699377, guid: c500290302a7ef8488693419d0e3f7d4, type: 3}
   rectRnd: {fileID: 856271613930041958, guid: f8c0577ded3c22a4abb22cdde8d22d52, type: 3}
 --- !u!1 &1897770997
