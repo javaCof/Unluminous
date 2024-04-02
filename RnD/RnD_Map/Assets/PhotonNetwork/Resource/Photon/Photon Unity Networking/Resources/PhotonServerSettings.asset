@@ -43,4 +43,7 @@ MonoBehaviour:
   - RequestForPickupItems
   - RequestForPickupTimes
   - TaggedPlayer
+  - GeneratePlayer
+  - GenerateMapTile
+  - GenerateMapTil
   DisableAutoOpenWizard: 1

@@ -621,6 +621,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1638636981}
   - component: {fileID: 1638636982}
+  - component: {fileID: 1638636978}
   m_Layer: 0
   m_Name: MapGenerator
   m_TagString: Untagged
@@ -628,6 +629,33 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1638636978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638636977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 1
+  instantiationId: 1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!4 &1638636981
 Transform:
   m_ObjectHideFlags: 0
@@ -659,19 +687,13 @@ MonoBehaviour:
   maxDivideDepth: 4
   minDividePer: 0.4
   maxDividePer: 0.6
-  emptyColor: {r: 0, g: 0, b: 0, a: 1}
-  floorColor: {r: 1, g: 1, b: 1, a: 1}
-  wallColor: {r: 1, g: 0, b: 0, a: 1}
-  cornerColor: {r: 0, g: 1, b: 0, a: 1}
-  pillarColor: {r: 0, g: 0, b: 1, a: 1}
-  pathColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   tileSize: 4
-  prefabFloor: {fileID: 1316661190979104, guid: 43f8e35d51f9d774eb87f290b86a9649, type: 3}
-  prefabWall: {fileID: 1655673125402110, guid: 718a8c0341a6b744581a10dfd1105f88, type: 3}
-  prefabCorner: {fileID: 1840828261763088, guid: 12115f3e2bc7884449890b084af37f7a, type: 3}
-  prefabPillar: {fileID: 1332032387223852, guid: 7f951c1ab0c98544dbb2241f27da4db5, type: 3}
-  playerPref: {fileID: 3505134323789400778, guid: e3696286dda244d4ca75a348c6501860, type: 3}
-  monsterPref: {fileID: 5554168257691849301, guid: b193b2bdb37728244acadc792b85b072, type: 3}
+  floorPrefab: {fileID: 1316661190979104, guid: 43f8e35d51f9d774eb87f290b86a9649, type: 3}
+  wallPrefab: {fileID: 1655673125402110, guid: 718a8c0341a6b744581a10dfd1105f88, type: 3}
+  cornerPrefab: {fileID: 1840828261763088, guid: 12115f3e2bc7884449890b084af37f7a, type: 3}
+  pillarPrefab: {fileID: 1332032387223852, guid: 7f951c1ab0c98544dbb2241f27da4db5, type: 3}
+  playerPrefab: {fileID: 3505134323789400778, guid: e3696286dda244d4ca75a348c6501860, type: 3}
+  monsterPrefab: {fileID: 5554168257691849301, guid: b193b2bdb37728244acadc792b85b072, type: 3}
   useDebug: 0
   lineRnd: {fileID: 4447601975305699377, guid: c500290302a7ef8488693419d0e3f7d4, type: 3}
   rectRnd: {fileID: 856271613930041958, guid: f8c0577ded3c22a4abb22cdde8d22d52, type: 3}
