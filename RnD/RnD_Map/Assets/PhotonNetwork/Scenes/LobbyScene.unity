@@ -287,7 +287,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1793405096}
         m_TargetAssemblyTypeName: PhotonInit, Assembly-CSharp
-        m_MethodName: OnClickCreateRoom
+        m_MethodName: CreateRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -415,7 +415,7 @@ GameObject:
   - component: {fileID: 143150487}
   - component: {fileID: 143150491}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: LobbyUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1161,7 +1161,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1793405096}
         m_TargetAssemblyTypeName: PhotonInit, Assembly-CSharp
-        m_MethodName: OnClickJoinRandom
+        m_MethodName: JoinRandom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1799,6 +1799,7 @@ MonoBehaviour:
   roomNameInput: {fileID: 524222058}
   roomListGrid: {fileID: 839464863}
   roomItem: {fileID: 8296637633502814147, guid: ff4758e1d1fa0ee4b883cfa837853293, type: 3}
+  nextScene: RoomScene
 --- !u!4 &1793405097
 Transform:
   m_ObjectHideFlags: 0

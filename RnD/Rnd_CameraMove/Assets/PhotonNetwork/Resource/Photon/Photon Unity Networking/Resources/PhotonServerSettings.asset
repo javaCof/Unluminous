@@ -28,6 +28,7 @@ MonoBehaviour:
   NetworkLogging: 1
   RunInBackground: 1
   RpcList:
+  - AddReady
   - Chat
   - ColorRpc
   - DestroyRpc
@@ -42,5 +43,8 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
+  - SetReady
   - TaggedPlayer
+  - LoadLevel
+  - LoadStage
   DisableAutoOpenWizard: 1

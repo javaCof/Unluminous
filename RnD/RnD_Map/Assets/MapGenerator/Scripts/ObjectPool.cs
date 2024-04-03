@@ -41,5 +41,6 @@ public class ObjectPool
             go.transform.parent = pos;
             go.SetActive(false);
         }
+        idx = 0;
     }
 }

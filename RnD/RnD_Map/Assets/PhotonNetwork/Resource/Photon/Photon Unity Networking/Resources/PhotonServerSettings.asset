@@ -28,13 +28,12 @@ MonoBehaviour:
   NetworkLogging: 1
   RunInBackground: 1
   RpcList:
+  - AddReady
   - Chat
   - ColorRpc
   - DestroyRpc
   - DoJump
   - Flash
-  - GenerateMapTile
-  - GeneratePlayer
   - InstantiateRpc
   - Marco
   - PickupItemInit
@@ -44,5 +43,13 @@ MonoBehaviour:
   - PunRespawn
   - RequestForPickupItems
   - RequestForPickupTimes
+  - SetReady
   - TaggedPlayer
+  - LoadLevel
+  - LoadStage
+  - GenerateMapTile
+  - GeneratePlayer
+  - ResetMap
+  - ReadyOK
+  - GenerateMapObject
   DisableAutoOpenWizard: 1

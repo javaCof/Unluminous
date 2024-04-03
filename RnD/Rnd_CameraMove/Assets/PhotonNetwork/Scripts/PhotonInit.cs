@@ -18,6 +18,9 @@ public class PhotonInit : MonoBehaviour
     public GridLayoutGroup roomListGrid;
     public GameObject roomItem;
 
+    [Header("NEXT SCENE")]
+    public string nextScene;
+
     private void Awake()
     {
         if (!PhotonNetwork.connected)
@@ -28,24 +31,13 @@ public class PhotonInit : MonoBehaviour
         }
     }
 
-    void OnJoinedLobby()
-    {
-        Debug.Log("PHOTON : Joined Lobby");
-        UpdateUserId();
-        UpdateRoomName();
-    }
-    void OnJoinedRoom()
-    {
-        Debug.Log("PHOTON : Enter Room");
-        StartCoroutine(LoadStage());
-    }
-    public void OnClickJoinRandom()
+    public void JoinRandom()
     {
         UpdateUserId();
         PhotonNetwork.player.NickName = userIdInput.text;
         PhotonNetwork.JoinRandomRoom();
     }
-    public void OnClickCreateRoom()
+    public void CreateRoom()
     {
         UpdateUserId();
         UpdateRoomName();
@@ -59,12 +51,25 @@ public class PhotonInit : MonoBehaviour
 
         PhotonNetwork.CreateRoom(roomNameInput.text, roomOptions, TypedLobby.Default);
     }
-    public void OnClickJoinRoom(string roomName) 
+    public void JoinRoom(string roomName)
     {
         UpdateUserId();
         PhotonNetwork.player.NickName = userIdInput.text;
         PhotonNetwork.JoinRoom(roomName);
     }
+
+    void OnJoinedLobby()
+    {
+        Debug.Log("PHOTON : Joined Lobby");
+        UpdateUserId();
+        UpdateRoomName();
+    }
+    void OnJoinedRoom()
+    {
+        Debug.Log("PHOTON : Enter Room");
+        StartCoroutine(EnterRoom());
+    }
+    
     void OnReceivedRoomListUpdate()
     {
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ROOM_ITEM"))
@@ -88,7 +93,7 @@ public class PhotonInit : MonoBehaviour
 
             roomData.UpdateRoomData();
             room.GetComponent<Button>().onClick.AddListener(
-                ()=> OnClickJoinRoom(roomData.roomName)
+                ()=> JoinRoom(roomData.roomName)
                 );
 
             roomListGrid.constraintCount = ++rowCount;
@@ -115,10 +120,10 @@ public class PhotonInit : MonoBehaviour
         roomNameInput.text = _roomName;
     }
 
-    IEnumerator LoadStage()
+    IEnumerator EnterRoom()
     {
         PhotonNetwork.isMessageQueueRunning = false;
-        AsyncOperation ao = SceneManager.LoadSceneAsync("GameScene");
+        AsyncOperation ao = SceneManager.LoadSceneAsync(nextScene);
         yield return ao;
     }
 

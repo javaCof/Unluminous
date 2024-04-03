@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 
-public class MenuManager : MonoBehaviour
+public class MenuUI : MonoBehaviour
 {
     public void MoveToScene(string scene)
     {

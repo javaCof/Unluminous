@@ -6,6 +6,7 @@ public class PhotonReady : MonoBehaviour
 {
     PhotonView pv;
     int readyPlayers;
+    bool isReady;
 
     private void Awake()
     {
@@ -29,8 +30,6 @@ public class PhotonReady : MonoBehaviour
     {
         isReady = true;
     }
-
-    bool isReady;
 
     public IEnumerator WaitForReady()
     {
