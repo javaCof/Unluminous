@@ -4,7 +4,13 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class monsterCtrl : MonoBehaviour
-{   //네비게이션
+{
+    //몬스터의 체력
+    public float hp=100;
+
+    public float attackDmg=10;
+
+    //네비게이션
     public NavMeshAgent myTraceAgent;
 
     //움직일 위치
@@ -21,7 +27,7 @@ public class monsterCtrl : MonoBehaviour
     public Transform monsterStartPosition;
 
 
-    public enum state { idle = 1, trace, attack, look, resetPosition };
+    public enum state { idle = 1, trace, attack, look, resetPosition, damage, dead };
 
     [Header("몬스터의 상태!")]
     public state enemyMode = state.idle;
@@ -44,7 +50,7 @@ public class monsterCtrl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (players.Length != null)
+        if (players.Length >0)
         {
 
             //타겟 셋팅
@@ -63,9 +69,9 @@ public class monsterCtrl : MonoBehaviour
     {
 
         //플레이어와 몬스터 위치거리
-        
 
-        if (players.Length != 0)
+
+        if (players.Length >= 0)
         {
             float dist = (transform.position - players[0].transform.position).sqrMagnitude;
 
@@ -82,56 +88,64 @@ public class monsterCtrl : MonoBehaviour
             }
         }
 
-        
+
         yield return null;
     }
 
 
     IEnumerator ModeSetting()
     {
-        //플레이어와 몬스터 위치거리
-        float distance = (transform.position - player.transform.position).sqrMagnitude;
-        //Debug.Log(distance);
-
-        //몬스터의 초기위치와 현재 위치거리
-        float startDistance = (transform.position - monsterStartPosition.position).sqrMagnitude;
-
-
-        //리셋 모드고 원점에서 10이상 일때(리셋 모드일때는 원점으로 갈때까지 계속 리셋 모드)
-        if (enemyMode == state.resetPosition && startDistance > 5)
+        //몬스터가 살아있을때
+        if (hp>0)
         {
-            enemyMode = state.resetPosition;
-        }
-        //원점에서 200이상으로 넘어갔을떄
-        else if (startDistance > 200)
-        {
-            enemyMode = state.resetPosition;
-        }
+            //플레이어와 몬스터 위치거리
+            float distance = (transform.position - player.transform.position).sqrMagnitude;
+            //Debug.Log(distance);
 
-        //원점거리 200이상으로 안넘어 갔을때
-        else
-        {  //플레이어가 매우 가까이 있을때
-            if (distance < 3)
+            //몬스터의 초기위치와 현재 위치거리
+            float startDistance = (transform.position - monsterStartPosition.position).sqrMagnitude;
+
+
+            //리셋 모드고 원점에서 10이상 일때(리셋 모드일때는 원점으로 갈때까지 계속 리셋 모드)
+            if (enemyMode == state.resetPosition && startDistance > 5)
             {
-                enemyMode = state.attack;
+                enemyMode = state.resetPosition;
+            }
+            //원점에서 200이상으로 넘어갔을떄
+            else if (startDistance > 200)
+            {
+                enemyMode = state.resetPosition;
             }
 
-            //플레이어와 거리가 추적 범위안에 들어왔을때
-            else if (distance < 200)
-            {
-                enemyMode = state.trace;
-            }
-
-            //look 범위 안에 들어가 있을때
-            else if (distance < 300)
-            {
-                enemyMode = state.look;
-            }
-
+            //원점거리 200이상으로 안넘어 갔을때
             else
-            {
-                enemyMode = state.idle;
+            {  //플레이어가 매우 가까이 있을때
+                if (distance < 3)
+                {
+                    enemyMode = state.attack;
+                }
+
+                //플레이어와 거리가 추적 범위안에 들어왔을때
+                else if (distance < 200)
+                {
+                    enemyMode = state.trace;
+                }
+
+                //look 범위 안에 들어가 있을때
+                else if (distance < 300)
+                {
+                    enemyMode = state.look;
+                }
+
+                else
+                {
+                    enemyMode = state.idle;
+                }
             }
+        }
+        else
+        {
+            enemyMode = state.dead;
         }
 
         yield return null;
@@ -206,10 +220,6 @@ public class monsterCtrl : MonoBehaviour
 
             //공격 애니메이션
             anim.SetTrigger("Attack");
-
-
-
-
         }
         else if (enemyMode == state.resetPosition)
         {
@@ -223,10 +233,60 @@ public class monsterCtrl : MonoBehaviour
             //목표를 monsterStartPosition로
             myTraceAgent.destination = monsterStartPosition.position;
         }
+        else if (enemyMode == state.damage)
+        {
+
+            //런 모션 멈춤
+            anim.SetFloat("Run", 0);
+
+            //이동 멈춤
+            myTraceAgent.isStopped = true;
+
+            //대미지 애니메이션 재생
+            anim.SetTrigger("Damage");
+
+        }
+        else if (enemyMode == state.dead)
+        {
+            //런 모션 멈춤
+            anim.SetFloat("Run", 0);
+
+            //이동 멈춤
+            myTraceAgent.isStopped = true;
+
+            //죽는 모션 재생
+            anim.SetBool("Dead", true);
+        }
 
         yield return null;
     }
 
+    //대미지 받는 함수
+    public void Damage(float playerDmg)
+    { 
+        //현재 체력에 받은 대미지 만큼 뺌
+        hp -= playerDmg;
 
+        //임시
+        if (hp>0)
+        {
+            Debug.Log("공격받음! 남은 체력 : " + hp);
+        }
+
+        //몬스터의 체력이 0 이하일때
+        if (hp<=0)
+        {   //사망 함수 실행
+            Dead();
+        }
+    }
+
+    //몬스터를 죽이는 함수
+    public void Dead()
+    {
+        //2초후 없어짐
+        Destroy(gameObject, 2.0f);
+
+        //gameObject.SetActive(false);
+    }
 
 }
