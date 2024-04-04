@@ -101,6 +101,7 @@ public class MapGenerator : MonoBehaviour
     public class ObjInfoList
     {
         public List<ObjInfo> objs;
+        public ObjInfoList(List<ObjInfo> objs) => this.objs = objs;
     }
 
     List<RectInt> rooms;
@@ -156,6 +157,7 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(LoadLevel());
     }
 
+    [ContextMenu("Reset Level")]
     public void ResetLevel()
     {
         StartCoroutine(LoadLevel());
@@ -184,7 +186,7 @@ public class MapGenerator : MonoBehaviour
         GenerateMapData();
         PaintMapTile();
         GenerateMapTile(mapTiles);
-        GenerateMapObject(JsonUtility.ToJson(objects));
+        GenerateMapObject(JsonUtility.ToJson(new ObjInfoList(objects)));
         GeneratePlayer();
 
         yield return null;
@@ -199,7 +201,7 @@ public class MapGenerator : MonoBehaviour
             PaintMapTile();
 
             pv.RPC("GenerateMapTile", PhotonTargets.All, mapTiles);
-            pv.RPC("GenerateMapObject", PhotonTargets.All, JsonUtility.ToJson(objects));
+            pv.RPC("GenerateMapObject", PhotonTargets.All, JsonUtility.ToJson(new ObjInfoList(objects)));
             pv.RPC("ReadyOK", PhotonTargets.All);
 
             yield return StartCoroutine(pr.WaitForReady());
@@ -428,6 +430,11 @@ public class MapGenerator : MonoBehaviour
                     }
                     break;
                 case RoomType.MONSTER:
+                    {
+                        Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
+
+                        objects.Add(new ObjInfo(ObjType.MONSTER, i, pos));
+                    }
                     break;
                 case RoomType.TREASURE:
                     break;
@@ -646,32 +653,34 @@ public class MapGenerator : MonoBehaviour
     /*------------MAP OBJECT------------*/
     [PunRPC] void GenerateMapObject(string json)
     {
-
-
-        Debug.Log(objects.Count);
-        ObjInfoList l = new ObjInfoList();
-        l.objs = objects;
-        Debug.Log(JsonUtility.ToJson(l));
-
-        List<ObjInfo> objs = JsonUtility.FromJson<List<ObjInfo>>(json);
+        List<ObjInfo> objs = JsonUtility.FromJson<ObjInfoList>(json).objs;
         foreach (ObjInfo obj in objs)
         {
-            //Debug.Log("" + obj.objID + obj.roomID + obj.pos);
-
             switch (obj.objID)
             {
                 case ObjType.PLAYER:
                     {
-                        //playerSpawnPoint = obj.pos;
+                        playerSpawnPoint = obj.pos;
                     }
                     break;
                 case ObjType.MONSTER:
                     {
-                        //Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
-                        //monsterPool.GetObject(obj.pos, Quaternion.identity, info.pos);
+                        GenerateObject(obj);
                     }
                     break;
             }
+        }
+    }
+
+    void GenerateObject(ObjInfo info)
+    {
+        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
+        {
+            monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
+        }
+        else
+        {
+            monsterPool.GetObject(info.pos, Quaternion.identity, objectPos);
         }
     }
 
