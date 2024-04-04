@@ -5,27 +5,21 @@ using UnityEngine.AI;
 
 public class monsterCtrl : MonoBehaviour
 {
-    //몬스터의 체력
-    public float hp=100;
+    public float hp = 100;                  //현재 체력
+    public float attackDmg = 10;            //공격력
 
-    public float attackDmg=10;
-
-    //네비게이션
-    public NavMeshAgent myTraceAgent;
-
-    //움직일 위치
-    public Vector3 MovePoint = Vector3.zero;
+    private Animator anim;              //애니메이션
+    private NavMeshAgent nav;           //네비게이션
+    
 
     //플레이어 오브젝트
-    public GameObject[] players;
-    public GameObject player;
-
-    //애니메이션
-    Animator anim;
+    private GameObject[] players;
+    private GameObject player;
 
     //몬스터의 초기 위치
     public Transform monsterStartPosition;
 
+    //Unit
 
     public enum state { idle = 1, trace, attack, look, resetPosition, damage, dead };
 
@@ -35,14 +29,14 @@ public class monsterCtrl : MonoBehaviour
     private void Awake()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
-        myTraceAgent = GetComponent<NavMeshAgent>();
-        anim = transform.Find("mon").gameObject.GetComponent<Animator>();
+        nav = GetComponent<NavMeshAgent>();
+        anim = GetComponentInChildren<Animator>();
 
     }
     // Start is called before the first frame update
     void Start()
     {
-        myTraceAgent.isStopped = true;
+        nav.isStopped = true;
 
         enemyMode = state.idle;
     }
@@ -170,7 +164,7 @@ public class monsterCtrl : MonoBehaviour
             anim.SetFloat("Run", 0);
 
             //몬스터 움직임 멈춤
-            myTraceAgent.isStopped = true;
+            nav.isStopped = true;
 
             //idle모션 재생
             anim.Play("Idle");
@@ -181,7 +175,7 @@ public class monsterCtrl : MonoBehaviour
             anim.SetFloat("Run", 0);
 
             //몬스터 움직임 멈춤
-            myTraceAgent.isStopped = true;
+            nav.isStopped = true;
 
             //몬스터 애니메이션 idle
             anim.Play("Idle");
@@ -199,13 +193,13 @@ public class monsterCtrl : MonoBehaviour
             anim.SetFloat("Run", 1);
 
             //스탑을 해제
-            myTraceAgent.isStopped = false;
+            nav.isStopped = false;
 
             //움직일 곳을 플레이어의 위치로 설정 
-            myTraceAgent.destination = player.transform.position;
+            nav.destination = player.transform.position;
 
             //플레이어에게서 멈출때 얼마나 거리를 벌릴건지
-            myTraceAgent.stoppingDistance = 0.5f;
+            nav.stoppingDistance = 0.5f;
         }
         else if (enemyMode == state.attack)
         {
@@ -216,7 +210,7 @@ public class monsterCtrl : MonoBehaviour
             transform.LookAt(playerLook);
 
             //공격할때 이동 멈춤
-            myTraceAgent.isStopped = true;
+            nav.isStopped = true;
 
             //공격 애니메이션
             anim.SetTrigger("Attack");
@@ -228,10 +222,10 @@ public class monsterCtrl : MonoBehaviour
             //anim.SetFloat("Run", Mathf.Abs(myTraceAgent.velocity.x + myTraceAgent.velocity.z));
 
             //움직임 멈춤 취소
-            myTraceAgent.isStopped = false;
+            nav.isStopped = false;
 
             //목표를 monsterStartPosition로
-            myTraceAgent.destination = monsterStartPosition.position;
+            nav.destination = monsterStartPosition.position;
         }
         else if (enemyMode == state.damage)
         {
@@ -240,7 +234,7 @@ public class monsterCtrl : MonoBehaviour
             anim.SetFloat("Run", 0);
 
             //이동 멈춤
-            myTraceAgent.isStopped = true;
+            nav.isStopped = true;
 
             //대미지 애니메이션 재생
             anim.SetTrigger("Damage");
@@ -252,7 +246,7 @@ public class monsterCtrl : MonoBehaviour
             anim.SetFloat("Run", 0);
 
             //이동 멈춤
-            myTraceAgent.isStopped = true;
+            nav.isStopped = true;
 
             //죽는 모션 재생
             anim.SetBool("Dead", true);
