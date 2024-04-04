@@ -18,16 +18,14 @@ public class UISizeFitter : MonoBehaviour
     {
         float heightRate = (float)Screen.height / viewHeight;
 
-        foreach (var ui in canvas.GetComponentsInChildren<RectTransform>())
+        foreach (var ui in canvas.GetComponentsInChildren<RectTransform>(true))
         {
             ui.anchoredPosition *= heightRate;
             ui.sizeDelta *= heightRate;
         }
-        foreach (var txt in canvas.GetComponentsInChildren<Text>())
+        foreach (var txt in canvas.GetComponentsInChildren<Text>(true))
         {
             txt.fontSize = (int)(txt.fontSize * heightRate);
         }
     }
-
-    public void FF() { }
 }

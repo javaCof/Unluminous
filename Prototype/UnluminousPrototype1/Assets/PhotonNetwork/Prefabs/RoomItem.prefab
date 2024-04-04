@@ -171,6 +171,7 @@ GameObject:
   - component: {fileID: 8296637633502814145}
   - component: {fileID: 5802543058980216083}
   - component: {fileID: 4275902399741265364}
+  - component: {fileID: 3554661920166259655}
   m_Layer: 5
   m_Name: RoomItem
   m_TagString: ROOM_ITEM
@@ -298,3 +299,16 @@ MonoBehaviour:
   roomName: 
   connectPlayer: 0
   maxPlayers: 0
+--- !u!114 &3554661920166259655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296637633502814147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8d554f637a5844289012b8ad242076, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewHeight: 1080

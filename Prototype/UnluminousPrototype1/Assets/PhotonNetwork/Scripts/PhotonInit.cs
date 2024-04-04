@@ -15,9 +15,11 @@ public class PhotonInit : MonoBehaviour
     public InputField roomNameInput;
 
     [Header("ROOM UI")]
-    public GameObject roomListContents;
+    public GridLayoutGroup roomListGrid;
     public GameObject roomItem;
-    public int RoomUIHeight = 80;
+
+    [Header("NEXT SCENE")]
+    public string nextScene;
 
     private void Awake()
     {
@@ -29,24 +31,13 @@ public class PhotonInit : MonoBehaviour
         }
     }
 
-    void OnJoinedLobby()
-    {
-        Debug.Log("PHOTON : Joined Lobby");
-        UpdateUserId();
-        UpdateRoomName();
-    }
-    void OnJoinedRoom()
-    {
-        Debug.Log("PHOTON : Enter Room");
-        StartCoroutine(LoadStage());
-    }
-    public void OnClickJoinRandom()
+    public void JoinRandom()
     {
         UpdateUserId();
         PhotonNetwork.player.NickName = userIdInput.text;
         PhotonNetwork.JoinRandomRoom();
     }
-    public void OnClickCreateRoom()
+    public void CreateRoom()
     {
         UpdateUserId();
         UpdateRoomName();
@@ -60,12 +51,25 @@ public class PhotonInit : MonoBehaviour
 
         PhotonNetwork.CreateRoom(roomNameInput.text, roomOptions, TypedLobby.Default);
     }
-    public void OnClickJoinRoom(string roomName) 
+    public void JoinRoom(string roomName)
     {
         UpdateUserId();
         PhotonNetwork.player.NickName = userIdInput.text;
         PhotonNetwork.JoinRoom(roomName);
     }
+
+    void OnJoinedLobby()
+    {
+        Debug.Log("PHOTON : Joined Lobby");
+        UpdateUserId();
+        UpdateRoomName();
+    }
+    void OnJoinedRoom()
+    {
+        Debug.Log("PHOTON : Enter Room");
+        StartCoroutine(EnterRoom());
+    }
+    
     void OnReceivedRoomListUpdate()
     {
         foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ROOM_ITEM"))
@@ -74,12 +78,13 @@ public class PhotonInit : MonoBehaviour
         }
 
         int rowCount = 0;
-        roomListContents.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
+        RectTransform gridRect = roomListGrid.GetComponent<RectTransform>();
+        gridRect.sizeDelta = new Vector2(0, roomListGrid.padding.top);
 
         foreach (RoomInfo _room in PhotonNetwork.GetRoomList())
         {
             GameObject room = Instantiate(roomItem);
-            room.transform.SetParent(roomListContents.transform, false);
+            room.transform.SetParent(gridRect, false);
 
             PhotonRoomData roomData = room.GetComponent<PhotonRoomData>();
             roomData.roomName = _room.Name;
@@ -88,11 +93,11 @@ public class PhotonInit : MonoBehaviour
 
             roomData.UpdateRoomData();
             room.GetComponent<Button>().onClick.AddListener(
-                ()=> OnClickJoinRoom(roomData.roomName)
+                ()=> JoinRoom(roomData.roomName)
                 );
 
-            roomListContents.GetComponent<GridLayoutGroup>().constraintCount = ++rowCount;
-            roomListContents.GetComponent<RectTransform>().sizeDelta += new Vector2(0, RoomUIHeight);
+            roomListGrid.constraintCount = ++rowCount;
+            gridRect.sizeDelta += new Vector2(0, roomListGrid.cellSize.y + roomListGrid.spacing.y);
         }
     }
 
@@ -115,10 +120,10 @@ public class PhotonInit : MonoBehaviour
         roomNameInput.text = _roomName;
     }
 
-    IEnumerator LoadStage()
+    IEnumerator EnterRoom()
     {
         PhotonNetwork.isMessageQueueRunning = false;
-        AsyncOperation ao = SceneManager.LoadSceneAsync("GameScene");
+        AsyncOperation ao = SceneManager.LoadSceneAsync(nextScene);
         yield return ao;
     }
 

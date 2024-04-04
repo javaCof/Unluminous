@@ -12,24 +12,16 @@ public class MapGenerator : MonoBehaviour
     public float minDividePer = 0.4f;
     public float maxDividePer = 0.6f;
 
-    [Header("MAP TEXTURE")]
-    public Color emptyColor = Color.black;
-    public Color floorColor = Color.white;
-    public Color wallColor = Color.red;
-    public Color cornerColor = Color.green;
-    public Color pillarColor = Color.blue;
-    public Color pathColor = Color.yellow;
-
     [Header("MAP TILE")]
     public float tileSize = 4f;
-    public GameObject prefabFloor;
-    public GameObject prefabWall;
-    public GameObject prefabCorner;
-    public GameObject prefabPillar;
+    public GameObject floorPrefab;
+    public GameObject wallPrefab;
+    public GameObject cornerPrefab;
+    public GameObject pillarPrefab;
 
     [Header("MAP OBJECT")]
-    public GameObject playerPref;
-    public GameObject monsterPref;
+    public GameObject playerPrefab;
+    public GameObject monsterPrefab;
 
     [Header("DEBUG")]
     public bool useDebug = false;
@@ -37,6 +29,8 @@ public class MapGenerator : MonoBehaviour
     public LineRenderer rectRnd;
 
     public enum RoomType { START, MONSTER, TREASURE, BOSS }
+    public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }
+    public enum ObjType { PLAYER, MONSTER }
 
     class RoomNode
     {
@@ -88,78 +82,155 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    [System.Serializable]
+    public class ObjInfo
+    {
+        public ObjType objID;
+        public int roomID;
+        public Vector3 pos;
+
+        public ObjInfo(ObjType objID, int roomID, Vector3 pos)
+        {
+            this.objID = objID;
+            this.roomID = roomID;
+            this.pos = pos;
+        }
+    }
+
+    [System.Serializable]
+    public class ObjInfoList
+    {
+        public List<ObjInfo> objs;
+        public ObjInfoList(List<ObjInfo> objs) => this.objs = objs;
+    }
+
     List<RectInt> rooms;
     List<PathInfo> paths;
     List<RoomInfo> roomInfos;
-
-    Texture2D mapTexture;
+    [SerializeReference] List<ObjInfo> objects;
 
     Transform tilePos;
     Transform objectPos;
     Transform debugPos;
 
+    Vector3 playerSpawnPoint;
+
+    TileType[] mapTiles;
+
+    ObjectPool floorPool;
+    ObjectPool wallPool;
+    ObjectPool cornerPool;
+    ObjectPool pillarPool;
+    ObjectPool monsterPool;
+
     PhotonView pv;
+    PhotonReady pr;
 
     private void Awake()
     {
         rooms = new List<RectInt>();
         paths = new List<PathInfo>();
         roomInfos = new List<RoomInfo>();
-        mapTexture = new Texture2D(mapSize.x, mapSize.y);
+        objects = new List<ObjInfo>();
+        mapTiles = new TileType[mapSize.x * mapSize.y];
+
+        (tilePos = new GameObject("tile").transform).parent = mapPos;
+        (objectPos = new GameObject("object").transform).parent = mapPos;
+        (debugPos = new GameObject("debug").transform).parent = mapPos;
+
+        int mapSizeInt = mapSize.x * mapSize.y;
+        Transform poolPos = new GameObject("pool").transform;
+
+        floorPool = new ObjectPool(floorPrefab, mapSizeInt, poolPos);
+        wallPool = new ObjectPool(wallPrefab, mapSizeInt / 2, poolPos);
+        cornerPool = new ObjectPool(cornerPrefab, mapSizeInt / 2, poolPos);
+        pillarPool = new ObjectPool(pillarPrefab, mapSizeInt / 2, poolPos);
+        monsterPool = new ObjectPool(monsterPrefab, 100, poolPos);
 
         pv = GetComponent<PhotonView>();
+        pr = GetComponent<PhotonReady>();
     }
-
     private void Start()
     {
-        PhotonNetwork.isMessageQueueRunning = true;
-        StartCoroutine(GenerateRandomMap());
-    }
+        if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
 
-    public void Run()
-    {
         StartCoroutine(LoadLevel());
     }
 
+    [ContextMenu("Reset Level")]
+    public void ResetLevel()
+    {
+        StartCoroutine(LoadLevel());
+    }
     IEnumerator LoadLevel()
     {
         AsyncOperation op = SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
         yield return op;
 
-        yield return StartCoroutine(GenerateRandomMap());
-        //yield return new WaitForSeconds(1);
-        
+        if (PhotonNetwork.inRoom)
+        {
+            yield return StartCoroutine(GenerateRandomMapMulti());
+        }
+        else
+        {
+            yield return StartCoroutine(GenerateRandomMapLocal());
+        }
+
         SceneManager.UnloadSceneAsync("LoadingScene", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
     }
-    IEnumerator GenerateRandomMap()
+
+    IEnumerator GenerateRandomMapLocal()
     {
-        ClearMap();
-        SetUpMap();
+        ResetMap();
 
         GenerateMapData();
         PaintMapTile();
-        GenerateMapTile();
-        GenerateMapObject();
+        GenerateMapTile(mapTiles);
+        GenerateMapObject(JsonUtility.ToJson(new ObjInfoList(objects)));
+        GeneratePlayer();
+
+        yield return null;
+    }
+    IEnumerator GenerateRandomMapMulti()
+    {
+        if (PhotonNetwork.isMasterClient)
+        {
+            pv.RPC("ResetMap", PhotonTargets.All);
+
+            GenerateMapData();
+            PaintMapTile();
+
+            pv.RPC("GenerateMapTile", PhotonTargets.All, mapTiles);
+            pv.RPC("GenerateMapObject", PhotonTargets.All, JsonUtility.ToJson(new ObjInfoList(objects)));
+            pv.RPC("ReadyOK", PhotonTargets.All);
+
+            yield return StartCoroutine(pr.WaitForReady());
+
+            pv.RPC("GeneratePlayer", PhotonTargets.All);
+        }
 
         yield return null;
     }
 
-    void ClearMap()
+    [PunRPC]
+    void ResetMap()
     {
-        foreach (Transform child in mapPos)
-            Destroy(child.gameObject);
-
         rooms.Clear();
         paths.Clear();
         roomInfos.Clear();
-    }
-    void SetUpMap()
-    {
-        (tilePos = new GameObject("tile").transform).parent = mapPos;
-        (objectPos = new GameObject("object").transform).parent = mapPos;
-        (debugPos = new GameObject("debug").transform).parent = mapPos;
-    }
+        objects.Clear();
 
+        floorPool.Reset();
+        wallPool.Reset();
+        cornerPool.Reset();
+        pillarPool.Reset();
+
+        foreach (Transform pos in objectPos)
+        {
+            Destroy(pos.gameObject);
+        }
+    }
+    
     /*------------MAP DATA------------*/
     void GenerateMapData()
     {
@@ -171,6 +242,7 @@ public class MapGenerator : MonoBehaviour
         CreateRoom(map);
         DecideRoomType();
         CreatePath(map);
+        SetObjectData();
     }
     void DivideRect(RoomNode node, int pDivAxis = -1, int divDepth = 0,
         bool hRev = false, bool vRev = false, int n = 0)
@@ -303,11 +375,9 @@ public class MapGenerator : MonoBehaviour
             else if (i == 0)
                 type = RoomType.BOSS;
             else
-            {
                 type = RoomType.MONSTER;
-            }
 
-            Transform roomPos = new GameObject("room_" + (rooms.Count - 1)).transform;
+            Transform roomPos = new GameObject("room_" + i).transform;
             roomPos.parent = objectPos;
             roomInfos.Add(new RoomInfo(type, rooms[i], roomPos));
         }
@@ -337,17 +407,53 @@ public class MapGenerator : MonoBehaviour
         CreatePath(node.left, n + 1);
         CreatePath(node.right, n + 1);
     }
-    
+    void SetMapTile(int x, int y, TileType type)
+    {
+        mapTiles[mapSize.x * y + x] = type;
+    }
+    TileType GetMapTile(int x, int y)
+    {
+        return mapTiles[mapSize.x * y + x];
+    }
+    void SetObjectData()
+    {
+        for (int i = 0; i < roomInfos.Count; i++)
+        {
+            RoomInfo info = roomInfos[i];
+            switch (info.type)
+            {
+                case RoomType.START:
+                    {
+                        Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
+
+                        objects.Add(new ObjInfo(ObjType.PLAYER, i, pos));
+                    }
+                    break;
+                case RoomType.MONSTER:
+                    {
+                        Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
+
+                        objects.Add(new ObjInfo(ObjType.MONSTER, i, pos));
+                    }
+                    break;
+                case RoomType.TREASURE:
+                    break;
+                case RoomType.BOSS:
+                    break;
+            }
+        }
+    }
+
     /*------------MAP PAINT------------*/
     void PaintMapTile()
     {
-        int map_w = mapTexture.width;
-        int map_h = mapTexture.height;
+        int map_w = mapSize.x;
+        int map_h = mapSize.y;
 
         //back
         for (int i = 0; i < map_h; i++)
             for (int j = 0; j < map_w; j++)
-                mapTexture.SetPixel(j, i, emptyColor);
+                SetMapTile(j, i, TileType.EMPTY);
 
         //room
         foreach (RectInt room in rooms)
@@ -360,25 +466,25 @@ public class MapGenerator : MonoBehaviour
             //floor
             for (int i = y1; i < y2; i++)
                 for (int j = x1; j < x2; j++)
-                    mapTexture.SetPixel(j, i, floorColor);
+                    SetMapTile(j, i, TileType.FLOOR);
 
             //wall
             for (int j = x1; j < x2; j++)
             {
-                mapTexture.SetPixel(j, y1, wallColor);
-                mapTexture.SetPixel(j, y2 - 1, wallColor);
+                SetMapTile(j, y1, TileType.WALL);
+                SetMapTile(j, y2 - 1, TileType.WALL);
             }
             for (int i = y1; i < y2; i++)
             {
-                mapTexture.SetPixel(x1, i, wallColor);
-                mapTexture.SetPixel(x2 - 1, i, wallColor);
+                SetMapTile(x1, i, TileType.WALL);
+                SetMapTile(x2 - 1, i, TileType.WALL);
             }
 
             //corner
-            mapTexture.SetPixel(x1, y1, cornerColor);
-            mapTexture.SetPixel(x1, y2 - 1, cornerColor);
-            mapTexture.SetPixel(x2 - 1, y1, cornerColor);
-            mapTexture.SetPixel(x2 - 1, y2 - 1, cornerColor);
+            SetMapTile(x1, y1, TileType.CORNER);
+            SetMapTile(x1, y2 - 1, TileType.CORNER);
+            SetMapTile(x2 - 1, y1, TileType.CORNER);
+            SetMapTile(x2 - 1, y2 - 1, TileType.CORNER);
         }
 
         //path
@@ -409,8 +515,6 @@ public class MapGenerator : MonoBehaviour
                 PaintCurve(beginCurve, path.end, endCurve);
             }
         }
-
-        mapTexture.Apply();
     }
     void PaintLine(Vector2Int begin, Vector2Int end, Color col)
     {
@@ -442,158 +546,167 @@ public class MapGenerator : MonoBehaviour
         {
             if (p1.y < p2.y)
             {
-                SetCurvePixel(cur, 0, 1, cornerColor);
-                SetCurvePixel(cur, 1, 0, pillarColor);
+                SetCurvePixel(cur, 0, 1, TileType.CORNER);
+                SetCurvePixel(cur, 1, 0, TileType.PILLAR);
             }
             else
             {
-                SetCurvePixel(cur, 0, 0, cornerColor);
-                SetCurvePixel(cur, 1, 1, pillarColor);
+                SetCurvePixel(cur, 0, 0, TileType.CORNER);
+                SetCurvePixel(cur, 1, 1, TileType.PILLAR);
             }
         }
         else
         {
             if (p1.y < p2.y)
             {
-                SetCurvePixel(cur, 1, 1, cornerColor);
-                SetCurvePixel(cur, 0, 0, pillarColor);
+                SetCurvePixel(cur, 1, 1, TileType.CORNER);
+                SetCurvePixel(cur, 0, 0, TileType.PILLAR);
             }
             else
             {
-                SetCurvePixel(cur, 1, 0, cornerColor);
-                SetCurvePixel(cur, 0, 1, pillarColor);
+                SetCurvePixel(cur, 1, 0, TileType.CORNER);
+                SetCurvePixel(cur, 0, 1, TileType.PILLAR);
             }
         }
     }
     void SetPathPixel(int x, int y)
     {
-        if (mapTexture.GetPixel(x, y) == wallColor) mapTexture.SetPixel(x, y, pillarColor);
-        else if (mapTexture.GetPixel(x, y) == emptyColor) mapTexture.SetPixel(x, y, pathColor);
+        if (GetMapTile(x, y) == TileType.WALL) SetMapTile(x, y, TileType.PILLAR);
+        else if (GetMapTile(x, y) == TileType.EMPTY) SetMapTile(x, y, TileType.PATH);
     }
-    void SetCurvePixel(Vector2Int cur, int offset_x, int offset_y, Color col)
+    void SetCurvePixel(Vector2Int cur, int offset_x, int offset_y, TileType type)
     {
-        mapTexture.SetPixel(cur.x + offset_x, cur.y + offset_y, col);
+        SetMapTile(cur.x + offset_x, cur.y + offset_y, type);
     }
 
     /*------------MAP TILE------------*/
-    void GenerateMapTile()
+    [PunRPC] void GenerateMapTile(TileType[] tiles)
     {
         float multiplierFactor = tileSize + float.Epsilon;
-        Color[] pixels = mapTexture.GetPixels();
 
         for (int i = 0; i < mapSize.y; i++)
         {
             for (int j = 0; j < mapSize.x; j++)
             {
-                Color pixelColor = pixels[i * mapSize.y + j];
+                TileType type = tiles[i * mapSize.y + j];
 
-                if (pixelColor == floorColor)
+                if (type == TileType.FLOOR)
                 {   //Floor
-                    GameObject inst = Instantiate(prefabFloor, tilePos);
+                    GameObject inst = floorPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                 }
-                else if (pixelColor == wallColor || pixelColor == pathColor)
+                else if (type == TileType.WALL || type == TileType.PATH)
                 {   //Wall
-                    GameObject inst = Instantiate(prefabWall, tilePos);
+                    GameObject inst = wallPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
-                    inst.transform.Rotate(new Vector3(0, FindRotationW(pixels, i, j), 0), Space.Self);
+                    inst.transform.Rotate(new Vector3(0, FindRotationW(tiles, i, j), 0), Space.Self);
                 }
-                else if (pixelColor == cornerColor)
+                else if (type == TileType.CORNER)
                 {   //Corner
-                    GameObject inst = Instantiate(prefabCorner, tilePos);
+                    GameObject inst = cornerPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
-                    inst.transform.Rotate(new Vector3(0, FindRotationL(pixels, i, j), 0), Space.Self);
+                    inst.transform.Rotate(new Vector3(0, FindRotationL(tiles, i, j), 0), Space.Self);
                 }
-                else if (pixelColor == pillarColor)
+                else if (type == TileType.PILLAR)
                 {   //Pillar
-                    GameObject inst = Instantiate(prefabPillar, tilePos);
+                    GameObject inst = pillarPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
-                    inst.transform.Rotate(new Vector3(0, FindRotationC(pixels, i, j), 0), Space.Self);
+                    inst.transform.Rotate(new Vector3(0, FindRotationC(tiles, i, j), 0), Space.Self);
                 }
             }
         }
     }
-    float FindRotationW(Color[] pixels, int i, int j)
+    float FindRotationW(TileType[] tiles, int i, int j)
     {
-        //void on the right
-        float Rotation = 0f;
-        //void on the bottom
-        if (i - 1 >= 0 && (pixels[(i - 1) * mapSize.y + j] == Color.black || pixels[(i - 1) * mapSize.y + j] == Color.cyan))
-        {
-            Rotation = 90f;
-        }
-        //void on the left
-        else if (j - 1 >= 0 && (pixels[i * mapSize.y + (j - 1)] == Color.black || pixels[i * mapSize.y + (j - 1)] == Color.cyan))
-        {
-            Rotation = 180f;
-        }
-        else if (i + 1 < mapSize.y && (pixels[(i + 1) * mapSize.y + j] == Color.black || pixels[(i + 1) * mapSize.y + j] == Color.cyan))
-        {
-            Rotation = -90f;
-        }
-        return Rotation;
+        float rotation = 0f;
+        if (i - 1 >= 0 && (tiles[(i - 1) * mapSize.y + j] == TileType.EMPTY))
+            rotation = 90f;
+        else if (j - 1 >= 0 && (tiles[i * mapSize.y + (j - 1)] == TileType.EMPTY))
+            rotation = 180f;
+        else if (i + 1 < mapSize.y && (tiles[(i + 1) * mapSize.y + j] == TileType.EMPTY))
+            rotation = -90f;
+        return rotation;
     }
-    float FindRotationC(Color[] pixels, int i, int j)
+    float FindRotationC(TileType[] tiles, int i, int j)
     {
-        //void is on right/up
-        float Rotation = 0f;
-        //void is on right/down
-        if (i - 1 >= 0 && j + 1 < mapSize.x && (pixels[(i - 1) * mapSize.y + (j + 1)] == Color.black || pixels[(i - 1) * mapSize.y + (j + 1)] == Color.cyan))
-            Rotation = 90f;
-        //voif is on bottom/left
-        else if (i - 1 >= 0 && j - 1 >= 0 && (pixels[(i - 1) * mapSize.y + (j - 1)] == Color.black || pixels[(i - 1) * mapSize.y + (j - 1)] == Color.cyan))
-            Rotation = 180f;
-        else if (i + 1 < mapSize.y && j - 1 >= 0 && (pixels[(i + 1) * mapSize.y + (j - 1)] == Color.black || pixels[(i + 1) * mapSize.y + (j - 1)] == Color.cyan))
-            Rotation = -90f;
-        return Rotation;
+        float rotation = 0f;
+        if (i - 1 >= 0 && j + 1 < mapSize.x && (tiles[(i - 1) * mapSize.y + (j + 1)] == TileType.EMPTY))
+            rotation = 90f;
+        else if (i - 1 >= 0 && j - 1 >= 0 && (tiles[(i - 1) * mapSize.y + (j - 1)] == TileType.EMPTY))
+            rotation = 180f;
+        else if (i + 1 < mapSize.y && j - 1 >= 0 && (tiles[(i + 1) * mapSize.y + (j - 1)] == TileType.EMPTY))
+            rotation = -90f;
+        return rotation;
     }
-    float FindRotationL(Color[] pixels, int i, int j)
+    float FindRotationL(TileType[] tiles, int i, int j)
     {
-        //void is in the top And right
         float rotation = 0;
-        //void is in the right And bottom
-        if (((pixels[i * mapSize.y + j - 1] == Color.black || pixels[i * mapSize.y + j - 1] == Color.cyan)) && ((pixels[(i - 1) * mapSize.y + j] == Color.black) || (pixels[(i - 1) * mapSize.y + j] == Color.cyan)))
+        if ((tiles[i * mapSize.y + j - 1] == TileType.EMPTY) && (tiles[(i - 1) * mapSize.y + j] == TileType.EMPTY))
             rotation = 180;
-        //void is up And Left
-        if (((pixels[i * mapSize.y + j - 1] == Color.black) || (pixels[i * mapSize.y + j - 1] == Color.cyan)) && ((pixels[(i + 1) * mapSize.y + j] == Color.black) || (pixels[(i + 1) * mapSize.y + j] == Color.cyan)))
+        if ((tiles[i * mapSize.y + j - 1] == TileType.EMPTY) && (tiles[(i + 1) * mapSize.y + j] == TileType.EMPTY))
             rotation = -90;
-        if (((pixels[i * mapSize.y + j + 1] == Color.black) || (pixels[i * mapSize.y + j + 1] == Color.cyan)) && ((pixels[(i - 1) * mapSize.y + j] == Color.black) || (pixels[(i - 1) * mapSize.y + j] == Color.cyan)))
+        if ((tiles[i * mapSize.y + j + 1] == TileType.EMPTY) && (tiles[(i - 1) * mapSize.y + j] == TileType.EMPTY))
             rotation = 90;
         return rotation;
     }
 
     /*------------MAP OBJECT------------*/
-    void GenerateMapObject()
+    [PunRPC] void GenerateMapObject(string json)
     {
-        foreach (RoomInfo info in roomInfos)
+        List<ObjInfo> objs = JsonUtility.FromJson<ObjInfoList>(json).objs;
+        foreach (ObjInfo obj in objs)
         {
-            switch (info.type)
+            switch (obj.objID)
             {
-                case RoomType.START:
+                case ObjType.PLAYER:
                     {
-                        Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
-
-                        //GameObject.Instantiate(playerPref, pos, Quaternion.identity, info.pos);
-                        GameObject player = PhotonNetwork.Instantiate("PhotonPlayer", pos, Quaternion.identity, 0);
-                        player.transform.parent = info.pos;
+                        playerSpawnPoint = obj.pos;
                     }
                     break;
-                case RoomType.MONSTER:
+                case ObjType.MONSTER:
                     {
-                        Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
-                        GameObject.Instantiate(monsterPref, pos, Quaternion.identity, info.pos);
+                        GenerateObject(obj);
                     }
-                    break;
-                case RoomType.TREASURE:
                     break;
             }
         }
     }
 
+    void GenerateObject(ObjInfo info)
+    {
+        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
+        {
+            monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
+        }
+        else
+        {
+            monsterPool.GetObject(info.pos, Quaternion.identity, objectPos);
+        }
+    }
+
+    [PunRPC]
+    void GeneratePlayer()
+    {
+        if (PhotonNetwork.inRoom)
+        {
+            PhotonNetwork.Instantiate("PhotonPlayer", playerSpawnPoint, Quaternion.identity, 0);
+        }
+        else
+        {
+            GameObject.Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity);
+        }
+    }
+
+    [PunRPC]
+    void ReadyOK()
+    {
+        pr.Ready();
+    }
+
     /*------------DEBUG------------*/
     void DrawLine(Vector2Int from, Vector2Int to, Color col, float zOrder = 0)
     {
-        LineRenderer rnd = Instantiate(lineRnd, debugPos);
+        LineRenderer rnd = GameObject.Instantiate(lineRnd, debugPos);
         rnd.material.color = col;
 
         rnd.SetPosition(0, new Vector3(from.x, from.y, zOrder));
@@ -601,7 +714,7 @@ public class MapGenerator : MonoBehaviour
     }
     void DrawRect(RectInt rect, Color col, float zOrder = 0)
     {
-        LineRenderer rnd = Instantiate(rectRnd, debugPos);
+        LineRenderer rnd = GameObject.Instantiate(rectRnd, debugPos);
         rnd.material.color = col;
 
         rnd.SetPosition(0, new Vector3(rect.x, rect.y, zOrder));

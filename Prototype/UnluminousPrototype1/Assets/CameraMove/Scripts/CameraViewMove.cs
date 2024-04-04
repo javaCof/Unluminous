@@ -64,8 +64,8 @@ public class CameraViewMove : MonoBehaviour
     {
         if (ctl.isGrounded)
         {
-            float inpH = Input.GetAxis("Horizontal");
-            float inpV = Input.GetAxis("Vertical");
+            float inpH = Input.GetAxisRaw("Horizontal");
+            float inpV = Input.GetAxisRaw("Vertical");
 
             float mSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : speed;
 
