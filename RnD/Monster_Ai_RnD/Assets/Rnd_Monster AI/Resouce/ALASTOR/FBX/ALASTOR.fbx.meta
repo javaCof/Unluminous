@@ -1,176 +1,506 @@
 fileFormatVersion: 2
 guid: 8c382c7ff0788664fab3c2fa4d5c1d3b
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Body
-    100002: Chest
-    100004: Foot.L
-    100006: Foot.R
-    100008: Hand.L
-    100010: Hand.R
-    100012: Head
-    100014: Hips
-    100016: Index Distal.L
-    100018: Index Distal.L_end
-    100020: Index Distal.R
-    100022: Index Distal.R_end
-    100024: Index Intermediate.L
-    100026: Index Intermediate.R
-    100028: Index Proximal.L
-    100030: Index Proximal.R
-    100032: Little Distal.L
-    100034: Little Distal.L_end
-    100036: Little Distal.R
-    100038: Little Distal.R_end
-    100040: Little Intermediate.L
-    100042: Little Intermediate.R
-    100044: Little Proximal.L
-    100046: Little Proximal.R
-    100048: Lower Arm.L
-    100050: Lower Arm.R
-    100052: Lower Leg.L
-    100054: Lower Leg.R
-    100056: Middle Distal.L
-    100058: Middle Distal.L_end
-    100060: Middle Distal.R
-    100062: Middle Distal.R_end
-    100064: Middle Intermediate.L
-    100066: Middle Intermediate.R
-    100068: Middle Proximal.L
-    100070: Middle Proximal.R
-    100072: Neck
-    100074: Ring Distal.L
-    100076: Ring Distal.L_end
-    100078: Ring Distal.R
-    100080: Ring Distal.R_end
-    100082: Ring Intermediate.L
-    100084: Ring Intermediate.R
-    100086: Ring Proximal.L
-    100088: Ring Proximal.R
-    100090: Shoulder.L
-    100092: Shoulder.R
-    100094: Shoulder_armor.L
-    100096: Shoulder_armor.L_end
-    100098: Shoulder_armor.R
-    100100: Shoulder_armor.R_end
-    100102: Spine
-    100104: tail
-    100106: tail.001
-    100108: tail.002
-    100110: tail.003
-    100112: tail.003_end
-    100114: Thumb Distal.L
-    100116: Thumb Distal.L_end
-    100118: Thumb Distal.R
-    100120: Thumb Distal.R_end
-    100122: Thumb Intermediate.L
-    100124: Thumb Intermediate.R
-    100126: Thumb Proximal.L
-    100128: Thumb Proximal.R
-    100130: Toe.L
-    100132: Toe.L_end
-    100134: Toe.R
-    100136: Toe.R_end
-    100138: Upper Arm.L
-    100140: Upper Arm.R
-    100142: Upper Leg.L
-    100144: Upper Leg.R
-    100146: //RootNode
-    100148: "\u4F53"
-    100150: "\u88C5\u5099"
-    400000: Body
-    400002: Chest
-    400004: Foot.L
-    400006: Foot.R
-    400008: Hand.L
-    400010: Hand.R
-    400012: Head
-    400014: Hips
-    400016: Index Distal.L
-    400018: Index Distal.L_end
-    400020: Index Distal.R
-    400022: Index Distal.R_end
-    400024: Index Intermediate.L
-    400026: Index Intermediate.R
-    400028: Index Proximal.L
-    400030: Index Proximal.R
-    400032: Little Distal.L
-    400034: Little Distal.L_end
-    400036: Little Distal.R
-    400038: Little Distal.R_end
-    400040: Little Intermediate.L
-    400042: Little Intermediate.R
-    400044: Little Proximal.L
-    400046: Little Proximal.R
-    400048: Lower Arm.L
-    400050: Lower Arm.R
-    400052: Lower Leg.L
-    400054: Lower Leg.R
-    400056: Middle Distal.L
-    400058: Middle Distal.L_end
-    400060: Middle Distal.R
-    400062: Middle Distal.R_end
-    400064: Middle Intermediate.L
-    400066: Middle Intermediate.R
-    400068: Middle Proximal.L
-    400070: Middle Proximal.R
-    400072: Neck
-    400074: Ring Distal.L
-    400076: Ring Distal.L_end
-    400078: Ring Distal.R
-    400080: Ring Distal.R_end
-    400082: Ring Intermediate.L
-    400084: Ring Intermediate.R
-    400086: Ring Proximal.L
-    400088: Ring Proximal.R
-    400090: Shoulder.L
-    400092: Shoulder.R
-    400094: Shoulder_armor.L
-    400096: Shoulder_armor.L_end
-    400098: Shoulder_armor.R
-    400100: Shoulder_armor.R_end
-    400102: Spine
-    400104: tail
-    400106: tail.001
-    400108: tail.002
-    400110: tail.003
-    400112: tail.003_end
-    400114: Thumb Distal.L
-    400116: Thumb Distal.L_end
-    400118: Thumb Distal.R
-    400120: Thumb Distal.R_end
-    400122: Thumb Intermediate.L
-    400124: Thumb Intermediate.R
-    400126: Thumb Proximal.L
-    400128: Thumb Proximal.R
-    400130: Toe.L
-    400132: Toe.L_end
-    400134: Toe.R
-    400136: Toe.R_end
-    400138: Upper Arm.L
-    400140: Upper Arm.R
-    400142: Upper Leg.L
-    400144: Upper Leg.R
-    400146: //RootNode
-    400148: "\u4F53"
-    400150: "\u88C5\u5099"
-    2100000: Material.001
-    2100002: Material.003
-    2100004: Material.006
-    2300000: "\u4F53"
-    2300002: "\u88C5\u5099"
-    3300000: "\u4F53"
-    3300002: "\u88C5\u5099"
-    4300000: "\u4F53"
-    4300002: "\u88C5\u5099"
-    9500000: //RootNode
-    13700000: "\u4F53"
-    13700002: "\u88C5\u5099"
-    2186277476908879412: ImportLogs
+  serializedVersion: 20300
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Body
+  - first:
+      1: 100002
+    second: Chest
+  - first:
+      1: 100004
+    second: Foot.L
+  - first:
+      1: 100006
+    second: Foot.R
+  - first:
+      1: 100008
+    second: Hand.L
+  - first:
+      1: 100010
+    second: Hand.R
+  - first:
+      1: 100012
+    second: Head
+  - first:
+      1: 100014
+    second: Hips
+  - first:
+      1: 100016
+    second: Index Distal.L
+  - first:
+      1: 100018
+    second: Index Distal.L_end
+  - first:
+      1: 100020
+    second: Index Distal.R
+  - first:
+      1: 100022
+    second: Index Distal.R_end
+  - first:
+      1: 100024
+    second: Index Intermediate.L
+  - first:
+      1: 100026
+    second: Index Intermediate.R
+  - first:
+      1: 100028
+    second: Index Proximal.L
+  - first:
+      1: 100030
+    second: Index Proximal.R
+  - first:
+      1: 100032
+    second: Little Distal.L
+  - first:
+      1: 100034
+    second: Little Distal.L_end
+  - first:
+      1: 100036
+    second: Little Distal.R
+  - first:
+      1: 100038
+    second: Little Distal.R_end
+  - first:
+      1: 100040
+    second: Little Intermediate.L
+  - first:
+      1: 100042
+    second: Little Intermediate.R
+  - first:
+      1: 100044
+    second: Little Proximal.L
+  - first:
+      1: 100046
+    second: Little Proximal.R
+  - first:
+      1: 100048
+    second: Lower Arm.L
+  - first:
+      1: 100050
+    second: Lower Arm.R
+  - first:
+      1: 100052
+    second: Lower Leg.L
+  - first:
+      1: 100054
+    second: Lower Leg.R
+  - first:
+      1: 100056
+    second: Middle Distal.L
+  - first:
+      1: 100058
+    second: Middle Distal.L_end
+  - first:
+      1: 100060
+    second: Middle Distal.R
+  - first:
+      1: 100062
+    second: Middle Distal.R_end
+  - first:
+      1: 100064
+    second: Middle Intermediate.L
+  - first:
+      1: 100066
+    second: Middle Intermediate.R
+  - first:
+      1: 100068
+    second: Middle Proximal.L
+  - first:
+      1: 100070
+    second: Middle Proximal.R
+  - first:
+      1: 100072
+    second: Neck
+  - first:
+      1: 100074
+    second: Ring Distal.L
+  - first:
+      1: 100076
+    second: Ring Distal.L_end
+  - first:
+      1: 100078
+    second: Ring Distal.R
+  - first:
+      1: 100080
+    second: Ring Distal.R_end
+  - first:
+      1: 100082
+    second: Ring Intermediate.L
+  - first:
+      1: 100084
+    second: Ring Intermediate.R
+  - first:
+      1: 100086
+    second: Ring Proximal.L
+  - first:
+      1: 100088
+    second: Ring Proximal.R
+  - first:
+      1: 100090
+    second: Shoulder.L
+  - first:
+      1: 100092
+    second: Shoulder.R
+  - first:
+      1: 100094
+    second: Shoulder_armor.L
+  - first:
+      1: 100096
+    second: Shoulder_armor.L_end
+  - first:
+      1: 100098
+    second: Shoulder_armor.R
+  - first:
+      1: 100100
+    second: Shoulder_armor.R_end
+  - first:
+      1: 100102
+    second: Spine
+  - first:
+      1: 100104
+    second: tail
+  - first:
+      1: 100106
+    second: tail.001
+  - first:
+      1: 100108
+    second: tail.002
+  - first:
+      1: 100110
+    second: tail.003
+  - first:
+      1: 100112
+    second: tail.003_end
+  - first:
+      1: 100114
+    second: Thumb Distal.L
+  - first:
+      1: 100116
+    second: Thumb Distal.L_end
+  - first:
+      1: 100118
+    second: Thumb Distal.R
+  - first:
+      1: 100120
+    second: Thumb Distal.R_end
+  - first:
+      1: 100122
+    second: Thumb Intermediate.L
+  - first:
+      1: 100124
+    second: Thumb Intermediate.R
+  - first:
+      1: 100126
+    second: Thumb Proximal.L
+  - first:
+      1: 100128
+    second: Thumb Proximal.R
+  - first:
+      1: 100130
+    second: Toe.L
+  - first:
+      1: 100132
+    second: Toe.L_end
+  - first:
+      1: 100134
+    second: Toe.R
+  - first:
+      1: 100136
+    second: Toe.R_end
+  - first:
+      1: 100138
+    second: Upper Arm.L
+  - first:
+      1: 100140
+    second: Upper Arm.R
+  - first:
+      1: 100142
+    second: Upper Leg.L
+  - first:
+      1: 100144
+    second: Upper Leg.R
+  - first:
+      1: 100146
+    second: //RootNode
+  - first:
+      1: 100148
+    second: "\u4F53"
+  - first:
+      1: 100150
+    second: "\u88C5\u5099"
+  - first:
+      4: 400000
+    second: Body
+  - first:
+      4: 400002
+    second: Chest
+  - first:
+      4: 400004
+    second: Foot.L
+  - first:
+      4: 400006
+    second: Foot.R
+  - first:
+      4: 400008
+    second: Hand.L
+  - first:
+      4: 400010
+    second: Hand.R
+  - first:
+      4: 400012
+    second: Head
+  - first:
+      4: 400014
+    second: Hips
+  - first:
+      4: 400016
+    second: Index Distal.L
+  - first:
+      4: 400018
+    second: Index Distal.L_end
+  - first:
+      4: 400020
+    second: Index Distal.R
+  - first:
+      4: 400022
+    second: Index Distal.R_end
+  - first:
+      4: 400024
+    second: Index Intermediate.L
+  - first:
+      4: 400026
+    second: Index Intermediate.R
+  - first:
+      4: 400028
+    second: Index Proximal.L
+  - first:
+      4: 400030
+    second: Index Proximal.R
+  - first:
+      4: 400032
+    second: Little Distal.L
+  - first:
+      4: 400034
+    second: Little Distal.L_end
+  - first:
+      4: 400036
+    second: Little Distal.R
+  - first:
+      4: 400038
+    second: Little Distal.R_end
+  - first:
+      4: 400040
+    second: Little Intermediate.L
+  - first:
+      4: 400042
+    second: Little Intermediate.R
+  - first:
+      4: 400044
+    second: Little Proximal.L
+  - first:
+      4: 400046
+    second: Little Proximal.R
+  - first:
+      4: 400048
+    second: Lower Arm.L
+  - first:
+      4: 400050
+    second: Lower Arm.R
+  - first:
+      4: 400052
+    second: Lower Leg.L
+  - first:
+      4: 400054
+    second: Lower Leg.R
+  - first:
+      4: 400056
+    second: Middle Distal.L
+  - first:
+      4: 400058
+    second: Middle Distal.L_end
+  - first:
+      4: 400060
+    second: Middle Distal.R
+  - first:
+      4: 400062
+    second: Middle Distal.R_end
+  - first:
+      4: 400064
+    second: Middle Intermediate.L
+  - first:
+      4: 400066
+    second: Middle Intermediate.R
+  - first:
+      4: 400068
+    second: Middle Proximal.L
+  - first:
+      4: 400070
+    second: Middle Proximal.R
+  - first:
+      4: 400072
+    second: Neck
+  - first:
+      4: 400074
+    second: Ring Distal.L
+  - first:
+      4: 400076
+    second: Ring Distal.L_end
+  - first:
+      4: 400078
+    second: Ring Distal.R
+  - first:
+      4: 400080
+    second: Ring Distal.R_end
+  - first:
+      4: 400082
+    second: Ring Intermediate.L
+  - first:
+      4: 400084
+    second: Ring Intermediate.R
+  - first:
+      4: 400086
+    second: Ring Proximal.L
+  - first:
+      4: 400088
+    second: Ring Proximal.R
+  - first:
+      4: 400090
+    second: Shoulder.L
+  - first:
+      4: 400092
+    second: Shoulder.R
+  - first:
+      4: 400094
+    second: Shoulder_armor.L
+  - first:
+      4: 400096
+    second: Shoulder_armor.L_end
+  - first:
+      4: 400098
+    second: Shoulder_armor.R
+  - first:
+      4: 400100
+    second: Shoulder_armor.R_end
+  - first:
+      4: 400102
+    second: Spine
+  - first:
+      4: 400104
+    second: tail
+  - first:
+      4: 400106
+    second: tail.001
+  - first:
+      4: 400108
+    second: tail.002
+  - first:
+      4: 400110
+    second: tail.003
+  - first:
+      4: 400112
+    second: tail.003_end
+  - first:
+      4: 400114
+    second: Thumb Distal.L
+  - first:
+      4: 400116
+    second: Thumb Distal.L_end
+  - first:
+      4: 400118
+    second: Thumb Distal.R
+  - first:
+      4: 400120
+    second: Thumb Distal.R_end
+  - first:
+      4: 400122
+    second: Thumb Intermediate.L
+  - first:
+      4: 400124
+    second: Thumb Intermediate.R
+  - first:
+      4: 400126
+    second: Thumb Proximal.L
+  - first:
+      4: 400128
+    second: Thumb Proximal.R
+  - first:
+      4: 400130
+    second: Toe.L
+  - first:
+      4: 400132
+    second: Toe.L_end
+  - first:
+      4: 400134
+    second: Toe.R
+  - first:
+      4: 400136
+    second: Toe.R_end
+  - first:
+      4: 400138
+    second: Upper Arm.L
+  - first:
+      4: 400140
+    second: Upper Arm.R
+  - first:
+      4: 400142
+    second: Upper Leg.L
+  - first:
+      4: 400144
+    second: Upper Leg.R
+  - first:
+      4: 400146
+    second: //RootNode
+  - first:
+      4: 400148
+    second: "\u4F53"
+  - first:
+      4: 400150
+    second: "\u88C5\u5099"
+  - first:
+      21: 2100000
+    second: Material.001
+  - first:
+      21: 2100002
+    second: Material.003
+  - first:
+      21: 2100004
+    second: Material.006
+  - first:
+      23: 2300000
+    second: "\u4F53"
+  - first:
+      23: 2300002
+    second: "\u88C5\u5099"
+  - first:
+      33: 3300000
+    second: "\u4F53"
+  - first:
+      33: 3300002
+    second: "\u88C5\u5099"
+  - first:
+      43: 4300000
+    second: "\u4F53"
+  - first:
+      43: 4300002
+    second: "\u88C5\u5099"
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: "\u4F53"
+  - first:
+      137: 13700002
+    second: "\u88C5\u5099"
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
   externalObjects: {}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -203,25 +533,32 @@ ModelImporter:
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -230,10 +567,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human:
     - boneName: Hips
       humanName: Hips
@@ -772,8 +1109,7 @@ ModelImporter:
     - name: Ring Intermediate.L
       parentName: Ring Proximal.L
       position: {x: -0.0000000016391277, y: 0.00053951214, z: 9.770156e-10}
-      rotation: {x: -0.0000012100205, y: -0.00000059604633, z: -0.00000044796604,
-        w: 1}
+      rotation: {x: -0.0000012100205, y: -0.00000059604633, z: -0.00000044796604, w: 1}
       scale: {x: 1.0000001, y: 1.0000002, z: 1.0000007}
     - name: Ring Distal.L
       parentName: Ring Intermediate.L
@@ -1032,13 +1368,18 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
