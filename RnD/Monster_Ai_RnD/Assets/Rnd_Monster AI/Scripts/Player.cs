@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     //레이캐스트를 맞은 몬스터를 담기위한 변수 
-    public monsterCtrl mon = null;
+    public Monster mon = null;
     //플레이어 체력
 
     public float hp = 100.0f;
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out hitInfo, maxRayDist) && hitInfo.transform.tag == "Enemy")
         {
             //mon 변수에 지금 ray에 닿은 monster를 참조
-            mon = hitInfo.transform.GetComponent<monsterCtrl>();
+            mon = hitInfo.transform.GetComponent<Monster>();
 
             Debug.Log("공격!");
 

@@ -2431,8 +2431,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 100
   attackDmg: 10
-  myTraceAgent: {fileID: 0}
-  MovePoint: {x: 0, y: 0, z: 0}
+  anim: {fileID: 0}
+  nav: {fileID: 0}
   players: []
   player: {fileID: 0}
   monsterStartPosition: {fileID: 1805928902}
