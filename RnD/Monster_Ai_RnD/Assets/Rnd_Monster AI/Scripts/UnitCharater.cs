@@ -7,6 +7,14 @@ public abstract class UnitCharater : MonoBehaviour
     protected UnitStatInfo statInfo;
     protected float curHP;
 
+    protected UnitState state;
+    public void ChangeState(UnitState state)
+    {
+        if (this.state != null) this.state.EndState();
+        this.state = state;
+        if (this.state != null) this.state.BeginState();
+    }
+
     protected string model_name;
     protected string icon_name;
 
@@ -14,3 +22,5 @@ public abstract class UnitCharater : MonoBehaviour
     public abstract void Attack(UnitCharater target);
     public abstract void Dead();
 }
+
+// { Search, Alert, Trace, Attack, Repos, Hit, Dead };

@@ -5,114 +5,92 @@ using UnityEngine.AI;
 
 public class Monster : UnitCharater
 {
+    public Rect roomRect;          //방 범위
 
+    private Animator anim;
+    private NavMeshAgent nav;
 
-
-    public enum State { Search, Alert, Trace, Attack, Repos, Hit, Dead };
-
-
-    public Rect roomArea;
-    UnitState state;
-
-
-    class MonsterStateSearch : UnitState
-    {
-        public override void BeginState()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void EndState()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void UpdateState()
-        {
-            //탐색범위 내에서 플레이어를 탐색
-            //탐색범위 내에 플레이어가 존재할 경우, 추적상태에 진입
-
-        }
-    }
-
-    void ChangeState(UnitState state)
-    {
-        if (this.state) this.state.EndState();
-        this.state = state;
-        this.state.BeginState();
-    }
-
-    class MonsterAlertSearch : UnitState
-    {
-        public override void BeginState()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void EndState()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void UpdateState()
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
-
-
-    private Animator anim;              //애니메이션
-    private NavMeshAgent nav;           //네비게이션
-
-
-    bool isDead;
-    bool hasTarget;
-
-
-
-    //플레이어 오브젝트
-    private GameObject[] players;
-    private GameObject player;
-
-
-
+    public Transform Target { get; private set; }
+    
     private void Awake()
     {
-        players = GameObject.FindGameObjectsWithTag("Player");
-        nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
-
+        nav = GetComponent<NavMeshAgent>();
     }
-    // Start is called before the first frame update
     void Start()
     {
         nav.isStopped = true;
-        state = State.idle;
+        state = new MonsterSearchState(this);
     }
-
-    // Update is called once per frame
     void Update()
     {
-        isDead = (curHP <= 0);
-
-        if (players.Length >0)
-        {
-
-            //타겟 셋팅
-            StartCoroutine(TargerSetting());
-
-            //모드 셋팅
-            StartCoroutine(ModeSetting());
-
-            //모드 행동
-            StartCoroutine(ModeAction());
-        }
-
         state.UpdateState();
     }
 
-    IEnumerator TargerSetting()
+    class MonsterSearchState : UnitState
+    {   //탐색상태
+        GameObject[] players;
+
+        public MonsterSearchState(UnitCharater _unit) : base(_unit) { }
+        public override void BeginState() 
+        {
+            players = GameObject.FindGameObjectsWithTag("Player");
+        }
+        public override void UpdateState()
+        {
+
+            unit.ChangeState(new MonsterTraceState(unit));
+        }
+        public override void EndState() { }
+    }
+        
+    class MonsterAlertState : UnitState
+    {   //경계상태 (미사용)
+        public MonsterAlertState(UnitCharater _unit) : base(_unit) { }
+        public override void BeginState() { }
+        public override void UpdateState() { }
+        public override void EndState() { }
+    }
+
+    class MonsterTraceState : UnitState
+    {   //추적상태
+        public MonsterTraceState(UnitCharater _unit) : base(_unit) { }
+        public override void BeginState() { }
+        public override void UpdateState() { }
+        public override void EndState() { }
+    }
+
+    class MonsterAttackState : UnitState
+    {   //공격상태
+        public MonsterAttackState(UnitCharater _unit) : base(_unit) { }
+        public override void BeginState() { }
+        public override void UpdateState() { }
+        public override void EndState() { }
+    }
+
+    class MonsterReposState : UnitState
+    {   //복귀상태
+        public MonsterReposState(UnitCharater _unit) : base(_unit) { }
+        public override void BeginState() { }
+        public override void UpdateState() { }
+        public override void EndState() { }
+    }
+
+    public override void Hit(UnitCharater other) { }
+    public override void Attack(UnitCharater target) { }
+    public override void Dead() { }
+
+
+
+
+
+
+    /*이전 코드*/
+
+    GameObject[] players;
+    GameObject player;
+
+    void TargerSetting()
     {
 
         //플레이어와 몬스터 위치거리
@@ -134,17 +112,10 @@ public class Monster : UnitCharater
                 }
             }
         }
-
-
-        yield return null;
     }
-
 
     void ModeSetting()
     {
-
-
-
         //몬스터가 살아있을때
         if (curHP>0)
         {
@@ -199,14 +170,11 @@ public class Monster : UnitCharater
         }
     }
 
-    IEnumerator ModeAction()
+    void ModeAction()
     {
 
         Vector3 playerLook = player.transform.position;
         playerLook.y = transform.position.y;
-
-
-
 
 
         //모드 변경
@@ -303,8 +271,6 @@ public class Monster : UnitCharater
             //죽는 모션 재생
             anim.SetBool("Dead", true);
         }
-
-        yield return null;
     }
 
     //대미지 받는 함수
@@ -324,16 +290,5 @@ public class Monster : UnitCharater
         {   //사망 함수 실행
             Dead();
         }
-    }
-
-
-    public override void Hit(UnitCharater other)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Attack(UnitCharater target)
-    {
-        throw new System.NotImplementedException();
     }
 }
