@@ -4,23 +4,14 @@ using UnityEngine;
 
 public abstract class UnitCharater : MonoBehaviour
 {
-    protected UnitStatInfo statInfo;
-    protected float curHP;
+    public bool isDead;
+    public UnitStatInfo stat;
+    public float curHP;
 
-    protected UnitState state;
-    public void ChangeState(UnitState state)
-    {
-        if (this.state != null) this.state.EndState();
-        this.state = state;
-        if (this.state != null) this.state.BeginState();
-    }
+    public string model_name;
+    public string icon_name;
 
-    protected string model_name;
-    protected string icon_name;
+    public int roomNum;
 
     public abstract void Hit(UnitCharater other);
-    public abstract void Attack(UnitCharater target);
-    public abstract void Dead();
 }
-
-// { Search, Alert, Trace, Attack, Repos, Hit, Dead };

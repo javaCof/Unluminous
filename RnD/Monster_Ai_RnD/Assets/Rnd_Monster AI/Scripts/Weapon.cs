@@ -15,7 +15,7 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "Player" && monctrl.state == Monster.State.attack)
+        if (col.gameObject.tag == "Player")
         {
             Debug.Log("플레이어 맞음!");
             //Destroy(col.gameObject);

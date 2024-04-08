@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    //플레이어 스크립트
-    Player player;
-
     //캐릭터 컨트롤러
     CharacterController playerCon;
 
@@ -44,8 +41,6 @@ public class Player : MonoBehaviour
         //Animator 컴포넌트 연결
         anim = gameObject.GetComponentInChildren<Animator>();
 
-        player = GetComponent<Player>();
-
         playerCon = GetComponent<CharacterController>();
     }
 
@@ -60,14 +55,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-        if (player != null)
-        {
-            ModeSet();
-
-            ModeAction();
-        }
+        ModeSet();
+        ModeAction();
     }
 
     public void ModeSet()
