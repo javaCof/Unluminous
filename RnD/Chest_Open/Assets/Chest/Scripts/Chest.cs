@@ -14,11 +14,11 @@ public class Chest : MonoBehaviour
     }
     public void Open()
     {
-
+        anim.SetTrigger("Open");
     }
 
     public void Close()
     {
-
+        anim.SetTrigger("Close");
     }
 }

@@ -48,6 +48,8 @@ public class Player : MonoBehaviour
 
         playerCon = GetComponent<CharacterController>();
     }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,7 +60,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (player!=null)
+
+
+        if (player != null)
         {
             ModeSet();
 
@@ -68,43 +72,41 @@ public class Player : MonoBehaviour
 
     public void ModeSet()
     {
-        if (hp > 0)
+
+        if (hp <= 0)  //죽엇을때
         {
-            //마우스 왼클릭 눌렀을떄
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            playerMode = State.Dead;
+        }
+        else
+        {
+            //맞았을때
+            if (lastHp > hp) //수정해야함
+            {
+                playerMode = State.Hit;
+            }
+            else if (Input.GetKeyDown(KeyCode.Mouse0))      //마우스 왼클릭 눌렀을떄
             {
                 playerMode = State.Attack;
-
             }
             //움직일때
             else if (Mathf.Abs(playerCon.velocity.x + playerCon.velocity.y) > 0)
             {
                 playerMode = State.Sprint;
             }
-            //맞았을때
-            else if (lastHp > hp) //수정해야함
-            {
-                playerMode = State.Hit;
-            }
             else  //아무것도 안할때
             {
                 playerMode = State.Idle;
             }
         }
-        else  //죽엇을때
-        {
-            playerMode = State.Dead;
-        }
 
     }
 
     public void ModeAction()
-    {       
-        if (playerMode == State.Idle)  //idle모드일때
-        {
-            anim.Play("Idle");
-        }  
-        else if (playerMode == State.Sprint)  //달리는 모드일때
+    {
+        //기본적으로 달리기 off 
+        anim.SetFloat("Run", 0f);
+
+        if (playerMode == State.Sprint)  //달리는 모드일때
         {
             anim.SetFloat("Run", 1f);
         }
@@ -122,10 +124,6 @@ public class Player : MonoBehaviour
         {
             anim.SetTrigger("Dead");
         }
-
-
-       
-        
     }
 
     public void Attack()
@@ -150,16 +148,16 @@ public class Player : MonoBehaviour
     }
 
     public void Damage(float MonDam)
-    {   
+    {
         //현재 체력에 받은 대미지 만큼 뺌
         hp -= MonDam;
 
-        if (hp>0)
+        if (hp > 0)
         {
             Debug.Log("몬스터한테 공격받음! 남은 체력 : " + hp);
         }
 
-        if (hp<=0)
+        if (hp <= 0)
         {//사망 함수 실행
             Dead();
         }
