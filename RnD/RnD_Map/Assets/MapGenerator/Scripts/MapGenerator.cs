@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.AI;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -186,6 +187,7 @@ public class MapGenerator : MonoBehaviour
         GenerateMapData();
         PaintMapTile();
         GenerateMapTile(mapTiles);
+        GenerateMapNav();
         GenerateMapObject(JsonUtility.ToJson(new ObjInfoList(objects)));
         GeneratePlayer();
 
@@ -649,6 +651,13 @@ public class MapGenerator : MonoBehaviour
             rotation = 90;
         return rotation;
     }
+
+    
+    /*------------MAP NAV------------*/
+    void GenerateMapNav()
+    {
+    }
+    
 
     /*------------MAP OBJECT------------*/
     [PunRPC] void GenerateMapObject(string json)
