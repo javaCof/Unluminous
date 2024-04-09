@@ -66,6 +66,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   sprintSpeed: 15
+  jumpable: 1
   jumpForce: 8
   gravity: 20
   mouseSensitivityX: 10
@@ -161,7 +162,7 @@ PrefabInstance:
     - target: {fileID: 2686890238588325744, guid: 4a076a09e2096f140b4008b73dea295f, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9100000, guid: 5714b7b0ac259014ea24fe8eb15084ea, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a076a09e2096f140b4008b73dea295f, type: 3}
 --- !u!4 &3743027508667454320 stripped

@@ -6,6 +6,7 @@ public class CameraViewMove : MonoBehaviour
 {
     public float speed = 10f;
     public float sprintSpeed = 15f;
+    public bool jumpable = true;
     public float jumpForce = 8f;
     public float gravity = 20f;
     public float mouseSensitivityX = 10f;
@@ -72,6 +73,8 @@ public class CameraViewMove : MonoBehaviour
             Vector3 inpDir = new Vector3(inpH, 0, inpV).normalized;
             Vector3 camDir = cam.TransformDirection(inpDir);
 
+            anim.SetBool("move", inpDir.sqrMagnitude > 0.01f);
+
             if (camDir.x == 0 && camDir.z == 0)
             {
                 moveVec = transform.TransformDirection(inpDir).normalized * mSpeed;
@@ -82,8 +85,10 @@ public class CameraViewMove : MonoBehaviour
                 moveVec = camDir.normalized * mSpeed;
             }
 
-            if (Input.GetKey(KeyCode.Space))
+            if (jumpable && Input.GetKey(KeyCode.Space))
+            {
                 moveVec.y += jumpForce;
+            }
         }
         moveVec.y -= gravity * Time.deltaTime;
     }
