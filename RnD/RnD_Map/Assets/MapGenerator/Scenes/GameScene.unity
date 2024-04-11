@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 073cdec0df549184aae0a5f5138614e5, type: 2}
 --- !u!1 &241460649
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,7 +705,7 @@ MonoBehaviour:
   wallPrefab: {fileID: 1655673125402110, guid: 718a8c0341a6b744581a10dfd1105f88, type: 3}
   cornerPrefab: {fileID: 1840828261763088, guid: 12115f3e2bc7884449890b084af37f7a, type: 3}
   pillarPrefab: {fileID: 1332032387223852, guid: 7f951c1ab0c98544dbb2241f27da4db5, type: 3}
-  playerPrefab: {fileID: 1637102306246264389, guid: d8a236918febe924ea4e380338ed3543, type: 3}
+  playerPrefab: {fileID: 3505134323789400778, guid: e3696286dda244d4ca75a348c6501860, type: 3}
   monsterPrefab: {fileID: 5554168257691849301, guid: b193b2bdb37728244acadc792b85b072, type: 3}
   useDebug: 0
   lineRnd: {fileID: 4447601975305699377, guid: c500290302a7ef8488693419d0e3f7d4, type: 3}

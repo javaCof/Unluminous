@@ -30,7 +30,7 @@ public class MapGenerator : MonoBehaviour
 
     public enum RoomType { START, MONSTER, TREASURE, BOSS }
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }
-    public enum ObjType { PLAYER, MONSTER }
+    public enum ObjType { PLAYER, ENEMY }
 
     class RoomNode
     {
@@ -145,7 +145,11 @@ public class MapGenerator : MonoBehaviour
         wallPool = new ObjectPool(wallPrefab, mapSizeInt / 2, poolPos);
         cornerPool = new ObjectPool(cornerPrefab, mapSizeInt / 2, poolPos);
         pillarPool = new ObjectPool(pillarPrefab, mapSizeInt / 2, poolPos);
-        monsterPool = new ObjectPool(monsterPrefab, 100, poolPos);
+
+        //if (PhotonNetwork.inRoom)
+        //    monsterPool = new ObjectPool("Enemy", 100, poolPos);
+        //else
+        //    monsterPool = new ObjectPool(monsterPrefab, 100, poolPos);
 
         pv = GetComponent<PhotonView>();
         pr = GetComponent<PhotonReady>();
@@ -186,6 +190,7 @@ public class MapGenerator : MonoBehaviour
         GenerateMapData();
         PaintMapTile();
         GenerateMapTile(mapTiles);
+        
         GenerateMapObject(JsonUtility.ToJson(new ObjInfoList(objects)));
         GeneratePlayer();
 
@@ -193,6 +198,8 @@ public class MapGenerator : MonoBehaviour
     }
     IEnumerator GenerateRandomMapMulti()
     {
+
+
         if (PhotonNetwork.isMasterClient)
         {
             pv.RPC("ResetMap", PhotonTargets.All);
@@ -200,14 +207,27 @@ public class MapGenerator : MonoBehaviour
             GenerateMapData();
             PaintMapTile();
 
+
             pv.RPC("GenerateMapTile", PhotonTargets.All, mapTiles);
             pv.RPC("GenerateMapObject", PhotonTargets.All, JsonUtility.ToJson(new ObjInfoList(objects)));
+
+
+
+
+            //PhotonNetwork.InstantiateSceneObject("Enemy", playerSpawnPoint, Quaternion.identity, 0, null);
+
+
+
+
             pv.RPC("ReadyOK", PhotonTargets.All);
 
             yield return StartCoroutine(pr.WaitForReady());
 
             pv.RPC("GeneratePlayer", PhotonTargets.All);
         }
+
+
+
 
         yield return null;
     }
@@ -433,7 +453,7 @@ public class MapGenerator : MonoBehaviour
                     {
                         Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
 
-                        objects.Add(new ObjInfo(ObjType.MONSTER, i, pos));
+                        objects.Add(new ObjInfo(ObjType.ENEMY, i, pos));
                     }
                     break;
                 case RoomType.TREASURE:
@@ -663,29 +683,29 @@ public class MapGenerator : MonoBehaviour
                         playerSpawnPoint = obj.pos;
                     }
                     break;
-                case ObjType.MONSTER:
+                case ObjType.ENEMY:
                     {
-                        GenerateObject(obj);
+                        if (PhotonNetwork.isMasterClient)
+                        {
+                            GameObject go = GenerateObject(obj);
+                            Rect objRoom = new Rect(
+                                rooms[obj.roomID].x * tileSize, rooms[obj.roomID].y * tileSize,
+                                rooms[obj.roomID].width * tileSize, rooms[obj.roomID].height * tileSize
+                                );
+                            go.GetComponent<Enemy>().SetRoom(obj.roomID, objRoom);
+                        }
                     }
                     break;
             }
         }
     }
-
-    void GenerateObject(ObjInfo info)
+    GameObject GenerateObject(ObjInfo info)
     {
-        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
-        {
-            monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
-        }
-        else
-        {
-            monsterPool.GetObject(info.pos, Quaternion.identity, objectPos);
-        }
+        //return monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
+        //return monsterPool.GetObject(info.pos, Quaternion.identity, null);
+        return PhotonNetwork.InstantiateSceneObject("Enemy", info.pos, Quaternion.identity, 0, null);
     }
-
-    [PunRPC]
-    void GeneratePlayer()
+    [PunRPC] void GeneratePlayer()
     {
         if (PhotonNetwork.inRoom)
         {
@@ -696,9 +716,7 @@ public class MapGenerator : MonoBehaviour
             GameObject.Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity);
         }
     }
-
-    [PunRPC]
-    void ReadyOK()
+    [PunRPC] void ReadyOK()
     {
         pr.Ready();
     }
@@ -721,5 +739,18 @@ public class MapGenerator : MonoBehaviour
         rnd.SetPosition(1, new Vector3(rect.x + rect.width, rect.y, zOrder));
         rnd.SetPosition(2, new Vector3(rect.x + rect.width, rect.y + rect.height, zOrder));
         rnd.SetPosition(3, new Vector3(rect.x, rect.y + rect.height, zOrder));
+    }
+
+    /*public method*/
+    public int FindRoom(Vector3 pos)
+    {
+        for (int i = 0; i < roomInfos.Count; i++)
+        {
+            RectInt room = roomInfos[i].rect;
+            if (pos.x > room.xMin * tileSize && pos.x < room.xMax * tileSize &&
+                pos.z > room.yMin * tileSize && pos.z < room.yMax * tileSize)
+                return i;
+        }
+        return -1;
     }
 }

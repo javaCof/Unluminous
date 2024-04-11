@@ -21,6 +21,22 @@ public class ObjectPool
         }
     }
 
+    public ObjectPool(string name, int n, Transform pos)
+    {
+        if (!PhotonNetwork.isMasterClient) return;
+
+        objects = new List<GameObject>(n);
+        this.pos = pos;
+
+        for (int i = 0; i < n; i++)
+        {
+            GameObject go = PhotonNetwork.InstantiateSceneObject(name, Vector3.zero, Quaternion.identity, 0, null);
+            
+            go.SetActive(false);
+            objects.Add(go);
+        }
+    }
+
     public GameObject GetObject(Vector3 pos, Quaternion rot, Transform parent)
     {
         if (idx < objects.Count)

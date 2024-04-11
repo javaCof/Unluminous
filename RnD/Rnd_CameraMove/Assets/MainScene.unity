@@ -808,5 +808,6 @@ PrefabInstance:
       propertyPath: instantiationId
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3158383041708410176, guid: d8a236918febe924ea4e380338ed3543, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d8a236918febe924ea4e380338ed3543, type: 3}

@@ -34,22 +34,21 @@ MonoBehaviour:
   - DestroyRpc
   - DoJump
   - Flash
+  - GenerateMapObject
+  - GenerateMapTile
+  - GeneratePlayer
   - InstantiateRpc
+  - LoadStage
   - Marco
   - PickupItemInit
   - Polo
   - PunPickup
   - PunPickupSimple
   - PunRespawn
+  - ReadyOK
   - RequestForPickupItems
   - RequestForPickupTimes
+  - ResetMap
   - SetReady
   - TaggedPlayer
-  - LoadLevel
-  - LoadStage
-  - GenerateMapTile
-  - GeneratePlayer
-  - ResetMap
-  - ReadyOK
-  - GenerateMapObject
   DisableAutoOpenWizard: 1
