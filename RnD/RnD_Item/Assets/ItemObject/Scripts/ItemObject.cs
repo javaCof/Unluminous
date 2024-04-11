@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemObject : MonoBehaviour
 {
-   public float genSpeed=10f;
+   public float genSpeed=1f;
     Rigidbody rigBody;
 
     ItemInfo info;
@@ -18,7 +18,7 @@ public class ItemObject : MonoBehaviour
     private void Start()
     {
         Vector3 tmp = rigBody.velocity;
-        tmp.y = 1f;
+        tmp.y = genSpeed;
         rigBody.velocity = tmp;
     }
 
