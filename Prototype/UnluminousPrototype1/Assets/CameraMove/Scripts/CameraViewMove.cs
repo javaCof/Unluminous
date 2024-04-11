@@ -44,6 +44,8 @@ public class CameraViewMove : MonoBehaviour
     }
     private void Update()
     {
+        Cursor.lockState = Input.GetKey(KeyCode.LeftControl) ? CursorLockMode.None : CursorLockMode.Locked;
+
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             Move();

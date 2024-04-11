@@ -138,25 +138,31 @@ public class MapGenerator : MonoBehaviour
         (objectPos = new GameObject("object").transform).parent = mapPos;
         (debugPos = new GameObject("debug").transform).parent = mapPos;
 
-        int mapSizeInt = mapSize.x * mapSize.y;
-        Transform poolPos = new GameObject("pool").transform;
+        
+        
 
-        floorPool = new ObjectPool(floorPrefab, mapSizeInt, poolPos);
-        wallPool = new ObjectPool(wallPrefab, mapSizeInt / 2, poolPos);
-        cornerPool = new ObjectPool(cornerPrefab, mapSizeInt / 2, poolPos);
-        pillarPool = new ObjectPool(pillarPrefab, mapSizeInt / 2, poolPos);
+        
 
-        //if (PhotonNetwork.inRoom)
-        //    monsterPool = new ObjectPool("Enemy", 100, poolPos);
-        //else
-        //    monsterPool = new ObjectPool(monsterPrefab, 100, poolPos);
+        
 
         pv = GetComponent<PhotonView>();
         pr = GetComponent<PhotonReady>();
     }
     private void Start()
     {
+        
+
         if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
+
+        Transform poolPos = new GameObject("pool").transform;
+        int mapSizeInt = mapSize.x * mapSize.y;
+        floorPool = new ObjectPool(floorPrefab, mapSizeInt, poolPos);
+        wallPool = new ObjectPool(wallPrefab, mapSizeInt / 2, poolPos);
+        cornerPool = new ObjectPool(cornerPrefab, mapSizeInt / 2, poolPos);
+        pillarPool = new ObjectPool(pillarPrefab, mapSizeInt / 2, poolPos);
+
+        if (PhotonNetwork.isMasterClient)
+            monsterPool = new ObjectPool("Enemy", 100, poolPos);
 
         StartCoroutine(LoadLevel());
     }
@@ -210,12 +216,6 @@ public class MapGenerator : MonoBehaviour
 
             pv.RPC("GenerateMapTile", PhotonTargets.All, mapTiles);
             pv.RPC("GenerateMapObject", PhotonTargets.All, JsonUtility.ToJson(new ObjInfoList(objects)));
-
-
-
-
-            //PhotonNetwork.InstantiateSceneObject("Enemy", playerSpawnPoint, Quaternion.identity, 0, null);
-
 
 
 
@@ -701,9 +701,9 @@ public class MapGenerator : MonoBehaviour
     }
     GameObject GenerateObject(ObjInfo info)
     {
-        //return monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
+        return monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
         //return monsterPool.GetObject(info.pos, Quaternion.identity, null);
-        return PhotonNetwork.InstantiateSceneObject("Enemy", info.pos, Quaternion.identity, 0, null);
+        //return PhotonNetwork.InstantiateSceneObject("Enemy", info.pos, Quaternion.identity, 0, null);
     }
     [PunRPC] void GeneratePlayer()
     {
