@@ -23,8 +23,6 @@ public class ObjectPool
 
     public ObjectPool(string name, int n, Transform pos)
     {
-        if (!PhotonNetwork.isMasterClient) return;
-
         objects = new List<GameObject>(n);
         this.pos = pos;
 
@@ -48,6 +46,12 @@ public class ObjectPool
             return objects[idx++];
         }
         else return null;
+    }
+
+    public void DisableObject(GameObject go)
+    {
+        go.transform.parent = pos;
+        go.SetActive(false);
     }
 
     public void Reset()

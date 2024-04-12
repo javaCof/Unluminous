@@ -138,21 +138,15 @@ public class MapGenerator : MonoBehaviour
         (objectPos = new GameObject("object").transform).parent = mapPos;
         (debugPos = new GameObject("debug").transform).parent = mapPos;
 
-        
-        
-
-        
-
-        
-
         pv = GetComponent<PhotonView>();
         pr = GetComponent<PhotonReady>();
     }
-    private void Start()
+    private IEnumerator Start()
     {
         
-
         if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
+        yield return new WaitForSeconds(1);
+
 
         Transform poolPos = new GameObject("pool").transform;
         int mapSizeInt = mapSize.x * mapSize.y;
@@ -160,6 +154,8 @@ public class MapGenerator : MonoBehaviour
         wallPool = new ObjectPool(wallPrefab, mapSizeInt / 2, poolPos);
         cornerPool = new ObjectPool(cornerPrefab, mapSizeInt / 2, poolPos);
         pillarPool = new ObjectPool(pillarPrefab, mapSizeInt / 2, poolPos);
+
+
 
         if (PhotonNetwork.isMasterClient)
             monsterPool = new ObjectPool("Enemy", 100, poolPos);
@@ -204,8 +200,6 @@ public class MapGenerator : MonoBehaviour
     }
     IEnumerator GenerateRandomMapMulti()
     {
-
-
         if (PhotonNetwork.isMasterClient)
         {
             pv.RPC("ResetMap", PhotonTargets.All);
@@ -213,21 +207,14 @@ public class MapGenerator : MonoBehaviour
             GenerateMapData();
             PaintMapTile();
 
-
             pv.RPC("GenerateMapTile", PhotonTargets.All, mapTiles);
             pv.RPC("GenerateMapObject", PhotonTargets.All, JsonUtility.ToJson(new ObjInfoList(objects)));
-
-
-
             pv.RPC("ReadyOK", PhotonTargets.All);
 
             yield return StartCoroutine(pr.WaitForReady());
 
             pv.RPC("GeneratePlayer", PhotonTargets.All);
         }
-
-
-
 
         yield return null;
     }
@@ -451,9 +438,18 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.MONSTER:
                     {
-                        Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
+                        RectInt objRect = new RectInt(info.rect.x + 1, info.rect.y + 1, info.rect.width - 2, info.rect.height - 2);
+                        CombinationRect objComb = new CombinationRect(objRect);
 
-                        objects.Add(new ObjInfo(ObjType.ENEMY, i, pos));
+                        for (int j = 0; j < 5; j++)
+                        {
+                            Vector2Int combPos = objComb.GetRandom();
+                            Vector3 pos = new Vector3(combPos.x * tileSize, 5f, combPos.y * tileSize);
+
+                            objects.Add(new ObjInfo(ObjType.ENEMY, i, pos));
+                        }
+
+                        //Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
                     }
                     break;
                 case RoomType.TREASURE:
@@ -692,7 +688,8 @@ public class MapGenerator : MonoBehaviour
                                 rooms[obj.roomID].x * tileSize, rooms[obj.roomID].y * tileSize,
                                 rooms[obj.roomID].width * tileSize, rooms[obj.roomID].height * tileSize
                                 );
-                            go.GetComponent<Enemy>().SetRoom(obj.roomID, objRoom);
+                            go.GetComponent<EnemyAction>().SetRoom(obj.roomID, objRoom);
+                            
                         }
                     }
                     break;
