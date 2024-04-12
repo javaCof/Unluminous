@@ -18,13 +18,16 @@ public class EnemyAction : UnitCharater
 
     private Animator anim;
     private NavMeshAgent nav;
+    private PhotonView pv;
 
     private GameObject[] players;
     private Transform target;
     private Vector3 originPos;
     private float attackDtime;
 
-    PhotonView pv;
+    private bool animMove;
+    private Vector3 curPos;
+    private Quaternion curRot;
 
     private void Awake()
     {
@@ -34,7 +37,7 @@ public class EnemyAction : UnitCharater
     }
     void Start()
     {
-        if (pv.isMine)
+        if (!PhotonNetwork.inRoom || pv.isMine)
         {
             isDead = false;
             SetSampleData();
@@ -53,6 +56,11 @@ public class EnemyAction : UnitCharater
         {
             UpdateState(state);
         }
+        else
+        {
+            UpdateAnimMove(animMove);
+            UpdatePos();
+        }
     }
 
     //임시 데이터 설정
@@ -60,7 +68,7 @@ public class EnemyAction : UnitCharater
     {
         stat = new UnitStatInfo();
         stat.HP = 30;
-        stat.ATK = 5;
+        stat.ATK = 0;
         stat.DEF = 5;
         stat.SPD = 1;
         curHP = stat.HP;
@@ -89,14 +97,14 @@ public class EnemyAction : UnitCharater
                 nav.isStopped = true;
                 break;
             case EnemyState.Trace:
-                anim.SetBool("move", true);
+                UpdateAnimMove(true);
                 break;
             case EnemyState.Attack:
                 nav.isStopped = true;
                 attackDtime = instantAttack ? Time.time - attackDelay : Time.time;
                 break;
             case EnemyState.Repos:
-                anim.SetBool("move", true);
+                UpdateAnimMove(true);
                 SetNav(originPos, 0.1f);
                 break;
         }
@@ -139,7 +147,7 @@ public class EnemyAction : UnitCharater
                     /*attack routine*/
                     if (Time.time - attackDtime > attackDelay)
                     {
-                        Attack();
+                        pv.RPC("Attack", PhotonTargets.All);
                         attackDtime = Time.time;
                     }
 
@@ -163,7 +171,7 @@ public class EnemyAction : UnitCharater
                 break;
             case EnemyState.Trace:
             case EnemyState.Repos:
-                anim.SetBool("move", false);
+                UpdateAnimMove(false);
                 break;
             case EnemyState.Attack:
                 break;
@@ -178,12 +186,23 @@ public class EnemyAction : UnitCharater
         BeginState(state);
     }
 
-    void Attack()
+    void UpdatePos()
+    {
+        transform.position = Vector3.Lerp(transform.position, curPos, 3.0f * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, curRot, 3.0f * Time.deltaTime);
+    }
+    void UpdateAnimMove(bool isMove)
+    {
+        animMove = isMove;
+        anim.SetBool("move", animMove);
+    }
+
+    [PunRPC] void Attack()
     {
         transform.LookAt(target);
         anim.SetTrigger("attack");
 
-        if (Vector3.Distance(transform.position, target.position) <= maxAttackRange)
+        if (pv.isMine && Vector3.Distance(transform.position, target.position) <= maxAttackRange)
             target.GetComponent<PlayerAction>().Hit(this);
     }
     public override void Hit(UnitCharater other)
@@ -196,8 +215,6 @@ public class EnemyAction : UnitCharater
     void Dead()
     {
         isDead = true;
-        ChangeState(EnemyState.Dead);
-
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
         StartCoroutine(RemoveObject(removeDelay));
@@ -272,7 +289,19 @@ public class EnemyAction : UnitCharater
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        
-        
+        if (stream.isWriting)
+        {
+            stream.SendNext(gameObject.GetActive());
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(animMove);
+        }
+        else
+        {
+            gameObject.SetActive((bool)stream.ReceiveNext());
+            curPos = (Vector3)stream.ReceiveNext();
+            curRot = (Quaternion)stream.ReceiveNext();
+            animMove = (bool)stream.ReceiveNext();
+        }
     }
 }

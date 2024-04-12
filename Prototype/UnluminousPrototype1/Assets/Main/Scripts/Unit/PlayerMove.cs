@@ -25,6 +25,10 @@ public class PlayerMove : MonoBehaviour
     private float camRotateX;
     private float camRotateY;
 
+    private bool animMove;
+    private Vector3 curPos;
+    private Quaternion curRot;
+
     private void Awake()
     {
         pv = GetComponent<PhotonView>();
@@ -44,8 +48,6 @@ public class PlayerMove : MonoBehaviour
     }
     private void Update()
     {
-        Cursor.lockState = Input.GetKey(KeyCode.LeftControl) ? CursorLockMode.None : CursorLockMode.Locked;
-
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             Move();
@@ -113,5 +115,33 @@ public class PlayerMove : MonoBehaviour
         else if (rot >= 180f && rot < 360f - camRotateAngleX)
             rot = 360f - camRotateAngleX;
         cam.localEulerAngles = new Vector3(rot, 0, 0);
+    }
+
+    void UpdatePos()
+    {
+        transform.position = Vector3.Lerp(transform.position, curPos, 3.0f * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, curRot, 3.0f * Time.deltaTime);
+    }
+    void UpdateAnimMove(bool isMove)
+    {
+        animMove = isMove;
+        anim.SetBool("move", animMove);
+    }
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            stream.SendNext(gameObject.GetActive());
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(animMove);
+        }
+        else
+        {
+            gameObject.SetActive((bool)stream.ReceiveNext());
+            curPos = (Vector3)stream.ReceiveNext();
+            curRot = (Quaternion)stream.ReceiveNext();
+            animMove = (bool)stream.ReceiveNext();
+        }
     }
 }

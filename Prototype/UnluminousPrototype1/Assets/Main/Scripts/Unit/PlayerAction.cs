@@ -7,27 +7,36 @@ public class PlayerAction : UnitCharater
     public float attackDist = 2f;
     public float actionDist = 2f;
 
+    private PhotonView pv;
     private Animator anim;
     private Collider target;
 
     private void Awake()
     {
+        pv = GetComponent<PhotonView>();
         anim = GetComponentInChildren<Animator>();
     }
     private void Start()
     {
-        isDead = false;
-        SetSampleData();
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            isDead = false;
+            roomNum = -1;
+            SetSampleData();
+        }
     }
     private void Update()
     {
-        UpdateRoomNum();
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            UpdateRoomNum();
 
-        SetLookTarget();
-        ShowLookTarget();
+            SetLookTarget();
+            ShowLookTarget();
 
-        if (Input.GetMouseButtonDown(0)) Attack();
-        if (Input.GetKeyDown(KeyCode.E)) Action();
+            if (Input.GetMouseButtonDown(0)) Attack();
+            if (Input.GetKeyDown(KeyCode.E)) Action();
+        }
     }
 
     //임시 데이터 설정
@@ -39,7 +48,6 @@ public class PlayerAction : UnitCharater
         stat.DEF = 5;
         stat.SPD = 1;
         curHP = stat.HP;
-        roomNum = -1;
     }
 
     void SetLookTarget()

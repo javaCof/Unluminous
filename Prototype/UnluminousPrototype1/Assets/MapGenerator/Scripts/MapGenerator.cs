@@ -155,10 +155,17 @@ public class MapGenerator : MonoBehaviour
         cornerPool = new ObjectPool(cornerPrefab, mapSizeInt / 2, poolPos);
         pillarPool = new ObjectPool(pillarPrefab, mapSizeInt / 2, poolPos);
 
-
-
-        if (PhotonNetwork.isMasterClient)
-            monsterPool = new ObjectPool("Enemy", 100, poolPos);
+        if (PhotonNetwork.inRoom)
+        {
+            if (PhotonNetwork.isMasterClient)
+            {
+                monsterPool = new ObjectPool("Enemy", 100, poolPos);
+            }
+        }
+        else
+        {
+            monsterPool = new ObjectPool(monsterPrefab, 100, poolPos);
+        }
 
         StartCoroutine(LoadLevel());
     }
@@ -681,7 +688,7 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case ObjType.ENEMY:
                     {
-                        if (PhotonNetwork.isMasterClient)
+                        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
                         {
                             GameObject go = GenerateObject(obj);
                             Rect objRoom = new Rect(
@@ -689,7 +696,6 @@ public class MapGenerator : MonoBehaviour
                                 rooms[obj.roomID].width * tileSize, rooms[obj.roomID].height * tileSize
                                 );
                             go.GetComponent<EnemyAction>().SetRoom(obj.roomID, objRoom);
-                            
                         }
                     }
                     break;
@@ -699,8 +705,6 @@ public class MapGenerator : MonoBehaviour
     GameObject GenerateObject(ObjInfo info)
     {
         return monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
-        //return monsterPool.GetObject(info.pos, Quaternion.identity, null);
-        //return PhotonNetwork.InstantiateSceneObject("Enemy", info.pos, Quaternion.identity, 0, null);
     }
     [PunRPC] void GeneratePlayer()
     {
@@ -716,6 +720,11 @@ public class MapGenerator : MonoBehaviour
     [PunRPC] void ReadyOK()
     {
         pr.Ready();
+    }
+
+    void RemoveObject(GameObject go)
+    {
+        monsterPool.DisableObject(go);
     }
 
     /*------------DEBUG------------*/
