@@ -15,8 +15,8 @@ MonoBehaviour:
   AppID: 6db51a25-45c0-4566-8720-fa52a4a64333
   VoiceAppID: 
   ChatAppID: 
-  HostType: 4
-  PreferredRegion: 0
+  HostType: 1
+  PreferredRegion: 9
   EnabledRegions: -1
   Protocol: 0
   ServerAddress: 
@@ -46,4 +46,7 @@ MonoBehaviour:
   - RequestForPickupTimes
   - SetReady
   - TaggedPlayer
+  - RemoveReady
+  - ReadyCancel
+  - Attack
   DisableAutoOpenWizard: 1

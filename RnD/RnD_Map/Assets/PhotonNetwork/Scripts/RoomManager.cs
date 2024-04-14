@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 public class RoomManager : MonoBehaviour
 {
     public GameObject readyBtn;
-    public GameObject startBtn;
+    public GameObject readyCancelBtn;
 
-    public string NextScene;
+    public string nextScene;
 
     PhotonView pv;
     PhotonReady pr;
@@ -18,31 +18,37 @@ public class RoomManager : MonoBehaviour
         pv = GetComponent<PhotonView>();
         pr = GetComponent<PhotonReady>();
     }
-
     IEnumerator Start()
     {
-        PhotonNetwork.isMessageQueueRunning = true;
-        startBtn.SetActive(false);
-
         yield return StartCoroutine(pr.WaitForReady());
 
-        startBtn.SetActive(PhotonNetwork.isMasterClient);
+        readyBtn.SetActive(false);
+        readyCancelBtn.SetActive(false);
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            PhotonNetwork.room.IsOpen = false;
+            PhotonNetwork.room.IsVisible = false;
+
+            pv.RPC("LoadStage", PhotonTargets.All);
+        }
     }
 
     public void OnReady()
     {
         readyBtn.SetActive(false);
+        readyCancelBtn.SetActive(true);
         pr.Ready();
     }
-
-    public void OnStart()
+    public void OnReadyCancel()
     {
-        pv.RPC("LoadStage", PhotonTargets.All);
+        readyBtn.SetActive(true);
+        readyCancelBtn.SetActive(false);
+        pr.ReadyCancel();
     }
 
-    [PunRPC]
-    void LoadStage()
+    [PunRPC] void LoadStage()
     {
-        SceneManager.LoadSceneAsync(NextScene);
+        PhotonNetwork.LoadLevelAsync(nextScene);
     }
 }

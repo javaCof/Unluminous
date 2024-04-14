@@ -112,6 +112,7 @@ public class MapGenerator : MonoBehaviour
     Transform tilePos;
     Transform objectPos;
     Transform debugPos;
+    Transform poolPos;
 
     Vector3 playerSpawnPoint;
 
@@ -128,6 +129,13 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
+        pv = GetComponent<PhotonView>();
+        pr = GetComponent<PhotonReady>();
+    }
+    private void Start()
+    {
+        if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
+
         rooms = new List<RectInt>();
         paths = new List<PathInfo>();
         roomInfos = new List<RoomInfo>();
@@ -137,22 +145,20 @@ public class MapGenerator : MonoBehaviour
         (tilePos = new GameObject("tile").transform).parent = mapPos;
         (objectPos = new GameObject("object").transform).parent = mapPos;
         (debugPos = new GameObject("debug").transform).parent = mapPos;
+        (poolPos = new GameObject("pool").transform).parent = mapPos;
 
         int mapSizeInt = mapSize.x * mapSize.y;
-        Transform poolPos = new GameObject("pool").transform;
-
         floorPool = new ObjectPool(floorPrefab, mapSizeInt, poolPos);
         wallPool = new ObjectPool(wallPrefab, mapSizeInt / 2, poolPos);
         cornerPool = new ObjectPool(cornerPrefab, mapSizeInt / 2, poolPos);
         pillarPool = new ObjectPool(pillarPrefab, mapSizeInt / 2, poolPos);
-        monsterPool = new ObjectPool(monsterPrefab, 100, poolPos);
 
-        pv = GetComponent<PhotonView>();
-        pr = GetComponent<PhotonReady>();
-    }
-    private void Start()
-    {
-        if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
+        if (PhotonNetwork.inRoom)
+        {
+            if (PhotonNetwork.isMasterClient)
+                monsterPool = new ObjectPool("Enemy", 100, poolPos);
+        }
+        else monsterPool = new ObjectPool(monsterPrefab, 100, poolPos);
 
         StartCoroutine(LoadLevel());
     }
@@ -185,8 +191,8 @@ public class MapGenerator : MonoBehaviour
 
         GenerateMapData();
         PaintMapTile();
+
         GenerateMapTile(mapTiles);
-        
         GenerateMapObject(JsonUtility.ToJson(new ObjInfoList(objects)));
         GeneratePlayer();
 
@@ -197,24 +203,22 @@ public class MapGenerator : MonoBehaviour
         if (PhotonNetwork.isMasterClient)
         {
             pv.RPC("ResetMap", PhotonTargets.All);
-
             GenerateMapData();
             PaintMapTile();
-
             pv.RPC("GenerateMapTile", PhotonTargets.All, mapTiles);
             pv.RPC("GenerateMapObject", PhotonTargets.All, JsonUtility.ToJson(new ObjInfoList(objects)));
-            pv.RPC("ReadyOK", PhotonTargets.All);
-
-            yield return StartCoroutine(pr.WaitForReady());
-
-            pv.RPC("GeneratePlayer", PhotonTargets.All);
+            pv.RPC("MapReadyOK", PhotonTargets.All);
         }
+
+        yield return StartCoroutine(pr.WaitForReady());
+
+        if (PhotonNetwork.isMasterClient)
+            pv.RPC("GeneratePlayer", PhotonTargets.All);
 
         yield return null;
     }
 
-    [PunRPC]
-    void ResetMap()
+    [PunRPC] void ResetMap()
     {
         rooms.Clear();
         paths.Clear();
@@ -418,23 +422,26 @@ public class MapGenerator : MonoBehaviour
     }
     void SetObjectData()
     {
+        objects.AddRange(new List<ObjInfo>(PhotonNetwork.inRoom ? PhotonNetwork.room.PlayerCount : 1));
+
         for (int i = 0; i < roomInfos.Count; i++)
         {
             RoomInfo info = roomInfos[i];
+            RectInt objRect = new RectInt(info.rect.x + 1, info.rect.y + 1, info.rect.width - 2, info.rect.height - 2);
+
             switch (info.type)
             {
                 case RoomType.START:
                     {
-                        Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
-
-                        objects.Add(new ObjInfo(ObjType.PLAYER, i, pos));
+                        if (PhotonNetwork.inRoom)
+                            AddObjectRandom(ObjType.PLAYER, PhotonNetwork.room.PlayerCount, i, objRect, true);
+                        else
+                            AddObjectCenter(ObjType.PLAYER, i, objRect, true);
                     }
                     break;
                 case RoomType.MONSTER:
                     {
-                        Vector3 pos = new Vector3(info.rect.center.x * tileSize, 5f, info.rect.center.y * tileSize);
-
-                        objects.Add(new ObjInfo(ObjType.ENEMY, i, pos));
+                        AddObjectRandom(ObjType.ENEMY, 5, i, objRect);
                     }
                     break;
                 case RoomType.TREASURE:
@@ -442,6 +449,28 @@ public class MapGenerator : MonoBehaviour
                 case RoomType.BOSS:
                     break;
             }
+        }
+    }
+    void AddObjectCenter(ObjType obj, int roomId, RectInt roomRect, bool addHead=false)
+    {
+        Vector3 pos = new Vector3(roomRect.center.x * tileSize, 5f, roomRect.center.y * tileSize);
+
+        if (addHead)
+            objects[0] = new ObjInfo(obj, roomId, pos);
+        else objects.Add(new ObjInfo(obj, roomId, pos));
+    }
+    void AddObjectRandom(ObjType obj, int count, int roomId, RectInt roomRect, bool addHead = false)
+    {
+        CombinationRect objComb = new CombinationRect(roomRect);
+
+        for (int i = 0; i < count; i++)
+        {
+            Vector2Int combPos = objComb.GetRandom();
+            Vector3 pos = new Vector3(combPos.x * tileSize, 5f, combPos.y * tileSize);
+
+            if (addHead)
+                objects[i] = new ObjInfo(obj, roomId, pos);
+            else objects.Add(new ObjInfo(obj, roomId, pos));
         }
     }
 
@@ -655,23 +684,23 @@ public class MapGenerator : MonoBehaviour
     [PunRPC] void GenerateMapObject(string json)
     {
         List<ObjInfo> objs = JsonUtility.FromJson<ObjInfoList>(json).objs;
+        playerSpawnPoint = PhotonNetwork.inRoom ? objs[PhotonNetwork.player.ID - 1].pos : objs[0].pos;
+
         foreach (ObjInfo obj in objs)
         {
             switch (obj.objID)
             {
-                case ObjType.PLAYER:
-                    {
-                        playerSpawnPoint = obj.pos;
-                    }
-                    break;
                 case ObjType.ENEMY:
                     {
-                        GameObject go = GenerateObject(obj);
-                        Rect objRoom = new Rect(
-                            rooms[obj.roomID].x * tileSize, rooms[obj.roomID].y * tileSize,
-                            rooms[obj.roomID].width * tileSize, rooms[obj.roomID].height * tileSize
-                            );
-                        //go.GetComponent<Enemy>().SetRoom(obj.roomID, objRoom);
+                        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
+                        {
+                            GameObject go = GenerateObject(obj);
+                            Rect objRoom = new Rect(
+                                rooms[obj.roomID].x * tileSize, rooms[obj.roomID].y * tileSize,
+                                rooms[obj.roomID].width * tileSize, rooms[obj.roomID].height * tileSize
+                                );
+                            go.GetComponent<EnemyAction>().SetRoom(obj.roomID, objRoom);
+                        }
                     }
                     break;
             }
@@ -679,14 +708,7 @@ public class MapGenerator : MonoBehaviour
     }
     GameObject GenerateObject(ObjInfo info)
     {
-        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
-        {
-            return monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
-        }
-        else
-        {
-            return monsterPool.GetObject(info.pos, Quaternion.identity, objectPos);
-        }
+        return monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
     }
     [PunRPC] void GeneratePlayer()
     {
@@ -699,7 +721,7 @@ public class MapGenerator : MonoBehaviour
             GameObject.Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity);
         }
     }
-    [PunRPC] void ReadyOK()
+    [PunRPC] void MapReadyOK()
     {
         pr.Ready();
     }
@@ -735,5 +757,9 @@ public class MapGenerator : MonoBehaviour
                 return i;
         }
         return -1;
+    }
+    public void RemoveObject(GameObject go)
+    {
+        monsterPool.DisableObject(go);
     }
 }

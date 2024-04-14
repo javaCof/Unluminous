@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f3758f8f58fdef43803eb9be1df0608, type: 3}
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
-  AppID: e3914816-0577-4f3f-a3f8-3e3f9b591fbd
+  AppID: 6db51a25-45c0-4566-8720-fa52a4a64333
   VoiceAppID: 
   ChatAppID: 
-  HostType: 4
-  PreferredRegion: 0
+  HostType: 1
+  PreferredRegion: 9
   EnabledRegions: -1
   Protocol: 0
   ServerAddress: 
@@ -46,9 +46,6 @@ MonoBehaviour:
   - RequestForPickupTimes
   - SetReady
   - TaggedPlayer
-  - GenerateMapObject
-  - GenerateMapTile
-  - GeneratePlayer
-  - ReadyOK
-  - ResetMap
+  - RemoveReady
+  - ReadyCancel
   DisableAutoOpenWizard: 1

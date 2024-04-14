@@ -2,30 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAction : UnitCharater
+public class PlayerAction : UnitAction
 {
     public float attackDist = 2f;
     public float actionDist = 2f;
 
+    [HideInInspector] public bool controllable = true;
+
+    private PhotonView pv;
     private Animator anim;
+
     private Collider target;
 
     private void Awake()
     {
+        pv = GetComponent<PhotonView>();
         anim = GetComponentInChildren<Animator>();
     }
     private void Start()
     {
-        isDead = false;
-        SetSampleData();
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            isDead = false;
+            roomNum = -1;
+
+            SetSampleData();
+        }
     }
     private void Update()
     {
-        SetLookTarget();
-        ShowLookTarget();
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            UpdateRoomNum();
 
-        if (Input.GetMouseButtonDown(0)) Attack();
-        if (Input.GetKeyDown(KeyCode.E)) Action();
+            SetLookTarget();
+            ShowLookTarget();
+
+            if (controllable)
+            {
+                if (Input.GetMouseButtonDown(0)) Attack();
+                if (Input.GetKeyDown(KeyCode.E)) Action();
+            }
+        }
     }
 
     //임시 데이터 설정
@@ -37,9 +55,12 @@ public class PlayerAction : UnitCharater
         stat.DEF = 5;
         stat.SPD = 1;
         curHP = stat.HP;
-        roomNum = -1;
     }
 
+    void UpdateRoomNum()
+    {
+        //roomNum = GameObject.FindObjectOfType<MapGenerator>().FindRoom(transform.position);
+    }
     void SetLookTarget()
     {
         Vector3 camPos = Camera.main.transform.position;
@@ -53,7 +74,6 @@ public class PlayerAction : UnitCharater
             target = hit.collider;
     }
     void ShowLookTarget() { }
-    void UpdateRoomNum() { }
 
     void Attack()
     {
@@ -61,7 +81,7 @@ public class PlayerAction : UnitCharater
 
         if (target != null && target.tag == "Enemy")
         {
-            target.GetComponent<Enemy>().Hit(this);
+            target.GetComponent<EnemyAction>().Hit(this);
         }
     }
     void Action()
@@ -78,7 +98,7 @@ public class PlayerAction : UnitCharater
                 break;
         }
     }
-    public override void Hit(UnitCharater other)
+    public override void Hit(UnitAction other)
     {
         curHP -= other.stat.ATK;
 
@@ -88,6 +108,7 @@ public class PlayerAction : UnitCharater
     void Dead()
     {
         isDead = true;
+        controllable = false;
 
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");

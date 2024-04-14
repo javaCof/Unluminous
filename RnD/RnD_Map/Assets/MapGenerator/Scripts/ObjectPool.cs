@@ -21,6 +21,21 @@ public class ObjectPool
         }
     }
 
+    public ObjectPool(string name, int n, Transform pos)
+    {
+        objects = new List<GameObject>(n);
+        this.pos = pos;
+
+        for (int i = 0; i < n; i++)
+        {
+            GameObject go = PhotonNetwork.InstantiateSceneObject(name, Vector3.zero, Quaternion.identity, 0, null);
+
+            go.transform.parent = pos;
+            go.SetActive(false);
+            objects.Add(go);
+        }
+    }
+
     public GameObject GetObject(Vector3 pos, Quaternion rot, Transform parent)
     {
         if (idx < objects.Count)
@@ -32,6 +47,12 @@ public class ObjectPool
             return objects[idx++];
         }
         else return null;
+    }
+
+    public void DisableObject(GameObject go)
+    {
+        go.transform.parent = pos;
+        go.SetActive(false);
     }
 
     public void Reset()
