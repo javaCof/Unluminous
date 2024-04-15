@@ -32,6 +32,9 @@ public class MapGenerator : MonoBehaviour
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }
     public enum ObjType { PLAYER, ENEMY }
 
+    private Color[] tileColors = { Color.black, Color.white, Color.yellow, Color.yellow, Color.yellow, Color.yellow };
+    public Texture2D mapTexture;
+
     class RoomNode
     {
         public RectInt rect;
@@ -107,7 +110,7 @@ public class MapGenerator : MonoBehaviour
     List<RectInt> rooms;
     List<PathInfo> paths;
     List<RoomInfo> roomInfos;
-    [SerializeReference] List<ObjInfo> objects;
+    [SerializeField] List<ObjInfo> objects;
 
     Transform tilePos;
     Transform objectPos;
@@ -247,6 +250,7 @@ public class MapGenerator : MonoBehaviour
         CreateRoom(map);
         DecideRoomType();
         CreatePath(map);
+        
         SetObjectData();
     }
     void DivideRect(RoomNode node, int pDivAxis = -1, int divDepth = 0,
@@ -441,7 +445,7 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.MONSTER:
                     {
-                        AddObjectRandom(ObjType.ENEMY, 5, i, objRect);
+                        AddObjectRandom(ObjType.ENEMY, 1, i, objRect);
                     }
                     break;
                 case RoomType.TREASURE:
@@ -545,6 +549,9 @@ public class MapGenerator : MonoBehaviour
                 PaintCurve(beginCurve, path.end, endCurve);
             }
         }
+
+        //texture
+        SetMapTexture();
     }
     void PaintLine(Vector2Int begin, Vector2Int end, Color col)
     {
@@ -607,6 +614,14 @@ public class MapGenerator : MonoBehaviour
     void SetCurvePixel(Vector2Int cur, int offset_x, int offset_y, TileType type)
     {
         SetMapTile(cur.x + offset_x, cur.y + offset_y, type);
+    }
+    void SetMapTexture()
+    {
+        for (int i = 0; i < mapTiles.Length; i++)
+        {
+            mapTexture.SetPixel(i % mapSize.x, i / mapSize.x, tileColors[(int)(mapTiles[i])]);
+        }
+        mapTexture.Apply();
     }
 
     /*------------MAP TILE------------*/

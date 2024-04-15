@@ -40,12 +40,13 @@ public class EnemyAction : UnitAction
     }
     void Start()
     {
-        if (!PhotonNetwork.inRoom || pv.isMine)
+        isDead = false;
+        SetSampleData();
+
+        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
-            isDead = false;
             originPos = transform.position;
 
-            SetSampleData();
             InitState(EnemyState.Search);
         }
         else
@@ -55,7 +56,7 @@ public class EnemyAction : UnitAction
     }
     void Update()
     {
-        if (!PhotonNetwork.inRoom || pv.isMine)
+        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
             if (enableState)
             {
@@ -157,8 +158,7 @@ public class EnemyAction : UnitAction
                     /*attack routine*/
                     if (Time.time - attackDtime > attackDelay)
                     {
-                        if (PhotonNetwork.inRoom)
-                            pv.RPC("Attack", PhotonTargets.All);
+                        if (PhotonNetwork.inRoom) pv.RPC("Attack", PhotonTargets.All);
                         else Attack();
 
                         attackDtime = Time.time;
@@ -257,20 +257,41 @@ public class EnemyAction : UnitAction
     //현재 네비게이션 종료 확인
     bool IsNavEnd() => InRange(nav.destination, nav.stoppingDistance + 0.1f);
 
+
+
+
+
+    //on player exit =>
+
+
     [PunRPC] void Attack()
     {
         transform.LookAt(target);
         anim.SetTrigger("attack");
 
-        if (!PhotonNetwork.inRoom || pv.isMine)
+        AttackDamage();
+    }
+    public void AttackDamage()      //call by anim
+    {
+        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
             if (Vector3.Distance(transform.position, target.position) <= maxAttackRange)
-                target.GetComponent<PlayerAction>().Hit(this);
+            {
+                if (PhotonNetwork.inRoom)
+                {
+                    PhotonView tpv = target.GetComponent<PhotonView>();
+                    tpv.RPC("Hit", tpv.owner, stat.ATK);
+                }
+                else
+                {
+                    target.GetComponent<PlayerAction>().Hit(stat.ATK);
+                }
+            }
         }
     }
-    public override void Hit(UnitAction other)
+    [PunRPC] public void Hit(float dmg)
     {
-        curHP -= other.stat.ATK;
+        curHP -= dmg;
 
         if (curHP <= 0) Dead();
         else anim.SetTrigger("hit");
@@ -282,7 +303,6 @@ public class EnemyAction : UnitAction
         anim.SetTrigger("dead");
         StartCoroutine(RemoveObject(removeDelay));
     }
-
     IEnumerator RemoveObject(float delay)
     {
         yield return new WaitForSeconds(delay);

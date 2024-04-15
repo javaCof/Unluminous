@@ -28,34 +28,32 @@ MonoBehaviour:
   NetworkLogging: 1
   RunInBackground: 1
   RpcList:
-  - AddReady
+  - AddPhotonReady
+  - Attack
   - Chat
   - ColorRpc
   - DestroyRpc
   - DoJump
   - Flash
+  - GenerateMapObject
+  - GenerateMapTile
+  - GeneratePlayer
   - InstantiateRpc
   - LoadStage
+  - MapReadyOK
   - Marco
+  - PhotonAllReady
   - PickupItemInit
   - Polo
   - PunPickup
   - PunPickupSimple
   - PunRespawn
+  - ReadyCancel
+  - RemovePhotonReady
   - RequestForPickupItems
   - RequestForPickupTimes
-  - SetReady
-  - TaggedPlayer
-  - RemoveReady
-  - ReadyCancel
-  - GenerateMapObject
-  - GenerateMapTile
-  - GeneratePlayer
-  - ReadyOK
   - ResetMap
-  - Attack
-  - AddPhotonReady
-  - MapReadyOK
-  - PhotonAllReady
-  - RemovePhotonReady
+  - TaggedPlayer
+  - Hit
+  - HitLocal
   DisableAutoOpenWizard: 1

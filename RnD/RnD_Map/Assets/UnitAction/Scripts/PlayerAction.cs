@@ -42,8 +42,17 @@ public class PlayerAction : UnitAction
 
             if (controllable)
             {
-                if (Input.GetMouseButtonDown(0)) Attack();
-                if (Input.GetKeyDown(KeyCode.E)) Action();
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (PhotonNetwork.inRoom) pv.RPC("Attack", PhotonTargets.All);
+                    else Attack();
+                }
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (PhotonNetwork.inRoom) pv.RPC("Action", PhotonTargets.All);
+                    else Action();
+                }
             }
         }
     }
@@ -77,13 +86,26 @@ public class PlayerAction : UnitAction
     }
     void ShowLookTarget() { }
 
-    void Attack()
+    [PunRPC] void Attack()
     {
         anim.SetTrigger("attack");
-
+        AttackDamage();
+    }
+    public void AttackDamage()      //call by anim
+    {
         if (target != null && target.tag == "Enemy")
         {
-            target.GetComponent<EnemyAction>().Hit(this);
+            if (PhotonNetwork.inRoom)
+            {
+                //PhotonView tpv = target.GetComponent<PhotonView>();
+                //tpv.RPC("Hit", tpv.owner, stat.ATK);
+
+                target.GetComponent<EnemyAction>().Hit(stat.ATK);
+            }
+            else
+            {
+                target.GetComponent<EnemyAction>().Hit(stat.ATK);
+            }
         }
     }
     void Action()
@@ -93,16 +115,15 @@ public class PlayerAction : UnitAction
         switch (target.tag)
         {
             case "Enemy":
-                Debug.Log(target.gameObject.name);
                 break;
             case "Chest":
                 //target.GetComponent<Chest>().Open();
                 break;
         }
     }
-    public override void Hit(UnitAction other)
+    [PunRPC] public void Hit(float dmg)
     {
-        curHP -= other.stat.ATK;
+        curHP -= dmg;
 
         if (curHP <= 0) Dead();
         else anim.SetTrigger("hit");
@@ -116,10 +137,6 @@ public class PlayerAction : UnitAction
         anim.SetTrigger("dead");
         ctl.enabled = false;
 
-
-        if (pv.isMine)
-        {
-            SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
-        }
+        SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
     }
 }
