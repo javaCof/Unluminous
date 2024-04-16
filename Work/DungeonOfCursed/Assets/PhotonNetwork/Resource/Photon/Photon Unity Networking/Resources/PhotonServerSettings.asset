@@ -56,4 +56,6 @@ MonoBehaviour:
   - TaggedPlayer
   - Hit
   - HitLocal
+  - Action
+  - Dead
   DisableAutoOpenWizard: 1
