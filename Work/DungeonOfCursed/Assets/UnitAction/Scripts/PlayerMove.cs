@@ -79,11 +79,15 @@ public class PlayerMove : MonoBehaviour
     {
         if (ctl.isGrounded)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             float inpH = Input.GetAxisRaw("Horizontal");
             float inpV = Input.GetAxisRaw("Vertical");
 
             float mSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : speed;
-
+            bool inpJump = Input.GetKey(KeyCode.Space);
+#elif UNITY_ANDROID
+            //>>>
+#endif
             Vector3 inpDir = new Vector3(inpH, 0, inpV).normalized;
             Vector3 camDir = cam.TransformDirection(inpDir);
 
@@ -99,7 +103,7 @@ public class PlayerMove : MonoBehaviour
                 moveVec = camDir.normalized * mSpeed;
             }
 
-            if (jumpable && Input.GetKey(KeyCode.Space))
+            if (jumpable && inpJump)
             {
                 moveVec.y += jumpForce;
             }
@@ -108,8 +112,12 @@ public class PlayerMove : MonoBehaviour
     }
     void Look()
     {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
         float dMouseX = Input.GetAxisRaw("Mouse X");
         float dMouseY = Input.GetAxisRaw("Mouse Y");
+#elif UNITY_ANDROID
+        //>>>
+#endif
 
         camRotateY = dMouseX * 100f * mouseSensitivityX * Time.deltaTime;
         camRotateX = -dMouseY * 100f * mouseSensitivityY * Time.deltaTime;

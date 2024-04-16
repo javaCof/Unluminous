@@ -97,7 +97,7 @@ public class PhotonInit : MonoBehaviour
     }
     void OnReceivedRoomListUpdate()
     {
-        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ROOM_ITEM"))
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("RoomItem"))
         {
             Destroy(obj);
         }
