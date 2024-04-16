@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/PhotonNetwork/Scenes/RoomScene.unity
     guid: 7284bc322345cd34093d91f57fe3d78e
   - enabled: 1
-    path: Assets/PhotonNetwork/Scenes/GameScene.unity
-    guid: e6e2661108d0e194fa4fb4ce83add378
+    path: Assets/MapGenerator/Scenes/GameScene.unity
+    guid: 659d058504c4c044c8e2a7971ac3aa79
+  - enabled: 1
+    path: Assets/MapGenerator/Scenes/LoadingScene.unity
+    guid: bede8d08d6317a540a6ca8d2ad9e9739
   m_configObjects: {}
