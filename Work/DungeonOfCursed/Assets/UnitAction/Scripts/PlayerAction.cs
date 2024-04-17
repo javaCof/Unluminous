@@ -40,15 +40,19 @@ public class PlayerAction : UnitAction
             SetLookTarget();
             ShowLookTarget();
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            bool inpAction = Input.GetMouseButtonDown(0);
-#elif UNITY_ANDROID
-            //>>>
-#endif
-            if (controllable && inpAction)
+            if (controllable)
             {
-                if (PhotonNetwork.inRoom) pv.RPC("Action", PhotonTargets.All);
-                else Action();
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (PhotonNetwork.inRoom) pv.RPC("Attack", PhotonTargets.All);
+                    else Attack();
+                }
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (PhotonNetwork.inRoom) pv.RPC("Action", PhotonTargets.All);
+                    else Action();
+                }
             }
         }
     }
@@ -82,26 +86,11 @@ public class PlayerAction : UnitAction
     }
     void ShowLookTarget() { }
 
-    [PunRPC] void Action()
+    [PunRPC] void Attack()
     {
-        if (target == null)
-        {
-            anim.SetTrigger("attack");
-            return;
-        }
+        anim.SetTrigger("attack");
 
-        switch (target.tag)
-        {
-            case "Enemy":
-                {
-                    anim.SetTrigger("attack");
-                    AttackDamage();
-                }
-                break;
-            case "Chest":
-                //target.GetComponent<Chest>().Open();
-                break;
-        }
+        AttackDamage();
     }
     public void AttackDamage()      //call by anim
     {
@@ -111,6 +100,11 @@ public class PlayerAction : UnitAction
             {
                 if (PhotonNetwork.inRoom)
                 {
+                    //PhotonView tpv = target.GetComponent<PhotonView>();
+                    //tpv.RPC("Hit", tpv.owner, stat.ATK);
+
+                    //target.GetComponent<EnemyAction>().Hit(stat.ATK);
+
                     target.GetComponent<PhotonView>().RPC("Hit", PhotonTargets.All, stat.ATK);
                 }
                 else
@@ -118,6 +112,21 @@ public class PlayerAction : UnitAction
                     target.GetComponent<EnemyAction>().Hit(stat.ATK);
                 }
             }
+        }
+
+
+    }
+    void Action()
+    {
+        if (target == null) return;
+
+        switch (target.tag)
+        {
+            case "Enemy":
+                break;
+            case "Chest":
+                //target.GetComponent<Chest>().Open();
+                break;
         }
     }
     [PunRPC] public void Hit(float dmg)
@@ -138,5 +147,4 @@ public class PlayerAction : UnitAction
 
         SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
     }
-
 }

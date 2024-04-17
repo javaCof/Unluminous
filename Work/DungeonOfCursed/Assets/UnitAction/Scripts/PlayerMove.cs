@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
+    public Button jumpBtn;
     public float speed = 7f;
     public float sprintSpeed = 10f;
     public bool jumpable = true;
+    public bool inpJump = false;
     public float jumpForce = 8f;
     public float gravity = 20f;
     public float mouseSensitivityX = 10f;
@@ -30,6 +33,8 @@ public class PlayerMove : MonoBehaviour
     private Vector3 curPos;
     private Quaternion curRot;
 
+
+
     private void Awake()
     {
         action = GetComponent<PlayerAction>();
@@ -37,12 +42,15 @@ public class PlayerMove : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
         cam = Camera.main.transform;
+
+        jumpBtn = GameObject.Find("JumpBtn").GetComponent<Button>();
+        jumpBtn.onClick.AddListener(Jump);
     }
     private void Start()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.lockState = CursorLockMode.Locked;
 
             cam.parent = transform;
             cam.localPosition = camOffset;
@@ -56,6 +64,9 @@ public class PlayerMove : MonoBehaviour
             {
                 Move();
                 Look();
+
+
+
             }
         }
         else
@@ -75,18 +86,36 @@ public class PlayerMove : MonoBehaviour
             CameraUpdate();
     }
 
+    public void Jump()
+    {
+        if (jumpable)
+        {
+            moveVec.y += jumpForce;
+        }
+    }
+
+    //void CantJump()
+    //{
+    //    inpJump = false;
+
+    //}
+
     void Move()
     {
         if (ctl.isGrounded)
         {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+#if  UNITY_STANDALONE_WIN
             float inpH = Input.GetAxisRaw("Horizontal");
             float inpV = Input.GetAxisRaw("Vertical");
 
             float mSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : speed;
-            bool inpJump = Input.GetKey(KeyCode.Space);
-#elif UNITY_ANDROID
-            //>>>
+            inpJump = Input.GetKey(KeyCode.Space);
+#elif UNITY_ANDROID || UNITY_EDITOR 
+            float inpH = UltimateJoystick.GetHorizontalAxis("joy");
+            float inpV = UltimateJoystick.GetVerticalAxis("joy");
+
+            float mSpeed = speed;
+
 #endif
             Vector3 inpDir = new Vector3(inpH, 0, inpV).normalized;
             Vector3 camDir = cam.TransformDirection(inpDir);
@@ -102,21 +131,26 @@ public class PlayerMove : MonoBehaviour
                 camDir.y = 0;
                 moveVec = camDir.normalized * mSpeed;
             }
-
             if (jumpable && inpJump)
             {
                 moveVec.y += jumpForce;
+                Invoke("CantJump", 0.5f);
             }
+
         }
         moveVec.y -= gravity * Time.deltaTime;
     }
     void Look()
     {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR
+
         float dMouseX = Input.GetAxisRaw("Mouse X");
         float dMouseY = Input.GetAxisRaw("Mouse Y");
-#elif UNITY_ANDROID
-        //>>>
+#elif UNITY_ANDROID 
+
+        float dMouseX = UltimateJoystick.GetHorizontalAxis( "rightJoyStick" )/5;
+        float dMouseY = UltimateJoystick.GetVerticalAxis( "rightJoyStick" )/5;
+
 #endif
 
         camRotateY = dMouseX * 100f * mouseSensitivityX * Time.deltaTime;

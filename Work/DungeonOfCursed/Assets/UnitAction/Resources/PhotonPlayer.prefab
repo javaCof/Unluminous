@@ -72,7 +72,7 @@ MonoBehaviour:
   gravity: 20
   mouseSensitivityX: 10
   mouseSensitivityY: 10
-  camRotateAngleX: 45
+  maxCamRotateAngle: 45
   camOffset: {x: 0, y: 1.72, z: 0.4}
 --- !u!114 &2958236034093024014
 MonoBehaviour:
@@ -81,7 +81,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1637102306246264389}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63fe6caca053a7745b86ebc522f12307, type: 3}
   m_Name: 
@@ -91,6 +91,7 @@ MonoBehaviour:
   roomNum: 0
   attackDist: 2
   actionDist: 2
+  controllable: 1
 --- !u!114 &7753764107837755533
 MonoBehaviour:
   m_ObjectHideFlags: 0

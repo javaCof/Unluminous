@@ -257,6 +257,13 @@ public class EnemyAction : UnitAction
     //현재 네비게이션 종료 확인
     bool IsNavEnd() => InRange(nav.destination, nav.stoppingDistance + 0.1f);
 
+
+
+
+
+    //on player exit =>
+
+
     [PunRPC] void Attack()
     {
         transform.LookAt(target);
@@ -284,30 +291,18 @@ public class EnemyAction : UnitAction
     }
     [PunRPC] public void Hit(float dmg)
     {
-        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
-        {
-            curHP -= dmg;
-            if (curHP <= 0)
-            {
-                pv.RPC("Dead", PhotonTargets.All);
-                return;
-            }
-        }
-        anim.SetTrigger("hit");
+        curHP -= dmg;
+
+        if (curHP <= 0) Dead();
+        else anim.SetTrigger("hit");
     }
-    [PunRPC] void Dead()
+    void Dead()
     {
         isDead = true;
         enableState = false;
-
-        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
-        {
-            ChangeState(EnemyState.Dead);
-            StartCoroutine(RemoveObject(removeDelay));
-        }
-
         anim.applyRootMotion = true;
-        anim.SetTrigger("dead");        
+        anim.SetTrigger("dead");
+        StartCoroutine(RemoveObject(removeDelay));
     }
     IEnumerator RemoveObject(float delay)
     {
@@ -345,6 +340,3 @@ public class EnemyAction : UnitAction
         }
     }
 }
-
-
-//on player exit =>
