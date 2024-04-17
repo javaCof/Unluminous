@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerAction : UnitAction
@@ -10,26 +11,36 @@ public class PlayerAction : UnitAction
 
     [HideInInspector] public bool controllable = true;
 
-    private PhotonView pv;
     private Animator anim;
     private CharacterController ctl;
     private MapGenerator map;
+    private PhotonView pv;
+
+    private Button actionBtn;
 
     private Collider target;
 
+    private bool inpAction;
+
     private void Awake()
     {
-        pv = GetComponent<PhotonView>();
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
         map = GameObject.FindObjectOfType<MapGenerator>();
+        pv = GetComponent<PhotonView>();
+
+        //actionBtn = GameObject.Find("ActionBtn").GetComponent<Button>();
+        //actionBtn.onClick.AddListener(() => inpAction = true);
     }
     private void Start()
     {
-        isDead = false;
-        roomNum = -1;
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            isDead = false;
+            roomNum = -1;
 
-        SetSampleData();
+            SetSampleData();
+        }
     }
     private void Update()
     {
@@ -40,19 +51,16 @@ public class PlayerAction : UnitAction
             SetLookTarget();
             ShowLookTarget();
 
-            if (controllable)
+#if UNITY_STANDALONE_WIN
+            inpAction = Input.GetMouseButtonDown(0);
+#elif UNITY_ANDROID
+#endif
+            if (controllable && inpAction)
             {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    if (PhotonNetwork.inRoom) pv.RPC("Attack", PhotonTargets.All);
-                    else Attack();
-                }
+                if (PhotonNetwork.inRoom) pv.RPC("Action_All", PhotonTargets.All);
+                else Action_All();
 
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    if (PhotonNetwork.inRoom) pv.RPC("Action", PhotonTargets.All);
-                    else Action();
-                }
+                inpAction = false;
             }
         }
     }
@@ -86,13 +94,26 @@ public class PlayerAction : UnitAction
     }
     void ShowLookTarget() { }
 
-    [PunRPC] void Attack()
+    [PunRPC]
+    void Action_All()
     {
-        anim.SetTrigger("attack");
+        if (target == null)
+        {
+            anim.SetTrigger("attack");
+            return;
+        }
 
-        AttackDamage();
+        switch (target.tag)
+        {
+            case "Enemy":
+                Attack_Owner();
+                break;
+            case "Chest":
+                //target.GetComponent<Chest>().Open();
+                break;
+        }
     }
-    public void AttackDamage()      //call by anim
+    public void Attack_Owner()      //call by anim
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
@@ -100,50 +121,53 @@ public class PlayerAction : UnitAction
             {
                 if (PhotonNetwork.inRoom)
                 {
-                    //PhotonView tpv = target.GetComponent<PhotonView>();
-                    //tpv.RPC("Hit", tpv.owner, stat.ATK);
-
-                    //target.GetComponent<EnemyAction>().Hit(stat.ATK);
-
-                    target.GetComponent<PhotonView>().RPC("Hit", PhotonTargets.All, stat.ATK);
+                    target.GetComponent<PhotonView>().RPC("Hit_All", PhotonTargets.All, stat.ATK);
                 }
                 else
                 {
-                    target.GetComponent<EnemyAction>().Hit(stat.ATK);
+                    target.GetComponent<EnemyAction>().Hit_All(stat.ATK);
                 }
             }
         }
-
-
     }
-    void Action()
+    [PunRPC] public void Hit_All(float dmg)
     {
-        if (target == null) return;
-
-        switch (target.tag)
+        if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            case "Enemy":
-                break;
-            case "Chest":
-                //target.GetComponent<Chest>().Open();
-                break;
-        }
-    }
-    [PunRPC] public void Hit(float dmg)
-    {
-        curHP -= dmg;
+            curHP -= dmg;
 
-        if (curHP <= 0) Dead();
-        else anim.SetTrigger("hit");
+            if (curHP <= 0)
+            {
+                if (PhotonNetwork.inRoom)
+                {
+                    pv.RPC("Dead_All", PhotonTargets.All);
+                }
+                else
+                {
+                    Dead_All();
+                }
+
+                return;
+            }
+        }
+        anim.SetTrigger("hit");
     }
-    void Dead()
+    [PunRPC] void Dead_All()
     {
-        isDead = true;
-        controllable = false;
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            isDead = true;
+            controllable = false;
+            ctl.enabled = false;
+            StartCoroutine(DeadOwner());
+        }
 
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
-        ctl.enabled = false;
+    }
+    IEnumerator DeadOwner()
+    {
+        yield return new WaitForSeconds(1);
 
         SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
     }

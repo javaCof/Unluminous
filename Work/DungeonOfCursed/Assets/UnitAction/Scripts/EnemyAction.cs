@@ -16,8 +16,8 @@ public class EnemyAction : UnitAction
 
     private Animator anim;
     private NavMeshAgent nav;
-    private PhotonView pv;
     private MapGenerator map;
+    private PhotonView pv;
 
     private EnemyState state;
     private Rect roomRect;
@@ -35,18 +35,17 @@ public class EnemyAction : UnitAction
     {
         anim = GetComponentInChildren<Animator>();
         nav = GetComponent<NavMeshAgent>();
-        pv = GetComponent<PhotonView>();
         map = GameObject.FindObjectOfType<MapGenerator>();
+        pv = GetComponent<PhotonView>();
     }
     void Start()
     {
-        isDead = false;
-        SetSampleData();
-
         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
+            isDead = false;
             originPos = transform.position;
-
+            
+            SetSampleData();
             InitState(EnemyState.Search);
         }
         else
@@ -61,10 +60,6 @@ public class EnemyAction : UnitAction
             if (enableState)
             {
                 UpdateState(state);
-            }
-            else if (state != EnemyState.Search)
-            {
-                ChangeState(EnemyState.Search);
             }
         }
         else
@@ -158,8 +153,8 @@ public class EnemyAction : UnitAction
                     /*attack routine*/
                     if (Time.time - attackDtime > attackDelay)
                     {
-                        if (PhotonNetwork.inRoom) pv.RPC("Attack", PhotonTargets.All);
-                        else Attack();
+                        if (PhotonNetwork.inRoom) pv.RPC("Attack_All", PhotonTargets.All);
+                        else Attack_All();
 
                         attackDtime = Time.time;
                     }
@@ -257,21 +252,14 @@ public class EnemyAction : UnitAction
     //현재 네비게이션 종료 확인
     bool IsNavEnd() => InRange(nav.destination, nav.stoppingDistance + 0.1f);
 
-
-
-
-
-    //on player exit =>
-
-
-    [PunRPC] void Attack()
+    [PunRPC] void Attack_All()
     {
         transform.LookAt(target);
         anim.SetTrigger("attack");
 
-        AttackDamage();
+        Attack_Master();
     }
-    public void AttackDamage()      //call by anim
+    public void Attack_Master()      //call by anim
     {
         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
@@ -279,30 +267,48 @@ public class EnemyAction : UnitAction
             {
                 if (PhotonNetwork.inRoom)
                 {
-                    PhotonView tpv = target.GetComponent<PhotonView>();
-                    tpv.RPC("Hit", tpv.owner, stat.ATK);
+                    target.GetComponent<PhotonView>().RPC("Hit_All", PhotonTargets.All, stat.ATK);
                 }
                 else
                 {
-                    target.GetComponent<PlayerAction>().Hit(stat.ATK);
+                    target.GetComponent<PlayerAction>().Hit_All(stat.ATK);
                 }
             }
         }
     }
-    [PunRPC] public void Hit(float dmg)
+    [PunRPC] public void Hit_All(float dmg)
     {
-        curHP -= dmg;
+        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
+        {
+            curHP -= dmg;
 
-        if (curHP <= 0) Dead();
-        else anim.SetTrigger("hit");
+            if (curHP <= 0)
+            {
+                if (PhotonNetwork.inRoom)
+                {
+                    pv.RPC("Dead_All", PhotonTargets.All);
+                }
+                else
+                {
+                    Dead_All();
+                }
+
+                return;
+            }
+        }
+        anim.SetTrigger("hit");
     }
-    void Dead()
+    [PunRPC] void Dead_All()
     {
-        isDead = true;
-        enableState = false;
+        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
+        {
+            isDead = true;
+            enableState = false;
+            StartCoroutine(RemoveObject(removeDelay));
+        }
+            
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
-        StartCoroutine(RemoveObject(removeDelay));
     }
     IEnumerator RemoveObject(float delay)
     {
@@ -325,7 +331,6 @@ public class EnemyAction : UnitAction
         if (stream.isWriting)
         {
             stream.SendNext(gameObject.GetActive());
-            stream.SendNext(enableState);
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(animMove);
@@ -333,10 +338,13 @@ public class EnemyAction : UnitAction
         else
         {
             gameObject.SetActive((bool)stream.ReceiveNext());
-            enableState = (bool)stream.ReceiveNext();
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
             animMove = (bool)stream.ReceiveNext();
         }
     }
 }
+
+
+
+//on player exit =>
