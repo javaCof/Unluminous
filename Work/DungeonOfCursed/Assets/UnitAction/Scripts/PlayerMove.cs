@@ -96,8 +96,7 @@ public class PlayerMove : MonoBehaviour
 
     //void CantJump()
     //{
-    //    inpJump = false;
-
+    //    inpJump = true;
     //}
 
     void Move()
@@ -115,6 +114,7 @@ public class PlayerMove : MonoBehaviour
             float inpV = UltimateJoystick.GetVerticalAxis("joy");
 
             float mSpeed = speed;
+            //inpJump=false;
 
 #endif
             Vector3 inpDir = new Vector3(inpH, 0, inpV).normalized;
@@ -134,7 +134,6 @@ public class PlayerMove : MonoBehaviour
             if (jumpable && inpJump)
             {
                 moveVec.y += jumpForce;
-                Invoke("CantJump", 0.5f);
             }
 
         }
