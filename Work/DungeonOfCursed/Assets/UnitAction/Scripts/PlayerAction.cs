@@ -16,8 +16,6 @@ public class PlayerAction : UnitAction
     private MapGenerator map;
     private PhotonView pv;
 
-    private Button actionBtn;
-
     private Collider target;
 
     private bool inpAction;
@@ -29,8 +27,7 @@ public class PlayerAction : UnitAction
         map = GameObject.FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
 
-        //actionBtn = GameObject.Find("ActionBtn").GetComponent<Button>();
-        //actionBtn.onClick.AddListener(() => inpAction = true);
+        GameObject.FindObjectOfType<GameUI>().actionButton.onClick.AddListener(() => inpAction = true);
     }
     private void Start()
     {

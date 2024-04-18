@@ -43,8 +43,7 @@ public class PlayerMove : MonoBehaviour
         ctl = GetComponent<CharacterController>();
         cam = Camera.main.transform;
 
-        //jumpBtn = GameObject.Find("JumpBtn").GetComponent<Button>();
-        //jumpBtn.onClick.AddListener(() => inpJump = true);
+        GameObject.FindObjectOfType<GameUI>().jumpButton.onClick.AddListener(() => inpJump = true);
     }
     private void Start()
     {

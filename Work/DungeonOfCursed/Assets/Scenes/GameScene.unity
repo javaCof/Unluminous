@@ -836,8 +836,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftJoyStick: {fileID: 1930457097569433}
   rightJoyStick: {fileID: 1930457047058724}
-  actionButton: {fileID: 887395739}
-  jumpButton: {fileID: 88369967}
+  actionButton: {fileID: 887395740}
+  jumpButton: {fileID: 88369969}
 --- !u!1 &951486408
 GameObject:
   m_ObjectHideFlags: 0
