@@ -44,7 +44,7 @@ public class EnemyAction : UnitAction
         {
             isDead = false;
             originPos = transform.position;
-            
+
             SetSampleData();
             InitState(EnemyState.Search);
         }
@@ -252,7 +252,8 @@ public class EnemyAction : UnitAction
     //현재 네비게이션 종료 확인
     bool IsNavEnd() => InRange(nav.destination, nav.stoppingDistance + 0.1f);
 
-    [PunRPC] void Attack_All()
+    [PunRPC]
+    void Attack_All()
     {
         transform.LookAt(target);
         anim.SetTrigger("attack");
@@ -276,7 +277,8 @@ public class EnemyAction : UnitAction
             }
         }
     }
-    [PunRPC] public void Hit_All(float dmg)
+    [PunRPC]
+    public void Hit_All(float dmg)
     {
         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
@@ -298,22 +300,27 @@ public class EnemyAction : UnitAction
         }
         anim.SetTrigger("hit");
     }
-    [PunRPC] void Dead_All()
+    [PunRPC]
+    void Dead_All()
     {
         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
             isDead = true;
             enableState = false;
-            StartCoroutine(RemoveObject(removeDelay));
         }
-            
+
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
+
+        StartCoroutine(RemoveObject(removeDelay));
     }
     IEnumerator RemoveObject(float delay)
     {
         yield return new WaitForSeconds(delay);
-        map.RemoveObject(gameObject);
+
+        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
+            map.RemoveObject(gameObject);
+        else gameObject.SetActive(false);
     }
 
     void UpdatePos()
