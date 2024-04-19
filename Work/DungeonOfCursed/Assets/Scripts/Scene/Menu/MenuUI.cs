@@ -6,18 +6,35 @@ using UnityEditor;
 
 public class MenuUI : MonoBehaviour
 {
-    public void MoveToScene(string scene)
+    private GameManager game;
+
+    private void Awake()
     {
-        SceneManager.LoadSceneAsync(scene);
+        game = FindObjectOfType<GameManager>();
     }
 
-    public void ExitGame(bool askQuit)
+    public void OnSingleButtonClick()
     {
-#if UNITY_EDITOR
-        if (!askQuit || EditorUtility.DisplayDialog("게임 종료", "게임을 종료하시겠습니까?", "예", "아니오"))
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+        StartCoroutine(SingleLoad());
+    }
+    private IEnumerator SingleLoad()
+    {
+        yield return game.StartLoading();
+        yield return game.ChangeScene("MenuScene", "GameScene");
+    }
+
+    public void OnMultiButtonClick()
+    {
+        StartCoroutine(MultiLoad());
+    }
+    private IEnumerator MultiLoad()
+    {
+        yield return game.StartLoading();
+        yield return game.ChangeScene("MenuScene", "LobbyScene");
+    }
+
+    public void OnExitButtonClick()
+    {
+        game.ExitGame(true);
     }
 }

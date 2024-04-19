@@ -21,8 +21,12 @@ public class PhotonInit : MonoBehaviour
     [Header("NEXT SCENE")]
     public string nextScene;
 
+    private GameManager game;
+
     private void Awake()
     {
+        game = FindObjectOfType<GameManager>();
+
         if (!PhotonNetwork.connected)
         {
             PhotonNetwork.ConnectUsingSettings(version);
@@ -89,6 +93,8 @@ public class PhotonInit : MonoBehaviour
         Debug.Log("PHOTON : Joined Lobby");
         UpdateUserId();
         UpdateRoomName();
+
+        StartCoroutine(game.EndLoading());
     }
     void OnJoinedRoom()
     {
@@ -130,6 +136,7 @@ public class PhotonInit : MonoBehaviour
     void OnFailedToConnectToPhoton(DisconnectCause cause)
     {
         Debug.Log("PHOTON : Photon Connect Failed");
+        game.ErrorGame(ERROR_CODE.PHOTON_CONNECT_ERROR);
     }
     void OnPhotonRandomJoinFailed(object[] codeAndMsg)
     {
@@ -149,9 +156,11 @@ public class PhotonInit : MonoBehaviour
     void OnPhotonCreateRoomFailed(object[] codeAndMsg) 
     {
         Debug.Log("PHOTON : Create Room Failed");
+        game.ErrorGame(ERROR_CODE.PHOTON_CREATE_ROOM_ERROR);
     }
     void OnPhotonJoinRoomFailed(object[] codeAndMsg)
     {
         Debug.Log("PHOTON : Join Room Failed");
+        game.ErrorGame(ERROR_CODE.PHOTON_JOIN_ROOM_ERROR);
     }
 }

@@ -5,52 +5,75 @@ using UnityEngine.SceneManagement;
 
 public class MapGenerator : MonoBehaviour
 {
-    [Header("MAP DATA")]
-    public Transform mapPos;
-    public Vector2Int mapSize;
-    public int maxDivideDepth = 4;
-    public float minDividePer = 0.4f;
-    public float maxDividePer = 0.6f;
 
+
+
+
+
+
+    private GameManager game;
+
+
+    //맵 설정
+    [Header("MAP SETTING")]
+    public Transform mapPos;                        //맵 위치
+    public Texture2D mapTexture;                    //맵 텍스쳐 (미니맵)
+    public Vector2Int mapSize;                      //맵 크기
+    public int maxDivideDepth = 4;                  //맵 생성 깊이
+    public float minDividePer = 0.4f;               //최소 맵 자르기 비율
+    public float maxDividePer = 0.6f;               //최대 맵 자르기 비율
+
+    //맵 타일 설정
     [Header("MAP TILE")]
-    public float tileSize = 4f;
-    public GameObject floorPrefab;
-    public GameObject wallPrefab;
-    public GameObject cornerPrefab;
-    public GameObject pillarPrefab;
+    public float tileSize = 4f;                     //타일 크기
+    public GameObject floorPrefab;                  //바닥 타일
+    public GameObject wallPrefab;                   //벽 타일
+    public GameObject cornerPrefab;                 //코너 타일
+    public GameObject pillarPrefab;                 //기둥 타일
 
+    //맵 오브젝트 설정
     [Header("MAP OBJECT")]
-    public GameObject playerPrefab;
-    public GameObject monsterPrefab;
+    public GameObject playerPrefab;                 //플레이어
+    public GameObject[] normalMonsterPrefabs;       //일반 몬스터
+    public GameObject[] eliteMonsterPrefabs;        //정예 몬스터
+    public GameObject[] bossMonsterPrefabs;         //보스 몬스터
+    public GameObject traderPrefab;                 //상인
+    public GameObject[] chestPrefabs;               //상자
+    public GameObject potalPrefab;                  //포탈
 
+    //맵 디버그 설정
     [Header("DEBUG")]
-    public bool useDebug = false;
-    public LineRenderer lineRnd;
-    public LineRenderer rectRnd;
+    public bool useDebug = false;                   //디버그 사용
+    public LineRenderer lineRnd;                    //라인 렌더러(Line)
+    public LineRenderer rectRnd;                    //라인 렌더러(Rect)
 
-    public enum RoomType { START, MONSTER, TREASURE, BOSS }
-    public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }
-    public enum ObjType { PLAYER, ENEMY }
+    public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
+    public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
+    public enum ObjType { PLAYER, MONSTER, CHEST, POTAL }                                   //오브젝트 타입
 
-    private Color[] tileColors = { Color.black, Color.white, Color.yellow, Color.yellow, Color.yellow, Color.yellow };
-    public Texture2D mapTexture;
+    private Color[] tileColors = { Color.white, Color.white, Color.black, Color.black, Color.black, Color.black };      //타일 색상
 
+    //방 노드 정보
     class RoomNode
     {
-        public RectInt rect;
-        public RectInt room;
-        public RoomNode left;
-        public RoomNode right;
-        public AxisLine line;
+        public RectInt rect;            //방 노드 Rect
+        public RectInt room;            //방 Rect
+        public RoomNode left;           //Left 자식노드
+        public RoomNode right;          //Right 자식노드
+        public AxisLine line;           //방 자르기 Line
 
+        //방 노드 생성
         public RoomNode(RectInt rect) => this.rect = rect;
+
+        //방 중앙
         public Vector2Int Center { get { return new Vector2Int(room.x + (room.width - 1) / 2, room.y + (room.height - 1) / 2); } }
     }
 
+    //라인 정보
     public struct AxisLine
     {
-        public int xy;
-        public bool xAxis;
+        public int xy;          //라인의 x/y 값
+        public bool xAxis;      //x라인/y라인
 
         public AxisLine(int xy, bool xAxis)
         {
@@ -58,11 +81,13 @@ public class MapGenerator : MonoBehaviour
             this.xAxis = xAxis;
         }
     }
+
+    //통로 정보
     public struct PathInfo
     {
-        public Vector2Int begin;
-        public Vector2Int end;
-        public AxisLine line;
+        public Vector2Int begin;    //통로 시작점
+        public Vector2Int end;      //통로 종료점
+        public AxisLine line;       //통로의 나누기 Line
 
         public PathInfo(Vector2Int begin, Vector2Int end, AxisLine line)
         {
@@ -71,6 +96,40 @@ public class MapGenerator : MonoBehaviour
             this.line = line;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //방 정보
     public struct RoomInfo
     {
         public RoomType type;
@@ -85,8 +144,8 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    [System.Serializable]
-    public class ObjInfo
+    //오브젝트 정보
+    [System.Serializable] public class ObjInfo
     {
         public ObjType objID;
         public int roomID;
@@ -100,22 +159,48 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    [System.Serializable]
-    public class ObjInfoList
+    //오브젝트 리스트 정보
+    [System.Serializable] public class ObjInfoList
     {
         public List<ObjInfo> objs;
         public ObjInfoList(List<ObjInfo> objs) => this.objs = objs;
     }
 
-    List<RectInt> rooms;
-    List<PathInfo> paths;
-    List<RoomInfo> roomInfos;
-    [SerializeField] List<ObjInfo> objects;
+    List<RectInt> rooms;                //방 리스트
+    List<PathInfo> paths;               //통로 리스트
+    List<RoomInfo> roomInfos;           //방 정보 리스트
+    List<ObjInfo> objects;              //오브젝트 리스트
 
-    Transform tilePos;
-    Transform objectPos;
-    Transform debugPos;
-    Transform poolPos;
+    Transform tilePos;                  //타일 위치
+    Transform objectPos;                //오브젝트 위치
+    Transform debugPos;                 //디버그 위치
+    Transform poolPos;                  //메모리풀 위치
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     Vector3 playerSpawnPoint;
 
@@ -130,8 +215,14 @@ public class MapGenerator : MonoBehaviour
     PhotonView pv;
     PhotonReady pr;
 
+
+
+
+
+
     private void Awake()
     {
+        game = FindObjectOfType<GameManager>();
         pv = GetComponent<PhotonView>();
         pr = GetComponent<PhotonReady>();
     }
@@ -161,7 +252,7 @@ public class MapGenerator : MonoBehaviour
             if (PhotonNetwork.isMasterClient)
                 monsterPool = new ObjectPool("Enemy", 100, poolPos);
         }
-        else monsterPool = new ObjectPool(monsterPrefab, 100, poolPos);
+        else monsterPool = new ObjectPool(normalMonsterPrefabs[0], 100, poolPos);
 
         StartCoroutine(LoadLevel());
     }
@@ -171,22 +262,83 @@ public class MapGenerator : MonoBehaviour
     {
         StartCoroutine(LoadLevel());
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //새로운 Level 로드
     IEnumerator LoadLevel()
     {
-        AsyncOperation op = SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
-        yield return op;
+        //로딩 화면
+        //AsyncOperation op = SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
+        //yield return op;
 
         if (PhotonNetwork.inRoom)
         {
+            //멀티용 맵 생성
             yield return StartCoroutine(GenerateRandomMapMulti());
         }
         else
         {
+            //싱글용 맵 생성
             yield return StartCoroutine(GenerateRandomMapLocal());
         }
 
-        SceneManager.UnloadSceneAsync("LoadingScene", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+        yield return new WaitForSeconds(0.3f);
+
+        //로딩 화면 제거
+        //SceneManager.UnloadSceneAsync("LoadingScene", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+
+        //yield return game.EndLoading();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     IEnumerator GenerateRandomMapLocal()
     {
@@ -384,7 +536,7 @@ public class MapGenerator : MonoBehaviour
             else if (i == 0)
                 type = RoomType.BOSS;
             else
-                type = RoomType.MONSTER;
+                type = RoomType.BATTLE;
 
             Transform roomPos = new GameObject("room_" + i).transform;
             roomPos.parent = objectPos;
@@ -443,14 +595,17 @@ public class MapGenerator : MonoBehaviour
                             AddObjectCenter(ObjType.PLAYER, i, objRect, true);
                     }
                     break;
-                case RoomType.MONSTER:
+                case RoomType.BATTLE:
                     {
-                        AddObjectRandom(ObjType.ENEMY, 1, i, objRect);
+                        AddObjectRandom(ObjType.MONSTER, 1, i, objRect);
                     }
                     break;
                 case RoomType.TREASURE:
                     break;
                 case RoomType.BOSS:
+                    {
+                        AddObjectCenter(ObjType.POTAL, i, objRect);
+                    }
                     break;
             }
         }
@@ -549,9 +704,6 @@ public class MapGenerator : MonoBehaviour
                 PaintCurve(beginCurve, path.end, endCurve);
             }
         }
-
-        //texture
-        SetMapTexture();
     }
     void PaintLine(Vector2Int begin, Vector2Int end, Color col)
     {
@@ -615,14 +767,6 @@ public class MapGenerator : MonoBehaviour
     {
         SetMapTile(cur.x + offset_x, cur.y + offset_y, type);
     }
-    void SetMapTexture()
-    {
-        for (int i = 0; i < mapTiles.Length; i++)
-        {
-            mapTexture.SetPixel(i % mapSize.x, i / mapSize.x, tileColors[(int)(mapTiles[i])]);
-        }
-        mapTexture.Apply();
-    }
 
     /*------------MAP TILE------------*/
     [PunRPC] void GenerateMapTile(TileType[] tiles)
@@ -660,6 +804,8 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+
+        SetMapTexture(tiles);
     }
     float FindRotationW(TileType[] tiles, int i, int j)
     {
@@ -694,6 +840,14 @@ public class MapGenerator : MonoBehaviour
             rotation = 90;
         return rotation;
     }
+    void SetMapTexture(TileType[] tiles)
+    {
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            mapTexture.SetPixel(i % mapSize.x, i / mapSize.x, tileColors[(int)(tiles[i])]);
+        }
+        mapTexture.Apply();
+    }
 
     /*------------MAP OBJECT------------*/
     [PunRPC] void GenerateMapObject(string json)
@@ -705,7 +859,7 @@ public class MapGenerator : MonoBehaviour
         {
             switch (obj.objID)
             {
-                case ObjType.ENEMY:
+                case ObjType.MONSTER:
                     {
                         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
                         {
@@ -716,6 +870,11 @@ public class MapGenerator : MonoBehaviour
                                 );
                             go.GetComponent<EnemyAction>().SetRoom(obj.roomID, objRoom);
                         }
+                    }
+                    break;
+                case ObjType.POTAL:
+                    {
+                        
                     }
                     break;
             }

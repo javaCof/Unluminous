@@ -35,6 +35,11 @@ public class PhotonReady : MonoBehaviour
         readyPlayers = 0;
     }
 
+    public int GetReadyPlayerCount()
+    {
+        return readyPlayers;
+    }
+
     [PunRPC] void AddPhotonReady()
     {
         if (++readyPlayers == PhotonNetwork.room.PlayerCount)
@@ -49,4 +54,16 @@ public class PhotonReady : MonoBehaviour
     }
 
     void OnLeftRoom() => ReadyCancel();
+
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            stream.SendNext(readyPlayers);
+        }
+        else
+        {
+            readyPlayers = (int)stream.ReceiveNext();
+        }
+    }
 }
