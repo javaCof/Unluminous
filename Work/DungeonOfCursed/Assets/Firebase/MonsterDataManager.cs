@@ -48,7 +48,7 @@ public class MonsterDataManager : MonoBehaviour
         string jsonData = JsonUtility.ToJson(monsterData);
         
         FirebaseR.databaseReference.Child("Monster").Child(monsterName).SetRawJsonValueAsync(jsonData);
-        
+        Debug.Log(jsonData);
     }
 
     [ContextMenu("몬스터 정보 불러오기")]
