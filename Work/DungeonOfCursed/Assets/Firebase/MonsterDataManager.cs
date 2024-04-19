@@ -19,6 +19,7 @@ public class MonsterDataManager : MonoBehaviour
             this.id = id;
             this.type = type;
             this.hp = hp;
+            this.atk = atk;
             this.def = def;
             this.spd = spd;
             this.dec = dec;
@@ -34,10 +35,10 @@ public class MonsterDataManager : MonoBehaviour
     public string dec;
     public string monsterName;
 
-    private DatabaseReference databaseReference;
+    //private DatabaseReference databaseReference;
     void Awake()
     {
-        databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
+        //databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     [ContextMenu("몬스터 정보 저장")]
@@ -46,14 +47,14 @@ public class MonsterDataManager : MonoBehaviour
         var monsterData = new Monster(id, type, hp, atk, def, spd, dec);
         string jsonData = JsonUtility.ToJson(monsterData);
         
-        databaseReference.Child("Monster").Child(monsterName).SetRawJsonValueAsync(jsonData);
+        FirebaseR.databaseReference.Child("Monster").Child(monsterName).SetRawJsonValueAsync(jsonData);
         
     }
 
     [ContextMenu("몬스터 정보 불러오기")]
     async void LoadMonsterData()
     {
-        var dataSnapshot = await databaseReference.Child("Monster").GetValueAsync();
+        var dataSnapshot = await FirebaseR.databaseReference.Child("Monster").GetValueAsync();
 
         if(dataSnapshot.HasChildren)
         {
