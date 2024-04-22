@@ -1028,10 +1028,6 @@ MonoBehaviour:
   debugPos: {fileID: 0}
   poolPos: {fileID: 0}
   tileSize: 4
-  floorPrefab: {fileID: 1316661190979104, guid: 43f8e35d51f9d774eb87f290b86a9649, type: 3}
-  wallPrefab: {fileID: 1655673125402110, guid: 718a8c0341a6b744581a10dfd1105f88, type: 3}
-  cornerPrefab: {fileID: 1840828261763088, guid: 12115f3e2bc7884449890b084af37f7a, type: 3}
-  pillarPrefab: {fileID: 1332032387223852, guid: 7f951c1ab0c98544dbb2241f27da4db5, type: 3}
   playerPrefab: {fileID: 1637102306246264389, guid: d8a236918febe924ea4e380338ed3543, type: 3}
   normalMonsterPrefabs:
   - {fileID: 9090062924774600592, guid: 00ed950ec0735d54f88389622adf905f, type: 3}
@@ -1039,7 +1035,7 @@ MonoBehaviour:
   bossMonsterPrefabs: []
   traderPrefab: {fileID: 0}
   chestPrefabs: []
-  potalPrefab: {fileID: 0}
+  potalPrefab: {fileID: 7693795528171577647, guid: 14b759d6b1ee6c04580fd2b5f7c24cca, type: 3}
   useDebug: 0
   lineRnd: {fileID: 4447601975305699377, guid: c500290302a7ef8488693419d0e3f7d4, type: 3}
   rectRnd: {fileID: 856271613930041958, guid: f8c0577ded3c22a4abb22cdde8d22d52, type: 3}

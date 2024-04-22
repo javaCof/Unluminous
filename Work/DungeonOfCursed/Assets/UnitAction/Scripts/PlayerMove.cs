@@ -17,7 +17,7 @@ public class PlayerMove : MonoBehaviour
     public Vector3 camOffset;
 
     private PlayerAction action;
-    
+
     private Animator anim;
     private CharacterController ctl;
     private Transform cam;
@@ -48,7 +48,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR
             Cursor.lockState = CursorLockMode.Locked;
 #endif
 
@@ -93,13 +93,13 @@ public class PlayerMove : MonoBehaviour
     {
         if (ctl.isGrounded)
         {
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR
             float inpH = Input.GetAxisRaw("Horizontal");
             float inpV = Input.GetAxisRaw("Vertical");
 
             float mSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : speed;
             inpJump = Input.GetKey(KeyCode.Space);
-#elif UNITY_ANDROID || UNITY_EDITOR
+#elif UNITY_ANDROID 
             float inpH = UltimateJoystick.GetHorizontalAxis("leftJoyStick");
             float inpV = UltimateJoystick.GetVerticalAxis("leftJoyStick");
 
@@ -130,12 +130,12 @@ public class PlayerMove : MonoBehaviour
     }
     void Look()
     {
-#if UNITY_STANDALONE_WIN
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR
         float dMouseX = Input.GetAxisRaw("Mouse X");
         float dMouseY = Input.GetAxisRaw("Mouse Y");
 #elif UNITY_ANDROID
-        float dMouseX = UltimateJoystick.GetHorizontalAxis("rightJoyStick")/5;
-        float dMouseY = UltimateJoystick.GetVerticalAxis("rightJoyStick")/5;
+        float dMouseX = UltimateJoystick.GetHorizontalAxis("rightJoyStick") / 5;
+        float dMouseY = UltimateJoystick.GetVerticalAxis("rightJoyStick") / 5;
 
         //float dMouseX = Mathf.Abs(inpX) > 0.1f ? Mathf.Sign(inpX) / 5 : 0;
         //float dMouseY = Mathf.Abs(inpY) > 0.1f ? Mathf.Sign(inpY) / 5 : 0;

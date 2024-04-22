@@ -237,7 +237,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         //로딩화면 제거
-        //yield return game.EndLoading();
+        yield return game.EndLoading();
     }
 
     IEnumerator GenerateRandomMapLocal()
