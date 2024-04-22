@@ -14,13 +14,15 @@ public class MapGenerator : MonoBehaviour
     public float minDividePer = 0.4f;               //최소 맵 자르기 비율
     public float maxDividePer = 0.6f;               //최대 맵 자르기 비율
 
+    //맵 요소 위치
+    public Transform tilePos;                       //타일 위치
+    public Transform objectPos;                     //오브젝트 위치
+    public Transform debugPos;                      //디버그 위치
+    public Transform poolPos;                       //메모리풀 위치
+
     //맵 타일 설정
     [Header("MAP TILE")]
     public float tileSize = 4f;                     //타일 크기
-    public GameObject floorPrefab;                  //바닥 타일
-    public GameObject wallPrefab;                   //벽 타일
-    public GameObject cornerPrefab;                 //코너 타일
-    public GameObject pillarPrefab;                 //기둥 타일
 
     //맵 오브젝트 설정
     [Header("MAP OBJECT")]
@@ -132,11 +134,6 @@ public class MapGenerator : MonoBehaviour
     List<RoomInfo> roomInfos;           //방 정보 리스트
     List<ObjInfo> objects;              //오브젝트 리스트
 
-    Transform tilePos;                  //타일 위치
-    Transform objectPos;                //오브젝트 위치
-    Transform debugPos;                 //디버그 위치
-    Transform poolPos;                  //메모리풀 위치
-
     GameManager game;
 
     Vector3 playerSpawnPoint;
@@ -158,7 +155,7 @@ public class MapGenerator : MonoBehaviour
         pv = GetComponent<PhotonView>();
         pr = GetComponent<PhotonReady>();
     }
-    private void Start()
+    void Start()
     {
         if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
 
@@ -174,19 +171,49 @@ public class MapGenerator : MonoBehaviour
         (poolPos = new GameObject("pool").transform).parent = mapPos;
 
         int mapSizeInt = mapSize.x * mapSize.y;
-        floorPool = new ObjectPool(floorPrefab, mapSizeInt, poolPos);
-        wallPool = new ObjectPool(wallPrefab, mapSizeInt / 2, poolPos);
-        cornerPool = new ObjectPool(cornerPrefab, mapSizeInt / 2, poolPos);
-        pillarPool = new ObjectPool(pillarPrefab, mapSizeInt / 2, poolPos);
+        floorPool = new ResourcePool("tile/Floor", mapSizeInt, poolPos);
+        wallPool = new ResourcePool("tile/Wall", mapSizeInt / 2, poolPos);
+        cornerPool = new ResourcePool("tile/CurveL", mapSizeInt / 2, poolPos);
+        pillarPool = new ResourcePool("tile/Collumn", mapSizeInt / 2, poolPos);
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         if (PhotonNetwork.inRoom)
         {
             if (PhotonNetwork.isMasterClient)
-                monsterPool = new ObjectPool("Enemy", 100, poolPos);
+                monsterPool = new PhotonPool("Ene/Enemy", 100);
         }
-        else monsterPool = new ObjectPool(normalMonsterPrefabs[0], 100, poolPos);
+        else monsterPool = new ResourcePool("Ene/Enemy", 100, poolPos);
 
         StartCoroutine(LoadLevel());
+    }
+
+    private void Update()
+    {
+        Debug.Log("update");
     }
 
     [ContextMenu("Reset Level")]
@@ -194,7 +221,6 @@ public class MapGenerator : MonoBehaviour
     {
         StartCoroutine(LoadLevel());
     }
-
 
     //새로운 Level 로드
     IEnumerator LoadLevel()
@@ -211,7 +237,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         //로딩화면 제거
-        yield return game.EndLoading();
+        //yield return game.EndLoading();
     }
 
     IEnumerator GenerateRandomMapLocal()
@@ -231,7 +257,7 @@ public class MapGenerator : MonoBehaviour
     {
         if (PhotonNetwork.isMasterClient)
         {
-            pv.RPC("ResetMap", PhotonTargets.All);
+            //pv.RPC("ResetMap", PhotonTargets.All);
             GenerateMapData();
             PaintMapTile();
             pv.RPC("GenerateMapTile", PhotonTargets.All, mapTiles);
@@ -762,11 +788,12 @@ public class MapGenerator : MonoBehaviour
     {
         if (PhotonNetwork.inRoom)
         {
-            PhotonNetwork.Instantiate("PhotonPlayer", playerSpawnPoint, Quaternion.identity, 0);
+            GameObject go = PhotonNetwork.Instantiate("PhotonPlayer", playerSpawnPoint, Quaternion.identity, 0);
+            go.transform.parent = objectPos;
         }
         else
         {
-            GameObject.Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity);
+            GameObject.Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity, objectPos);
         }
     }
     [PunRPC] void MapReadyOK()

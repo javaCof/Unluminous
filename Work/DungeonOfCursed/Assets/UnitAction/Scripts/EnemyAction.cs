@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAction : UnitAction
+public class EnemyAction : UnitAction, IPhotonPoolObject
 {
     public enum EnemyState { Search, Trace, Attack, Repos, Dead }
 
@@ -257,6 +257,7 @@ public class EnemyAction : UnitAction
     {
         transform.LookAt(target);
         anim.SetTrigger("attack");
+        Debug.Log("АјАн!!!!!!!!!!!!!!");
 
         Attack_Master();
     }
@@ -337,18 +338,52 @@ public class EnemyAction : UnitAction
     {
         if (stream.isWriting)
         {
-            stream.SendNext(gameObject.GetActive());
+            //stream.SendNext(gameObject.GetActive());
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(animMove);
         }
         else
         {
-            gameObject.SetActive((bool)stream.ReceiveNext());
+            //gameObject.SetActive((bool)stream.ReceiveNext());
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
             animMove = (bool)stream.ReceiveNext();
         }
+    }
+
+    void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+
+    }
+
+
+
+
+
+    [PunRPC] public void OnPoolCreate()
+    {
+        if (PhotonNetwork.isMasterClient)
+            pv.RPC("OnPoolCreate", PhotonTargets.Others);
+
+        transform.parent = map.poolPos;
+        gameObject.SetActive(false);
+    }
+    [PunRPC] public void OnPoolEnable()
+    {
+        if (PhotonNetwork.isMasterClient)
+            pv.RPC("OnPoolEnable", PhotonTargets.Others);
+
+        transform.parent = map.objectPos;
+        gameObject.SetActive(true);
+    }
+    [PunRPC] public void OnPoolDisable()
+    {
+        if (PhotonNetwork.isMasterClient)
+            pv.RPC("OnPoolDisable", PhotonTargets.Others);
+
+        transform.parent = map.poolPos;
+        gameObject.SetActive(false);
     }
 }
 
