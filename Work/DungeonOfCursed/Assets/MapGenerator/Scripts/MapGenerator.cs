@@ -195,6 +195,7 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(LoadLevel());
     }
 
+
     //새로운 Level 로드
     IEnumerator LoadLevel()
     {
@@ -765,7 +766,7 @@ public class MapGenerator : MonoBehaviour
         }
         else
         {
-            GameObject.Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity, objectPos);
+            GameObject.Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity);
         }
     }
     [PunRPC] void MapReadyOK()

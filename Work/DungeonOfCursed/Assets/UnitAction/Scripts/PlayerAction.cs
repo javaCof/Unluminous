@@ -27,9 +27,7 @@ public class PlayerAction : UnitAction
         map = GameObject.FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
 
-#if UNITY_EDITOR || UNITY_ANDROID
         GameObject.FindObjectOfType<GameUI>().actionButton.onClick.AddListener(() => inpAction = true);
-#endif
     }
     private void Start()
     {

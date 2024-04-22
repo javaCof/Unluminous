@@ -1,10 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using Firebase;
-using Firebase.Database;
-using System.Globalization;
 
 public class ItemDataManager : MonoBehaviour
 {
@@ -12,38 +8,34 @@ public class ItemDataManager : MonoBehaviour
     {
         public int id;
         public int price;
+        public string dec;
 
-        public Item(int id, int price)
+        public Item(int id, int price, string dec)
         {
             this.id = id;
             this.price = price;
+            this.dec = dec;
         }
     }
 
     public string itemName;
     public int id;
     public int price;
-
-    private DatabaseReference databaseReference;
-
-    void Awake()
-    {
-        databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
-    }
+    public string dec;
 
     [ContextMenu("아이템 정보 저장")]
     void SaveItemData()
     {  
-        var Item = new Item(id, price);
+        var Item = new Item(id, price, dec);
         string jsonData = JsonUtility.ToJson(Item);
 
-        databaseReference.Child("Item").Child(itemName).SetRawJsonValueAsync(jsonData);
+        FirebaseRef.databaseReference.Child("Item").Child(itemName).SetRawJsonValueAsync(jsonData);
     }
 
     [ContextMenu("아이템 정보 불러오기")]
     async void LoadItemData()
     {
-        var dataSnapshot = await databaseReference.Child("Item").GetValueAsync();
+        var dataSnapshot = await FirebaseRef.databaseReference.Child("Item").GetValueAsync();
 
         if(dataSnapshot.HasChildren)
         {
@@ -65,7 +57,7 @@ public class ItemDataManager : MonoBehaviour
     [ContextMenu("아이템 정보 불러오기2")]
     async void LoadItemData2()
     {
-        var dataSnapshot = await databaseReference.Child("Item").GetValueAsync();
+        var dataSnapshot = await FirebaseRef.databaseReference.Child("Item").GetValueAsync();
     
         if(dataSnapshot.HasChildren)
         {

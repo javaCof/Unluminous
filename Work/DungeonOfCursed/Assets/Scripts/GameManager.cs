@@ -27,8 +27,11 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator ChangeScene(string scene_from, string scene_to)
     {
-        yield return SceneManager.LoadSceneAsync(scene_to, LoadSceneMode.Additive);
-        yield return SceneManager.UnloadSceneAsync(scene_from, UnloadSceneOptions.None);
+        AsyncOperation opLoad = SceneManager.LoadSceneAsync(scene_to, LoadSceneMode.Additive);
+        AsyncOperation opUnload = SceneManager.UnloadSceneAsync(scene_from, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+
+        yield return opLoad;
+        yield return opUnload;
     }
     public IEnumerator StartLoading()
     {
