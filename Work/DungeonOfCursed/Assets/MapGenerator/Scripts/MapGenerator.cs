@@ -5,15 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MapGenerator : MonoBehaviour
 {
-
-
-
-
-
-
-    private GameManager game;
-
-
     //맵 설정
     [Header("MAP SETTING")]
     public Transform mapPos;                        //맵 위치
@@ -97,38 +88,6 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //방 정보
     public struct RoomInfo
     {
@@ -145,7 +104,8 @@ public class MapGenerator : MonoBehaviour
     }
 
     //오브젝트 정보
-    [System.Serializable] public class ObjInfo
+    [System.Serializable]
+    public class ObjInfo
     {
         public ObjType objID;
         public int roomID;
@@ -160,7 +120,8 @@ public class MapGenerator : MonoBehaviour
     }
 
     //오브젝트 리스트 정보
-    [System.Serializable] public class ObjInfoList
+    [System.Serializable]
+    public class ObjInfoList
     {
         public List<ObjInfo> objs;
         public ObjInfoList(List<ObjInfo> objs) => this.objs = objs;
@@ -176,31 +137,7 @@ public class MapGenerator : MonoBehaviour
     Transform debugPos;                 //디버그 위치
     Transform poolPos;                  //메모리풀 위치
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    GameManager game;
 
     Vector3 playerSpawnPoint;
 
@@ -214,11 +151,6 @@ public class MapGenerator : MonoBehaviour
 
     PhotonView pv;
     PhotonReady pr;
-
-
-
-
-
 
     private void Awake()
     {
@@ -264,42 +196,9 @@ public class MapGenerator : MonoBehaviour
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //새로운 Level 로드
     IEnumerator LoadLevel()
     {
-        //로딩 화면
-        //AsyncOperation op = SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
-        //yield return op;
-
         if (PhotonNetwork.inRoom)
         {
             //멀티용 맵 생성
@@ -311,34 +210,9 @@ public class MapGenerator : MonoBehaviour
             yield return StartCoroutine(GenerateRandomMapLocal());
         }
 
-        yield return new WaitForSeconds(0.3f);
-
-        //로딩 화면 제거
-        //SceneManager.UnloadSceneAsync("LoadingScene", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
-
-        //yield return game.EndLoading();
+        //로딩화면 제거
+        yield return game.EndLoading();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     IEnumerator GenerateRandomMapLocal()
     {
