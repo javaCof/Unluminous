@@ -54,11 +54,12 @@ public class MonsterDataManager : MonoBehaviour
     [ContextMenu("몬스터 정보 불러오기")]
     async void LoadMonsterData()
     {
-        var dataSnapshot = await FirebaseR.databaseReference.Child("Monster").GetValueAsync();
+        //var dataSnapshot = await FirebaseR.databaseReference.Child("Monster").GetValueAsync();
+        var monsterData = await FirebaseR.MonsterData();
 
-        if(dataSnapshot.HasChildren)
+        if(monsterData.HasChildren)
         {
-            foreach(var monsterDataSnapshot in dataSnapshot.Children)
+            foreach(var monsterDataSnapshot in monsterData.Children)
             {
                 var monsterName = monsterDataSnapshot.Key;
                 var monsterValues = monsterDataSnapshot.Value as Dictionary<string, object>;
