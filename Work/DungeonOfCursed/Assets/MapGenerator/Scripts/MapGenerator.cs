@@ -179,14 +179,7 @@ public class MapGenerator : MonoBehaviour
 
 
 
-
-
-    
-
-
-
-
-
+        var monsterData = FirebaseR.MonsterData();
 
 
 
@@ -211,9 +204,9 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(LoadLevel());
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        Debug.Log("update");
+
     }
 
     [ContextMenu("Reset Level")]
