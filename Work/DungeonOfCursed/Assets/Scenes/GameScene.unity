@@ -1335,25 +1335,23 @@ MonoBehaviour:
   mapPos: {fileID: 1897770998}
   mapTexture: {fileID: 2800000, guid: 3c4a14e0c1ede4241817ffb10b0936f3, type: 3}
   mapSize: {x: 64, y: 64}
+  tileSize: 4
   maxDivideDepth: 4
   minDividePer: 0.4
   maxDividePer: 0.6
+  tileColors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  myPlayerColor: {r: 1, g: 0, b: 0, a: 1}
+  othPlayerColor: {r: 0, g: 0, b: 1, a: 1}
   tilePos: {fileID: 0}
   objectPos: {fileID: 0}
-  debugPos: {fileID: 0}
   poolPos: {fileID: 0}
-  tileSize: 4
-  playerPrefab: {fileID: 1637102306246264389, guid: d8a236918febe924ea4e380338ed3543, type: 3}
-  normalMonsterPrefabs:
-  - {fileID: 9090062924774600592, guid: 00ed950ec0735d54f88389622adf905f, type: 3}
-  eliteMonsterPrefabs: []
-  bossMonsterPrefabs: []
-  traderPrefab: {fileID: 0}
-  chestPrefabs: []
-  potalPrefab: {fileID: 7693795528171577647, guid: 14b759d6b1ee6c04580fd2b5f7c24cca, type: 3}
-  useDebug: 0
-  lineRnd: {fileID: 4447601975305699377, guid: c500290302a7ef8488693419d0e3f7d4, type: 3}
-  rectRnd: {fileID: 856271613930041958, guid: f8c0577ded3c22a4abb22cdde8d22d52, type: 3}
 --- !u!1 &1731669822
 GameObject:
   m_ObjectHideFlags: 0
