@@ -156,6 +156,7 @@ public class PlayerAction : UnitAction
             isDead = true;
             controllable = false;
             ctl.enabled = false;
+
             StartCoroutine(DeadOwner());
         }
 
@@ -166,6 +167,6 @@ public class PlayerAction : UnitAction
     {
         yield return new WaitForSeconds(1);
 
-        SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
+        //SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
     }
 }

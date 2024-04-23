@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MapGenerator : MonoBehaviour
 {
+    public Camera mainCam;
+
     //맵 설정
     [Header("MAP SETTING")]
     public Transform mapPos;                        //맵 위치
@@ -200,7 +202,6 @@ public class MapGenerator : MonoBehaviour
 
 
 
-
         if (PhotonNetwork.inRoom)
         {
             if (PhotonNetwork.isMasterClient)
@@ -211,10 +212,6 @@ public class MapGenerator : MonoBehaviour
         StartCoroutine(LoadLevel());
     }
 
-    private void Update()
-    {
-        Debug.Log("update");
-    }
 
     [ContextMenu("Reset Level")]
     public void ResetLevel()
@@ -237,7 +234,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         //로딩화면 제거
-        //yield return game.EndLoading();
+        yield return game.EndLoading();
     }
 
     IEnumerator GenerateRandomMapLocal()
