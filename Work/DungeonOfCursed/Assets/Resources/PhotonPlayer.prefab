@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1637102306246264388}
   - component: {fileID: 1637102306246264386}
-  - component: {fileID: 1637102306246264385}
-  - component: {fileID: 2958236034093024014}
+  - component: {fileID: 7922648874941320776}
+  - component: {fileID: 315115674774174069}
   - component: {fileID: 7753764107837755533}
   m_Layer: 0
   m_Name: PhotonPlayer
@@ -53,7 +53,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &1637102306246264385
+--- !u!114 &7922648874941320776
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,16 +65,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f79babf6a88c54e8936eb015ecb527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  sprintSpeed: 15
+  speed: 7
+  sprintSpeed: 10
   jumpable: 1
   jumpForce: 8
   gravity: 20
   mouseSensitivityX: 10
   mouseSensitivityY: 10
   maxCamRotateAngle: 45
-  camOffset: {x: 0, y: 1.72, z: 0.4}
---- !u!114 &2958236034093024014
+  camOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &315115674774174069
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,7 +113,7 @@ MonoBehaviour:
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 1637102306246264385}
+  - {fileID: 7922648874941320776}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

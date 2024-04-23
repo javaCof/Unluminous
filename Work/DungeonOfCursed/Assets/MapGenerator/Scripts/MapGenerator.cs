@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -9,16 +8,11 @@ public class MapGenerator : MonoBehaviour
     [Header("MAP SETTING")]
     public Transform mapPos;                        //맵 위치
     public Texture2D mapTexture;                    //맵 텍스쳐 (미니맵)
+    public Texture2D tileTexture;                   //타일 텍스쳐
     public Vector2Int mapSize;                      //맵 크기
     public int maxDivideDepth = 4;                  //맵 생성 깊이
     public float minDividePer = 0.4f;               //최소 맵 자르기 비율
     public float maxDividePer = 0.6f;               //최대 맵 자르기 비율
-
-    //맵 요소 위치
-    public Transform tilePos;                       //타일 위치
-    public Transform objectPos;                     //오브젝트 위치
-    public Transform debugPos;                      //디버그 위치
-    public Transform poolPos;                       //메모리풀 위치
 
     //맵 타일 설정
     [Header("MAP TILE")]
@@ -40,11 +34,20 @@ public class MapGenerator : MonoBehaviour
     public LineRenderer lineRnd;                    //라인 렌더러(Line)
     public LineRenderer rectRnd;                    //라인 렌더러(Rect)
 
+    //맵 요소 위치
+    [HideInInspector] public Transform tilePos;     //타일 위치
+    [HideInInspector] public Transform objectPos;   //오브젝트 위치
+    [HideInInspector] public Transform debugPos;    //디버그 위치
+    [HideInInspector] public Transform poolPos;     //메모리풀 위치
+
     public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
+    public enum TileID { FLOOR=100, WALL, CORNER, PILLAR };                                 //타일 ID
     public enum ObjType { PLAYER, MONSTER, CHEST, POTAL }                                   //오브젝트 타입
 
     private Color[] tileColors = { Color.white, Color.white, Color.black, Color.black, Color.black, Color.black };      //타일 색상
+    private Color myPlayerColor = Color.red;
+    private Color othPlayerColor = Color.blue;
 
     //방 노드 정보
     class RoomNode
@@ -139,12 +142,9 @@ public class MapGenerator : MonoBehaviour
     Vector3 playerSpawnPoint;
 
     TileType[] mapTiles;
+    
 
-    ObjectPool floorPool;
-    ObjectPool wallPool;
-    ObjectPool cornerPool;
-    ObjectPool pillarPool;
-    ObjectPool monsterPool;
+    Dictionary<int, ObjectPool> objectsPool;
 
     PhotonView pv;
     PhotonReady pr;
@@ -170,50 +170,29 @@ public class MapGenerator : MonoBehaviour
         (debugPos = new GameObject("debug").transform).parent = mapPos;
         (poolPos = new GameObject("pool").transform).parent = mapPos;
 
+        objectsPool = new Dictionary<int, ObjectPool>();
+
         int mapSizeInt = mapSize.x * mapSize.y;
-        floorPool = new ResourcePool("tile/Floor", mapSizeInt, poolPos);
-        wallPool = new ResourcePool("tile/Wall", mapSizeInt / 2, poolPos);
-        cornerPool = new ResourcePool("tile/CurveL", mapSizeInt / 2, poolPos);
-        pillarPool = new ResourcePool("tile/Collumn", mapSizeInt / 2, poolPos);
+        objectsPool[(int)TileID.FLOOR] = new ResourcePool("tile/Floor", mapSizeInt, poolPos);
+        objectsPool[(int)TileID.WALL] = new ResourcePool("tile/Wall", mapSizeInt / 2, poolPos);
+        objectsPool[(int)TileID.CORNER] = new ResourcePool("tile/CurveL", mapSizeInt / 2, poolPos);
+        objectsPool[(int)TileID.PILLAR] = new ResourcePool("tile/Collumn", mapSizeInt / 2, poolPos);
 
+        if (!PhotonNetwork.inRoom)
+            objectsPool[10000] = new ResourcePool("object/Enemy1", 100, poolPos);
+        else if (PhotonNetwork.isMasterClient)
+            objectsPool[10000] = new PhotonPool("object/Enemy1", 100);
 
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        if (PhotonNetwork.inRoom)
-        {
-            if (PhotonNetwork.isMasterClient)
-                monsterPool = new PhotonPool("Ene/Enemy", 100);
-        }
-        else monsterPool = new ResourcePool("Ene/Enemy", 100, poolPos);
+        if (!PhotonNetwork.inRoom)
+            objectsPool[10001] = new ResourcePool("object/Enemy2", 100, poolPos);
+        else if (PhotonNetwork.isMasterClient)
+            objectsPool[10001] = new PhotonPool("object/Enemy2", 100);
 
         StartCoroutine(LoadLevel());
     }
-
     private void Update()
     {
-        Debug.Log("update");
+        UpdateMapTexture();
     }
 
     [ContextMenu("Reset Level")]
@@ -237,7 +216,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         //로딩화면 제거
-        //yield return game.EndLoading();
+        yield return game.EndLoading();
     }
 
     IEnumerator GenerateRandomMapLocal()
@@ -257,7 +236,7 @@ public class MapGenerator : MonoBehaviour
     {
         if (PhotonNetwork.isMasterClient)
         {
-            //pv.RPC("ResetMap", PhotonTargets.All);
+            pv.RPC("ResetMap", PhotonTargets.All);
             GenerateMapData();
             PaintMapTile();
             pv.RPC("GenerateMapTile", PhotonTargets.All, mapTiles);
@@ -280,17 +259,27 @@ public class MapGenerator : MonoBehaviour
         roomInfos.Clear();
         objects.Clear();
 
-        floorPool.Reset();
-        wallPool.Reset();
-        cornerPool.Reset();
-        pillarPool.Reset();
-
-        foreach (Transform pos in objectPos)
+        foreach (var pool in objectsPool)
         {
-            Destroy(pos.gameObject);
+            pool.Value.Reset();
         }
     }
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /*------------MAP DATA------------*/
     void GenerateMapData()
     {
@@ -434,7 +423,7 @@ public class MapGenerator : MonoBehaviour
             if (i == (int)Mathf.Pow(2, maxDivideDepth) - 1)
                 type = RoomType.START;
             else if (i == 0)
-                type = RoomType.BOSS;
+                type = RoomType.POTAL;
             else
                 type = RoomType.BATTLE;
 
@@ -497,12 +486,21 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.BATTLE:
                     {
-                        AddObjectRandom(ObjType.MONSTER, 1, i, objRect);
+                        AddObjectRandom(ObjType.MONSTER, 5, i, objRect);
                     }
                     break;
                 case RoomType.TREASURE:
                     break;
                 case RoomType.BOSS:
+                    {
+                        AddObjectCenter(ObjType.POTAL, i, objRect);
+                    }
+                    break;
+                case RoomType.ELITE:
+                    break;
+                case RoomType.TRADER:
+                    break;
+                case RoomType.POTAL:
                     {
                         AddObjectCenter(ObjType.POTAL, i, objRect);
                     }
@@ -681,31 +679,31 @@ public class MapGenerator : MonoBehaviour
 
                 if (type == TileType.FLOOR)
                 {   //Floor
-                    GameObject inst = floorPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
+                    GameObject inst = objectsPool[(int)TileID.FLOOR].GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                 }
                 else if (type == TileType.WALL || type == TileType.PATH)
                 {   //Wall
-                    GameObject inst = wallPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
+                    GameObject inst = objectsPool[(int)TileID.WALL].GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                     inst.transform.Rotate(new Vector3(0, FindRotationW(tiles, i, j), 0), Space.Self);
                 }
                 else if (type == TileType.CORNER)
                 {   //Corner
-                    GameObject inst = cornerPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
+                    GameObject inst = objectsPool[(int)TileID.CORNER].GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                     inst.transform.Rotate(new Vector3(0, FindRotationL(tiles, i, j), 0), Space.Self);
                 }
                 else if (type == TileType.PILLAR)
                 {   //Pillar
-                    GameObject inst = pillarPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
+                    GameObject inst = objectsPool[(int)TileID.PILLAR].GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                     inst.transform.Rotate(new Vector3(0, FindRotationC(tiles, i, j), 0), Space.Self);
                 }
             }
         }
 
-        SetMapTexture(tiles);
+        SetTileTexture(tiles);
     }
     float FindRotationW(TileType[] tiles, int i, int j)
     {
@@ -740,13 +738,31 @@ public class MapGenerator : MonoBehaviour
             rotation = 90;
         return rotation;
     }
-    void SetMapTexture(TileType[] tiles)
+    void SetTileTexture(TileType[] tiles)
     {
         for (int i = 0; i < tiles.Length; i++)
         {
-            mapTexture.SetPixel(i % mapSize.x, i / mapSize.x, tileColors[(int)(tiles[i])]);
+            tileTexture.SetPixel(i % mapSize.x, i / mapSize.x, tileColors[(int)(tiles[i])]);
+        }
+        tileTexture.Apply();
+    }
+    void UpdateMapTexture()
+    {
+        for (int i = 0; i < tileTexture.width*tileTexture.height; i++)
+        {
+            mapTexture.SetPixel(i % mapSize.x, i / mapSize.x, tileTexture.GetPixel(i % mapSize.x, i / mapSize.x));
+        }
+
+        foreach (var obj in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            Vector2Int pixel = ObjPosToMap(obj.transform.position);
+            mapTexture.SetPixel(pixel.x, pixel.y, (!PhotonNetwork.inRoom || obj.GetComponent<PhotonView>().isMine) ? myPlayerColor : othPlayerColor);
         }
         mapTexture.Apply();
+    }
+    Vector2Int ObjPosToMap(Vector3 pos)
+    {
+        return new Vector2Int((int)(pos.x / tileSize), (int)(pos.z / tileSize));
     }
 
     /*------------MAP OBJECT------------*/
@@ -782,7 +798,7 @@ public class MapGenerator : MonoBehaviour
     }
     GameObject GenerateObject(ObjInfo info)
     {
-        return monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
+        return objectsPool[Random.Range(10000, 10002)].GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
     }
     [PunRPC] void GeneratePlayer()
     {
@@ -833,8 +849,8 @@ public class MapGenerator : MonoBehaviour
         }
         return -1;
     }
-    public void RemoveObject(GameObject go)
+    public void RemoveObject(GameObject go, int id=10000)
     {
-        monsterPool.DisableObject(go);
+        objectsPool[id].DisableObject(go);
     }
 }

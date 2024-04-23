@@ -27,7 +27,7 @@ public class PlayerAction : UnitAction
         map = GameObject.FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
 
-        GameObject.FindObjectOfType<GameUI>().actionButton.onClick.AddListener(() => inpAction = true);
+        //GameObject.FindObjectOfType<GameUI>().actionButton.onClick.AddListener(() => inpAction = true);
     }
     private void Start()
     {
