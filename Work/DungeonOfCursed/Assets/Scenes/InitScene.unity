@@ -168,4 +168,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstScene: MenuScene
   loadingScene: LoadingScene
-  errorScene: ErrorScene

@@ -49,7 +49,7 @@ public class PlayerMove : MonoBehaviour
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR
-            Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.lockState = CursorLockMode.Locked;
 #endif
 
             cam.parent = transform;
@@ -93,13 +93,13 @@ public class PlayerMove : MonoBehaviour
     {
         if (ctl.isGrounded)
         {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR
+#if UNITY_STANDALONE_WIN 
             float inpH = Input.GetAxisRaw("Horizontal");
             float inpV = Input.GetAxisRaw("Vertical");
 
             float mSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : speed;
             inpJump = Input.GetKey(KeyCode.Space);
-#elif UNITY_ANDROID 
+#elif UNITY_ANDROID || UNITY_EDITOR
             float inpH = UltimateJoystick.GetHorizontalAxis("leftJoyStick");
             float inpV = UltimateJoystick.GetVerticalAxis("leftJoyStick");
 
@@ -130,10 +130,10 @@ public class PlayerMove : MonoBehaviour
     }
     void Look()
     {
-#if UNITY_STANDALONE_WIN || UNITY_EDITOR
+#if UNITY_STANDALONE_WIN 
         float dMouseX = Input.GetAxisRaw("Mouse X");
         float dMouseY = Input.GetAxisRaw("Mouse Y");
-#elif UNITY_ANDROID
+#elif UNITY_ANDROID|| UNITY_EDITOR
         float dMouseX = UltimateJoystick.GetHorizontalAxis("rightJoyStick") / 5;
         float dMouseY = UltimateJoystick.GetVerticalAxis("rightJoyStick") / 5;
 
