@@ -603,6 +603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewHeight: 1080
+  font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &776793221
 MonoBehaviour:
   m_ObjectHideFlags: 0

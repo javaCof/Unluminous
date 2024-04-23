@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public string firstScene;
     public string loadingScene;
+    public string errorScene;
 
     private bool now_loading;
     
@@ -61,7 +62,7 @@ public class GameManager : MonoBehaviour
             case ERROR_CODE.PHOTON_CONNECT_ERROR:
             case ERROR_CODE.PHOTON_CREATE_ROOM_ERROR:
             case ERROR_CODE.PHOTON_JOIN_ROOM_ERROR:
-                StartCoroutine(MoveToScene("ErrorScene", 0.3f));
+                StartCoroutine(MoveToScene(errorScene, 0.3f));
                 break;
         }
     }

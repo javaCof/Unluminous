@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UISizeFitter : MonoBehaviour
 {
     public int viewHeight = 1080;
+    public Font font;
 
     private RectTransform canvas;
 
@@ -26,6 +27,7 @@ public class UISizeFitter : MonoBehaviour
         foreach (var txt in canvas.GetComponentsInChildren<Text>(true))
         {
             txt.fontSize = (int)(txt.fontSize * heightRate);
+            txt.font = font;
         }
     }
 }
