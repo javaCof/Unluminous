@@ -7,25 +7,14 @@ using System.Threading.Tasks;
 public class FirebaseR
 {
     public static DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
+    public static DataSnapshot monsterDataLoad;
+    public static DataSnapshot itemDataLoad;
+    public static DataSnapshot equipDataLoad;
 
-    public static async Task<DataSnapshot> MonsterData()
+    public static async Task LoadData()
     {
-        var monsterData = await databaseReference.Child("Monster").GetValueAsync();
-
-        return monsterData;
-    }
-
-    public static async Task<DataSnapshot> ItemData()
-    {
-        var itemData = await databaseReference.Child("Item").GetValueAsync();
-
-        return itemData;
-    }
-
-    public static async Task<DataSnapshot> EquipData()
-    {
-        var equipData = await databaseReference.Child("Equip").GetValueAsync();
-
-        return equipData;
+        monsterDataLoad = await databaseReference.Child("Monster").GetValueAsync();
+        itemDataLoad = await databaseReference.Child("Item").GetValueAsync();
+        equipDataLoad = await databaseReference.Child("Equip").GetValueAsync();
     }
 }
