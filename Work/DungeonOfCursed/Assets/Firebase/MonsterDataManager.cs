@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Firebase.Database;
 public class MonsterDataManager : MonoBehaviour
 {
     public class Monster

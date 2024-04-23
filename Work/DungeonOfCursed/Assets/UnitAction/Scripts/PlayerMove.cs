@@ -17,7 +17,7 @@ public class PlayerMove : MonoBehaviour
     public Vector3 camOffset;
 
     private PlayerAction action;
-
+    
     private Animator anim;
     private CharacterController ctl;
     private Transform cam;
@@ -40,9 +40,8 @@ public class PlayerMove : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
         cam = Camera.main.transform;
-
 #if UNITY_ANDROID
-        //GameObject.FindObjectOfType<GameUI>().jumpButton.onClick.AddListener(() => inpJump = true);
+        GameObject.FindObjectOfType<GameUI>().jumpButton.onClick.AddListener(() => inpJump = true);
 #endif
     }
     private void Start()
@@ -55,7 +54,6 @@ public class PlayerMove : MonoBehaviour
 
             cam.parent = transform;
             cam.localPosition = camOffset;
-            
         }
     }
     private void Update()
@@ -95,7 +93,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (ctl.isGrounded)
         {
-#if UNITY_STANDALONE_WIN 
+#if UNITY_STANDALONE_WIN
             float inpH = Input.GetAxisRaw("Horizontal");
             float inpV = Input.GetAxisRaw("Vertical");
 
@@ -132,12 +130,12 @@ public class PlayerMove : MonoBehaviour
     }
     void Look()
     {
-#if UNITY_STANDALONE_WIN 
+#if UNITY_STANDALONE_WIN
         float dMouseX = Input.GetAxisRaw("Mouse X");
         float dMouseY = Input.GetAxisRaw("Mouse Y");
-#elif UNITY_ANDROID|| UNITY_EDITOR
-        float dMouseX = UltimateJoystick.GetHorizontalAxis("rightJoyStick") / 5;
-        float dMouseY = UltimateJoystick.GetVerticalAxis("rightJoyStick") / 5;
+#elif UNITY_ANDROID
+        float dMouseX = UltimateJoystick.GetHorizontalAxis("rightJoyStick")/5;
+        float dMouseY = UltimateJoystick.GetVerticalAxis("rightJoyStick")/5;
 
         //float dMouseX = Mathf.Abs(inpX) > 0.1f ? Mathf.Sign(inpX) / 5 : 0;
         //float dMouseY = Mathf.Abs(inpY) > 0.1f ? Mathf.Sign(inpY) / 5 : 0;
