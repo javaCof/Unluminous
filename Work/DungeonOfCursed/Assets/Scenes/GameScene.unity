@@ -944,6 +944,7 @@ GameObject:
   - component: {fileID: 935082981}
   - component: {fileID: 935082980}
   - component: {fileID: 935082985}
+  - component: {fileID: 935082986}
   - component: {fileID: 935082984}
   m_Layer: 5
   m_Name: GameUI
@@ -1070,6 +1071,18 @@ MonoBehaviour:
   rightJoyStick: {fileID: 1930457047058724}
   actionButton: {fileID: 887395740}
   jumpButton: {fileID: 88369969}
+--- !u!114 &935082986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935082979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6200641626ad98a4ebe05173585dd801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &951486408
 GameObject:
   m_ObjectHideFlags: 0

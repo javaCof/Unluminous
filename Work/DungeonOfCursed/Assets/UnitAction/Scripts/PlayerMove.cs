@@ -39,19 +39,17 @@ public class PlayerMove : MonoBehaviour
         pv = GetComponent<PhotonView>();
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
-        cam = Camera.main.transform;
-#if UNITY_ANDROID
+        cam = GameObject.FindObjectOfType<MapGenerator>().mainCam.transform;
+
         GameObject.FindObjectOfType<GameUI>().jumpButton.onClick.AddListener(() => inpJump = true);
-#endif
     }
     private void Start()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-#if UNITY_STANDALONE_WIN
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             Cursor.lockState = CursorLockMode.Locked;
 #endif
-
             cam.parent = transform;
             cam.localPosition = camOffset;
         }
@@ -86,20 +84,24 @@ public class PlayerMove : MonoBehaviour
     private void LateUpdate()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
-            CameraUpdate();
+        {
+            if (!action.isDead)
+                CameraUpdate();
+        }
+            
     }
 
     void Move()
     {
         if (ctl.isGrounded)
         {
-#if UNITY_STANDALONE_WIN
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             float inpH = Input.GetAxisRaw("Horizontal");
             float inpV = Input.GetAxisRaw("Vertical");
 
             float mSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : speed;
             inpJump = Input.GetKey(KeyCode.Space);
-#elif UNITY_ANDROID || UNITY_EDITOR
+#elif UNITY_ANDROID
             float inpH = UltimateJoystick.GetHorizontalAxis("leftJoyStick");
             float inpV = UltimateJoystick.GetVerticalAxis("leftJoyStick");
 
@@ -130,7 +132,7 @@ public class PlayerMove : MonoBehaviour
     }
     void Look()
     {
-#if UNITY_STANDALONE_WIN
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
         float dMouseX = Input.GetAxisRaw("Mouse X");
         float dMouseY = Input.GetAxisRaw("Mouse Y");
 #elif UNITY_ANDROID

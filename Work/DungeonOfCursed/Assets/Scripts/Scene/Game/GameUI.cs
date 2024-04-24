@@ -17,7 +17,7 @@ public class GameUI : MonoBehaviour
         actionButton.gameObject.SetActive(false);
         jumpButton.gameObject.SetActive(false);
 
-#if UNITY_ANDROID
+#if !UNITY_EDITOR && UNITY_ANDROID
         leftJoyStick.SetActive(true);
         rightJoyStick.SetActive(true);
         actionButton.gameObject.SetActive(true);

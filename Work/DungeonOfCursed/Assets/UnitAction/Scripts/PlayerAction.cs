@@ -48,7 +48,7 @@ public class PlayerAction : UnitAction
             SetLookTarget();
             ShowLookTarget();
 
-#if UNITY_STANDALONE_WIN
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             inpAction = Input.GetMouseButtonDown(0);
 #elif UNITY_ANDROID
 #endif
@@ -156,6 +156,7 @@ public class PlayerAction : UnitAction
             isDead = true;
             controllable = false;
             ctl.enabled = false;
+
             StartCoroutine(DeadOwner());
         }
 
@@ -166,6 +167,6 @@ public class PlayerAction : UnitAction
     {
         yield return new WaitForSeconds(1);
 
-        SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
+        //SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
     }
 }
