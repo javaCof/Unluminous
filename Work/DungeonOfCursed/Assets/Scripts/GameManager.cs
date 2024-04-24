@@ -6,7 +6,8 @@ using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
-    public string nextScene;
+    public string firstScene;
+    public string loadingScene;
 
     private bool now_loading;
     
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        SceneManager.LoadSceneAsync(nextScene);
+        SceneManager.LoadSceneAsync(firstScene);
     }
 
     public IEnumerator MoveToScene(string scene, float delay=0)
@@ -37,7 +38,7 @@ public class GameManager : MonoBehaviour
         if (!now_loading)
         {
             now_loading = true;
-            AsyncOperation op = SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
+            AsyncOperation op = SceneManager.LoadSceneAsync(loadingScene, LoadSceneMode.Additive);
             yield return op;
         }
         yield return null;
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         if (now_loading)
         {
-            AsyncOperation op = SceneManager.UnloadSceneAsync("LoadingScene", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+            AsyncOperation op = SceneManager.UnloadSceneAsync(loadingScene, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
             yield return op;
             now_loading = false;
         }
@@ -60,7 +61,7 @@ public class GameManager : MonoBehaviour
             case ERROR_CODE.PHOTON_CONNECT_ERROR:
             case ERROR_CODE.PHOTON_CREATE_ROOM_ERROR:
             case ERROR_CODE.PHOTON_JOIN_ROOM_ERROR:
-                SceneManager.LoadSceneAsync("ErrorScene", LoadSceneMode.Additive);
+                StartCoroutine(MoveToScene("ErrorScene", 0.3f));
                 break;
         }
     }

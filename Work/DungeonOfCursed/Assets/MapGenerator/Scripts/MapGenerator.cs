@@ -1,108 +1,72 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapGenerator : MonoBehaviour
 {
-    public Camera mainCam;                          //카메라
+    //맵 설정
+    [Header("MAP SETTING")]
     public Transform mapPos;                        //맵 위치
-    public Texture2D mapTexture;                    //맵 텍스쳐
+    public Texture2D mapTexture;                    //맵 텍스쳐 (미니맵)
     public Vector2Int mapSize;                      //맵 크기
-    public float tileSize = 4f;                     //타일 크기
     public int maxDivideDepth = 4;                  //맵 생성 깊이
     public float minDividePer = 0.4f;               //최소 맵 자르기 비율
     public float maxDividePer = 0.6f;               //최대 맵 자르기 비율
 
+    //맵 요소 위치
+    public Transform tilePos;                       //타일 위치
+    public Transform objectPos;                     //오브젝트 위치
+    public Transform debugPos;                      //디버그 위치
+    public Transform poolPos;                       //메모리풀 위치
 
+    //맵 타일 설정
+    [Header("MAP TILE")]
+    public float tileSize = 4f;                     //타일 크기
 
+    //맵 오브젝트 설정
+    [Header("MAP OBJECT")]
+    public GameObject playerPrefab;                 //플레이어
+    public GameObject[] normalMonsterPrefabs;       //일반 몬스터
+    public GameObject[] eliteMonsterPrefabs;        //정예 몬스터
+    public GameObject[] bossMonsterPrefabs;         //보스 몬스터
+    public GameObject traderPrefab;                 //상인
+    public GameObject[] chestPrefabs;               //상자
+    public GameObject potalPrefab;                  //포탈
 
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
+    //맵 디버그 설정
+    [Header("DEBUG")]
+    public bool useDebug = false;                   //디버그 사용
+    public LineRenderer lineRnd;                    //라인 렌더러(Line)
+    public LineRenderer rectRnd;                    //라인 렌더러(Rect)
 
     public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
-    public enum TileID { FLOOR=100, WALL, CORNER, PILLAR };                                 //타일 ID
     public enum ObjType { PLAYER, MONSTER, CHEST, POTAL }                                   //오브젝트 타입
 
-    public Color[] tileColors = { Color.white, Color.white, Color.black, Color.black, Color.black, Color.black };      //타일 색상
-    public Color myPlayerColor = Color.red;
-    public Color othPlayerColor = Color.blue;
+    private Color[] tileColors = { Color.white, Color.white, Color.black, Color.black, Color.black, Color.black };      //타일 색상
 
-
-
-
-
-
-
-
-
-
-
-
-
-    [HideInInspector] public Transform tilePos;     //타일 위치
-    [HideInInspector] public Transform objectPos;   //오브젝트 위치
-    [HideInInspector] public Transform poolPos;     //메모리풀 위치
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private Texture2D tileTexture;                   //타일 텍스쳐
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //방 노드 정보
     class RoomNode
     {
-        public RectInt rect;
-        public RectInt room;
-        public RoomNode left;
-        public RoomNode right;
-        public AxisLine line;
+        public RectInt rect;            //방 노드 Rect
+        public RectInt room;            //방 Rect
+        public RoomNode left;           //Left 자식노드
+        public RoomNode right;          //Right 자식노드
+        public AxisLine line;           //방 자르기 Line
 
+        //방 노드 생성
         public RoomNode(RectInt rect) => this.rect = rect;
+
+        //방 중앙
         public Vector2Int Center { get { return new Vector2Int(room.x + (room.width - 1) / 2, room.y + (room.height - 1) / 2); } }
     }
+
+    //라인 정보
     public struct AxisLine
     {
-        public int xy;
-        public bool xAxis;
+        public int xy;          //라인의 x/y 값
+        public bool xAxis;      //x라인/y라인
 
         public AxisLine(int xy, bool xAxis)
         {
@@ -110,11 +74,13 @@ public class MapGenerator : MonoBehaviour
             this.xAxis = xAxis;
         }
     }
+
+    //통로 정보
     public struct PathInfo
     {
-        public Vector2Int begin;
-        public Vector2Int end;
-        public AxisLine line;
+        public Vector2Int begin;    //통로 시작점
+        public Vector2Int end;      //통로 종료점
+        public AxisLine line;       //통로의 나누기 Line
 
         public PathInfo(Vector2Int begin, Vector2Int end, AxisLine line)
         {
@@ -123,6 +89,8 @@ public class MapGenerator : MonoBehaviour
             this.line = line;
         }
     }
+
+    //방 정보
     public struct RoomInfo
     {
         public RoomType type;
@@ -137,7 +105,9 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    [System.Serializable] public class ObjInfo
+    //오브젝트 정보
+    [System.Serializable]
+    public class ObjInfo
     {
         public ObjType objID;
         public int roomID;
@@ -150,26 +120,14 @@ public class MapGenerator : MonoBehaviour
             this.pos = pos;
         }
     }
-    [System.Serializable] public class ObjInfoList
+
+    //오브젝트 리스트 정보
+    [System.Serializable]
+    public class ObjInfoList
     {
         public List<ObjInfo> objs;
         public ObjInfoList(List<ObjInfo> objs) => this.objs = objs;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     List<RectInt> rooms;                //방 리스트
     List<PathInfo> paths;               //통로 리스트
@@ -181,9 +139,12 @@ public class MapGenerator : MonoBehaviour
     Vector3 playerSpawnPoint;
 
     TileType[] mapTiles;
-    
 
-    Dictionary<int, ObjectPool> objectsPool;
+    ObjectPool floorPool;
+    ObjectPool wallPool;
+    ObjectPool cornerPool;
+    ObjectPool pillarPool;
+    ObjectPool monsterPool;
 
     PhotonView pv;
     PhotonReady pr;
@@ -204,41 +165,64 @@ public class MapGenerator : MonoBehaviour
         objects = new List<ObjInfo>();
         mapTiles = new TileType[mapSize.x * mapSize.y];
 
-        tileTexture = new Texture2D(mapSize.x, mapSize.y);
-
         (tilePos = new GameObject("tile").transform).parent = mapPos;
         (objectPos = new GameObject("object").transform).parent = mapPos;
+        (debugPos = new GameObject("debug").transform).parent = mapPos;
         (poolPos = new GameObject("pool").transform).parent = mapPos;
 
-        objectsPool = new Dictionary<int, ObjectPool>();
-
         int mapSizeInt = mapSize.x * mapSize.y;
-        objectsPool[(int)TileID.FLOOR] = new ResourcePool("tile/Floor", mapSizeInt, poolPos);
-        objectsPool[(int)TileID.WALL] = new ResourcePool("tile/Wall", mapSizeInt / 2, poolPos);
-        objectsPool[(int)TileID.CORNER] = new ResourcePool("tile/CurveL", mapSizeInt / 2, poolPos);
-        objectsPool[(int)TileID.PILLAR] = new ResourcePool("tile/Collumn", mapSizeInt / 2, poolPos);
+        floorPool = new ResourcePool("tile/Floor", mapSizeInt, poolPos);
+        wallPool = new ResourcePool("tile/Wall", mapSizeInt / 2, poolPos);
+        cornerPool = new ResourcePool("tile/CurveL", mapSizeInt / 2, poolPos);
+        pillarPool = new ResourcePool("tile/Collumn", mapSizeInt / 2, poolPos);
 
-        if (!PhotonNetwork.inRoom)
-            objectsPool[10000] = new ResourcePool("object/Enemy1", 100, poolPos);
-        else if (PhotonNetwork.isMasterClient)
-            objectsPool[10000] = new PhotonPool("object/Enemy1", 100);
 
-        if (!PhotonNetwork.inRoom)
-            objectsPool[10001] = new ResourcePool("object/Enemy2", 100, poolPos);
-        else if (PhotonNetwork.isMasterClient)
-            objectsPool[10001] = new PhotonPool("object/Enemy2", 100);
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        if (PhotonNetwork.inRoom)
+        {
+            if (PhotonNetwork.isMasterClient)
+                monsterPool = new PhotonPool("Ene/Enemy", 100);
+        }
+        else monsterPool = new ResourcePool("Ene/Enemy", 100, poolPos);
 
         StartCoroutine(LoadLevel());
     }
+
     private void Update()
     {
-        UpdateMapTexture();
+        Debug.Log("update");
     }
 
+    [ContextMenu("Reset Level")]
     public void ResetLevel()
     {
         StartCoroutine(LoadLevel());
     }
+
+    //새로운 Level 로드
     IEnumerator LoadLevel()
     {
         if (PhotonNetwork.inRoom)
@@ -253,7 +237,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         //로딩화면 제거
-        yield return game.EndLoading();
+        //yield return game.EndLoading();
     }
 
     IEnumerator GenerateRandomMapLocal()
@@ -273,11 +257,9 @@ public class MapGenerator : MonoBehaviour
     {
         if (PhotonNetwork.isMasterClient)
         {
-            pv.RPC("ResetMap", PhotonTargets.All);
-
+            //pv.RPC("ResetMap", PhotonTargets.All);
             GenerateMapData();
             PaintMapTile();
-
             pv.RPC("GenerateMapTile", PhotonTargets.All, mapTiles);
             pv.RPC("GenerateMapObject", PhotonTargets.All, JsonUtility.ToJson(new ObjInfoList(objects)));
             pv.RPC("MapReadyOK", PhotonTargets.All);
@@ -298,36 +280,33 @@ public class MapGenerator : MonoBehaviour
         roomInfos.Clear();
         objects.Clear();
 
-        foreach (var pool in objectsPool)
+        floorPool.Reset();
+        wallPool.Reset();
+        cornerPool.Reset();
+        pillarPool.Reset();
+
+        foreach (Transform pos in objectPos)
         {
-            pool.Value.Reset();
+            Destroy(pos.gameObject);
         }
     }
     
-
-
-
-
-
-
-
-
-
-
-
     /*------------MAP DATA------------*/
     void GenerateMapData()
     {
         RoomNode map = new RoomNode(new RectInt(0, 0, mapSize.x, mapSize.y));
 
+        if (useDebug) DrawRect(map.rect, Color.red);
+
         DivideRect(map);
         CreateRoom(map);
-        CreatePath(map);
-
         DecideRoomType();
+        CreatePath(map);
+        
         SetObjectData();
     }
-    void DivideRect(RoomNode node, int pDivAxis = -1, int divDepth = 0, bool hRev = false, bool vRev = false, int n = 0)
+    void DivideRect(RoomNode node, int pDivAxis = -1, int divDepth = 0,
+        bool hRev = false, bool vRev = false, int n = 0)
     {
         if (n == maxDivideDepth) return;
 
@@ -366,6 +345,14 @@ public class MapGenerator : MonoBehaviour
                 node.right = rRoom;
             }
             bH = true;
+
+            if (useDebug)
+            {
+                DrawLine(
+                new Vector2Int(node.rect.x, node.rect.y + down_h),
+                new Vector2Int(node.rect.x + node.rect.width, node.rect.y + down_h),
+                Color.red);
+            }
         }
         else
         {   //divide vertical
@@ -391,6 +378,14 @@ public class MapGenerator : MonoBehaviour
                 node.right = rRoom;
             }
             bV = true;
+
+            if (useDebug)
+            {
+                DrawLine(
+                new Vector2Int(node.rect.x + left_w, node.rect.y),
+                new Vector2Int(node.rect.x + left_w, node.rect.y + node.rect.height),
+                Color.red);
+            }
         }
 
         DivideRect(node.left, divideAxis, divDepth, bH, bV, n + 1);
@@ -411,6 +406,15 @@ public class MapGenerator : MonoBehaviour
 
             room = new RectInt(x, y, w, h);
             rooms.Add(room);
+
+            if (useDebug)
+            {
+                if (rooms.Count == 1)
+                    DrawRect(room, Color.blue);
+                else if (rooms.Count == (int)Mathf.Pow(2, maxDivideDepth))
+                    DrawRect(room, Color.red);
+                else DrawRect(room, Color.white);
+            }
         }
         else
         {
@@ -421,11 +425,45 @@ public class MapGenerator : MonoBehaviour
 
         return room;
     }
+    void DecideRoomType()
+    {
+        for (int i = 0; i < (int)Mathf.Pow(2, maxDivideDepth); i++)
+        {
+            RoomType type;
+
+            if (i == (int)Mathf.Pow(2, maxDivideDepth) - 1)
+                type = RoomType.START;
+            else if (i == 0)
+                type = RoomType.BOSS;
+            else
+                type = RoomType.BATTLE;
+
+            Transform roomPos = new GameObject("room_" + i).transform;
+            roomPos.parent = objectPos;
+            roomInfos.Add(new RoomInfo(type, rooms[i], roomPos));
+        }
+    }
     void CreatePath(RoomNode node, int n = 0)
     {
         if (n == maxDivideDepth) return;
 
         paths.Add(new PathInfo(node.left.Center, node.right.Center, node.line));
+
+        if (useDebug)
+        {
+            if (node.line.xAxis)
+            {
+                DrawLine(node.left.Center, new Vector2Int(node.left.Center.x, node.line.xy), Color.blue, -0.1f);
+                DrawLine(node.right.Center, new Vector2Int(node.right.Center.x, node.line.xy), Color.blue, -0.1f);
+                DrawLine(new Vector2Int(node.left.Center.x, node.line.xy), new Vector2Int(node.right.Center.x, node.line.xy), Color.blue, -0.1f);
+            }
+            else
+            {
+                DrawLine(node.left.Center, new Vector2Int(node.line.xy, node.left.Center.y), Color.blue, -0.1f);
+                DrawLine(node.right.Center, new Vector2Int(node.line.xy, node.right.Center.y), Color.blue, -0.1f);
+                DrawLine(new Vector2Int(node.line.xy, node.left.Center.y), new Vector2Int(node.line.xy, node.right.Center.y), Color.blue, -0.1f);
+            }
+        }
 
         CreatePath(node.left, n + 1);
         CreatePath(node.right, n + 1);
@@ -437,26 +475,6 @@ public class MapGenerator : MonoBehaviour
     TileType GetMapTile(int x, int y)
     {
         return mapTiles[mapSize.x * y + x];
-    }
-
-    /*------------OBJ DATA------------*/
-    void DecideRoomType()
-    {
-        for (int i = 0; i < (int)Mathf.Pow(2, maxDivideDepth); i++)
-        {
-            RoomType type;
-
-            if (i == (int)Mathf.Pow(2, maxDivideDepth) - 1)
-                type = RoomType.START;
-            else if (i == 0)
-                type = RoomType.POTAL;
-            else
-                type = RoomType.BATTLE;
-
-            Transform roomPos = new GameObject("room_" + i).transform;
-            roomPos.parent = objectPos;
-            roomInfos.Add(new RoomInfo(type, rooms[i], roomPos));
-        }
     }
     void SetObjectData()
     {
@@ -479,7 +497,7 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.BATTLE:
                     {
-                        AddObjectRandom(ObjType.MONSTER, 5, i, objRect);
+                        AddObjectRandom(ObjType.MONSTER, 1, i, objRect);
                     }
                     break;
                 case RoomType.TREASURE:
@@ -489,19 +507,10 @@ public class MapGenerator : MonoBehaviour
                         AddObjectCenter(ObjType.POTAL, i, objRect);
                     }
                     break;
-                case RoomType.ELITE:
-                    break;
-                case RoomType.TRADER:
-                    break;
-                case RoomType.POTAL:
-                    {
-                        AddObjectCenter(ObjType.POTAL, i, objRect);
-                    }
-                    break;
             }
         }
     }
-    void AddObjectCenter(ObjType obj, int roomId, RectInt roomRect, bool addHead = false)
+    void AddObjectCenter(ObjType obj, int roomId, RectInt roomRect, bool addHead=false)
     {
         Vector3 pos = new Vector3(roomRect.center.x * tileSize, 5f, roomRect.center.y * tileSize);
 
@@ -672,31 +681,31 @@ public class MapGenerator : MonoBehaviour
 
                 if (type == TileType.FLOOR)
                 {   //Floor
-                    GameObject inst = objectsPool[(int)TileID.FLOOR].GetObject(Vector3.zero, Quaternion.identity, tilePos);
+                    GameObject inst = floorPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                 }
                 else if (type == TileType.WALL || type == TileType.PATH)
                 {   //Wall
-                    GameObject inst = objectsPool[(int)TileID.WALL].GetObject(Vector3.zero, Quaternion.identity, tilePos);
+                    GameObject inst = wallPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                     inst.transform.Rotate(new Vector3(0, FindRotationW(tiles, i, j), 0), Space.Self);
                 }
                 else if (type == TileType.CORNER)
                 {   //Corner
-                    GameObject inst = objectsPool[(int)TileID.CORNER].GetObject(Vector3.zero, Quaternion.identity, tilePos);
+                    GameObject inst = cornerPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                     inst.transform.Rotate(new Vector3(0, FindRotationL(tiles, i, j), 0), Space.Self);
                 }
                 else if (type == TileType.PILLAR)
                 {   //Pillar
-                    GameObject inst = objectsPool[(int)TileID.PILLAR].GetObject(Vector3.zero, Quaternion.identity, tilePos);
+                    GameObject inst = pillarPool.GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                     inst.transform.Rotate(new Vector3(0, FindRotationC(tiles, i, j), 0), Space.Self);
                 }
             }
         }
 
-        SetTileTexture(tiles);
+        SetMapTexture(tiles);
     }
     float FindRotationW(TileType[] tiles, int i, int j)
     {
@@ -731,37 +740,14 @@ public class MapGenerator : MonoBehaviour
             rotation = 90;
         return rotation;
     }
-
-    /*------------MINIMAP------------*/
-    void SetTileTexture(TileType[] tiles)
+    void SetMapTexture(TileType[] tiles)
     {
         for (int i = 0; i < tiles.Length; i++)
         {
-            tileTexture.SetPixel(i % mapSize.x, i / mapSize.x, tileColors[(int)(tiles[i])]);
-        }
-        tileTexture.Apply();
-    }
-    void UpdateMapTexture()
-    {
-        for (int i = 0; i < tileTexture.width*tileTexture.height; i++)
-        {
-            mapTexture.SetPixel(i % mapSize.x, i / mapSize.x, tileTexture.GetPixel(i % mapSize.x, i / mapSize.x));
-        }
-
-        foreach (var obj in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            Vector2Int pixel = ObjPosToMap(obj.transform.position);
-            mapTexture.SetPixel(pixel.x, pixel.y, (!PhotonNetwork.inRoom || obj.GetComponent<PhotonView>().isMine) ? myPlayerColor : othPlayerColor);
+            mapTexture.SetPixel(i % mapSize.x, i / mapSize.x, tileColors[(int)(tiles[i])]);
         }
         mapTexture.Apply();
     }
-    Vector2Int ObjPosToMap(Vector3 pos)
-    {
-        return new Vector2Int((int)(pos.x / tileSize), (int)(pos.z / tileSize));
-    }
-
-
-
 
     /*------------MAP OBJECT------------*/
     [PunRPC] void GenerateMapObject(string json)
@@ -796,7 +782,7 @@ public class MapGenerator : MonoBehaviour
     }
     GameObject GenerateObject(ObjInfo info)
     {
-        return objectsPool[Random.Range(10000, 10002)].GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
+        return monsterPool.GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
     }
     [PunRPC] void GeneratePlayer()
     {
@@ -807,12 +793,32 @@ public class MapGenerator : MonoBehaviour
         }
         else
         {
-            GameObject.Instantiate(Resources.Load("PhotonPlayer"), playerSpawnPoint, Quaternion.identity, objectPos);
+            GameObject.Instantiate(playerPrefab, playerSpawnPoint, Quaternion.identity, objectPos);
         }
     }
     [PunRPC] void MapReadyOK()
     {
         pr.Ready();
+    }
+
+    /*------------DEBUG------------*/
+    void DrawLine(Vector2Int from, Vector2Int to, Color col, float zOrder = 0)
+    {
+        LineRenderer rnd = GameObject.Instantiate(lineRnd, debugPos);
+        rnd.material.color = col;
+
+        rnd.SetPosition(0, new Vector3(from.x, from.y, zOrder));
+        rnd.SetPosition(1, new Vector3(to.x, to.y, zOrder));
+    }
+    void DrawRect(RectInt rect, Color col, float zOrder = 0)
+    {
+        LineRenderer rnd = GameObject.Instantiate(rectRnd, debugPos);
+        rnd.material.color = col;
+
+        rnd.SetPosition(0, new Vector3(rect.x, rect.y, zOrder));
+        rnd.SetPosition(1, new Vector3(rect.x + rect.width, rect.y, zOrder));
+        rnd.SetPosition(2, new Vector3(rect.x + rect.width, rect.y + rect.height, zOrder));
+        rnd.SetPosition(3, new Vector3(rect.x, rect.y + rect.height, zOrder));
     }
 
     /*public method*/
@@ -827,8 +833,8 @@ public class MapGenerator : MonoBehaviour
         }
         return -1;
     }
-    public void RemoveObject(GameObject go, int id=10000)
+    public void RemoveObject(GameObject go)
     {
-        objectsPool[id].DisableObject(go);
+        monsterPool.DisableObject(go);
     }
 }

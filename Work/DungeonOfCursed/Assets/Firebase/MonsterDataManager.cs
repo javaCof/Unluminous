@@ -25,6 +25,8 @@ public class MonsterDataManager : MonoBehaviour
         }
     }
 
+    public Dictionary<int, Monster> monsters = new Dictionary<int, Monster>();
+
     public int id;
     public int type;
     public float hp;

@@ -257,6 +257,7 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     {
         transform.LookAt(target);
         anim.SetTrigger("attack");
+        Debug.Log("АјАн!!!!!!!!!!!!!!");
 
         Attack_Master();
     }
@@ -337,17 +338,28 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     {
         if (stream.isWriting)
         {
+            //stream.SendNext(gameObject.GetActive());
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(animMove);
         }
         else
         {
+            //gameObject.SetActive((bool)stream.ReceiveNext());
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
             animMove = (bool)stream.ReceiveNext();
         }
     }
+
+    void OnPhotonInstantiate(PhotonMessageInfo info)
+    {
+
+    }
+
+
+
+
 
     [PunRPC] public void OnPoolCreate()
     {

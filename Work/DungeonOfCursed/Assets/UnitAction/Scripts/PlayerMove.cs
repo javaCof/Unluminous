@@ -39,9 +39,10 @@ public class PlayerMove : MonoBehaviour
         pv = GetComponent<PhotonView>();
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
-        cam = GameObject.FindObjectOfType<MapGenerator>().mainCam.transform;
-
+        cam = Camera.main.transform;
+#if UNITY_ANDROID
         GameObject.FindObjectOfType<GameUI>().jumpButton.onClick.AddListener(() => inpJump = true);
+#endif
     }
     private void Start()
     {
@@ -50,6 +51,7 @@ public class PlayerMove : MonoBehaviour
 #if UNITY_STANDALONE_WIN
             Cursor.lockState = CursorLockMode.Locked;
 #endif
+
             cam.parent = transform;
             cam.localPosition = camOffset;
         }
@@ -84,11 +86,7 @@ public class PlayerMove : MonoBehaviour
     private void LateUpdate()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
-        {
-            if (!action.isDead)
-                CameraUpdate();
-        }
-            
+            CameraUpdate();
     }
 
     void Move()
