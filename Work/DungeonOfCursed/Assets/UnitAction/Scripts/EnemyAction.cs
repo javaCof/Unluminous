@@ -257,7 +257,6 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     {
         transform.LookAt(target);
         anim.SetTrigger("attack");
-        Debug.Log("АјАн!!!!!!!!!!!!!!");
 
         Attack_Master();
     }

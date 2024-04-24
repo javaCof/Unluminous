@@ -163,10 +163,12 @@ public class PlayerAction : UnitAction
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
     }
-    IEnumerator DeadOwner()
+    IEnumerator DeadOwner()             //플레이어 사망
     {
         yield return new WaitForSeconds(1);
 
-        //SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
+
+        //GetComponentInChildren
+        //SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
     }
 }
