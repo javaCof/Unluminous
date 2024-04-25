@@ -8,9 +8,6 @@ public class GameManager : MonoBehaviour
 {
     public string nextScene;
 
-    [TextArea(0, 1000)]
-    public string ToDo;
-
     private bool now_loading;
     
     private void Awake()
@@ -19,7 +16,28 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        StartCoroutine(MonsterLoad());
         SceneManager.LoadSceneAsync(nextScene);
+    }
+
+    IEnumerator MonsterLoad() 
+    {
+        yield return FirebaseManager.MonsterLoadData();
+        Debug.Log("ëª¬ìŠ¤í„° ë¡œë“œ ì™„ë£Œ");
+        StartCoroutine(ItemLoad());
+    }
+
+    IEnumerator ItemLoad()
+    {
+        yield return FirebaseManager.ItemLoadData();
+        Debug.Log("ì•„ì´í…œ ë¡œë“œ ì™„ë£Œ");
+        StartCoroutine(EquipLoad());
+    }
+
+    IEnumerator EquipLoad()
+    {
+        yield return FirebaseManager.EquipLoadData();
+        Debug.Log("ì¥ë¹„ ë¡œë“œ ì™„ë£Œ");
     }
 
     public IEnumerator MoveToScene(string scene, float delay=0)
@@ -70,7 +88,7 @@ public class GameManager : MonoBehaviour
     public void ExitGame(bool askQuit)
     {
 #if UNITY_EDITOR
-        if (!askQuit || EditorUtility.DisplayDialog("°ÔÀÓ Á¾·á", "°ÔÀÓÀ» Á¾·áÇÏ½Ã°Ú½À´Ï±î?", "¿¹", "¾Æ´Ï¿À"))
+        if (!askQuit || EditorUtility.DisplayDialog("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï½Ã°Ú½ï¿½ï¿½Ï±ï¿½?", "ï¿½ï¿½", "ï¿½Æ´Ï¿ï¿½"))
             UnityEditor.EditorApplication.isPlaying = false;
 #else
         Application.Quit();

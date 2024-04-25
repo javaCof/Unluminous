@@ -44,7 +44,7 @@ public class EquipDataManager : MonoBehaviour
     {
         var data = new Equip(id, set, hp, atk, def, speed, price, dec);
         string jsonData = JsonUtility.ToJson(data);
-        FirebaseRef.databaseReference.Child("Equip").Child("Helmet").Child(equipName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Equip").Child("Helmet").Child(equipName).SetRawJsonValueAsync(jsonData);
 
         Debug.Log(data);
     }
@@ -54,7 +54,7 @@ public class EquipDataManager : MonoBehaviour
     {
         var data = new Equip(id, set, hp, atk, def, speed, price, dec);
         string jsonData = JsonUtility.ToJson(data);
-        FirebaseRef.databaseReference.Child("Equip").Child("Pants").Child(equipName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Equip").Child("Pants").Child(equipName).SetRawJsonValueAsync(jsonData);
 
         Debug.Log(data);
     }
@@ -64,7 +64,7 @@ public class EquipDataManager : MonoBehaviour
     {
         var data = new Equip(id, set, hp, atk, def, speed, price, dec);
         string jsonData = JsonUtility.ToJson(data);
-        FirebaseRef.databaseReference.Child("Equip").Child("Armor").Child(equipName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Equip").Child("Armor").Child(equipName).SetRawJsonValueAsync(jsonData);
 
         Debug.Log(data);
     }
@@ -74,7 +74,7 @@ public class EquipDataManager : MonoBehaviour
     {
         var data = new Equip(id, set, hp, atk, def, speed, price, dec);
         string jsonData = JsonUtility.ToJson(data);
-        FirebaseRef.databaseReference.Child("Equip").Child("SetEquip").Child(equipName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Equip").Child("SetEquip").Child(equipName).SetRawJsonValueAsync(jsonData);
 
         Debug.Log(data);
     }

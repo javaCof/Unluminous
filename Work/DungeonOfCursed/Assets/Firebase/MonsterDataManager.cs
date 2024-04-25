@@ -42,19 +42,13 @@ public class MonsterDataManager : MonoBehaviour
         //await FirebaseR.LoadData();
     }
 
-    async void Start()
-    {
-        await FirebaseR.LoadData();
-        Debug.Log(FirebaseR.equipDataLoad.Child("Helmet").Child("평범한 투구").Child("id").Value);
-    }
-
     [ContextMenu("몬스터 정보 저장")]
     void SaveMonsterData()
     {
         var monsterData = new Monster(id, type, hp, atk, def, spd, dec);
         string jsonData = JsonUtility.ToJson(monsterData);
         
-        FirebaseR.databaseReference.Child("Monster").Child(monsterName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Monster").Child(monsterName).SetRawJsonValueAsync(jsonData);
         Debug.Log(jsonData);
     }
 
@@ -64,10 +58,10 @@ public class MonsterDataManager : MonoBehaviour
         //var dataSnapshot = await FirebaseR.databaseReference.Child("Monster").GetValueAsync();
         //var monsterData = await FirebaseR.MonsterData();
 
-        await FirebaseR.LoadData();
-        if(FirebaseR.monsterDataLoad.HasChildren)
+        await FirebaseManager.MonsterLoadData();
+        if(FirebaseManager.monsterDataLoad.HasChildren)
         {
-            foreach(var monsterDataSnapshot in FirebaseR.monsterDataLoad.Children)
+            foreach(var monsterDataSnapshot in FirebaseManager.monsterDataLoad.Children)
             {
                 var monsterName = monsterDataSnapshot.Key;
                 var monsterValues = monsterDataSnapshot.Value as Dictionary<string, object>;
@@ -94,39 +88,31 @@ public class MonsterDataManager : MonoBehaviour
     [ContextMenu("골렘 정보 불러오기")]
     void Golem()
     {
-        var data = FirebaseR.monsterDataLoad.Value as Dictionary<string, object>;
-        if (data != null && data.ContainsKey("골렘"))
-        {
-            var monsterData = data["Monster"] as Dictionary<string, object>;
-            if (monsterData != null && monsterData.ContainsKey("골렘"))
-            {
-                var idValue = monsterData["id"];
-                Debug.Log(monsterData["id"]);
-            }
-            else
-            {
-                Debug.Log("골렘의 id 값이 없습니다.");
-            }
-        }
-        else
-        {
-            Debug.Log("골렘 데이터가 없습니다.");
-        }
+        //var monsterData = FirebaseManager.monsterData["11002"] as Dictionary<string, object>;
+        
+        
+        Debug.Log(FirebaseManager.monster["11002"]["name"]);
+
+        // if((string)monsterData["name"] == "트리플 쉘 터틀")
+        // {
+        //     Debug.Log("같음");
+        // }
     }
 
-    [ContextMenu("몬스터 정보 다시")]
+    [ContextMenu("정보 다시")]
     public async void RenameMonsterKey()
     {
-        // 1. "골렘" 데이터 가져오기
-        var golemData = await FirebaseR.databaseReference.Child("Equip").Child("Helmet").Child("전설의 투구 ").GetValueAsync();
+        // 1. 데이터 가져오기
+        var golemData = await FirebaseManager.databaseReference.Child("Equip").Child("Helmet").Child("전설의 투구 ").GetValueAsync();
 
-        // 2. "Golem"으로 새 키에 데이터 복사
-        await FirebaseR.databaseReference.Child("Equip").Child("Helmet").Child("전설의 투구").SetValueAsync(golemData.Value);
+        // 2. "???"으로 새 키에 데이터 복사
+        await FirebaseManager.databaseReference.Child("Equip").Child("Helmet").Child("전설의 투구").SetValueAsync(golemData.Value);
 
-        // 3. 기존 "골렘" 키 삭제
-        await FirebaseR.databaseReference.Child("Equip").Child("Helmet").Child("전설의 투구 ").RemoveValueAsync();
+        // 3. 기존 키 삭제
+        await FirebaseManager.databaseReference.Child("Equip").Child("Helmet").Child("전설의 투구 ").RemoveValueAsync();
 
         Debug.Log("키 변경이 완료되었습니다.");
+        
     }
 
 }

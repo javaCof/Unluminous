@@ -29,13 +29,13 @@ public class ItemDataManager : MonoBehaviour
         var Item = new Item(id, price, dec);
         string jsonData = JsonUtility.ToJson(Item);
 
-        FirebaseRef.databaseReference.Child("Item").Child(itemName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Item").Child(itemName).SetRawJsonValueAsync(jsonData);
     }
 
     [ContextMenu("아이템 정보 불러오기")]
     async void LoadItemData()
     {
-        var dataSnapshot = await FirebaseRef.databaseReference.Child("Item").GetValueAsync();
+        var dataSnapshot = await FirebaseManager.databaseReference.Child("Item").GetValueAsync();
 
         if(dataSnapshot.HasChildren)
         {
@@ -57,7 +57,7 @@ public class ItemDataManager : MonoBehaviour
     [ContextMenu("아이템 정보 불러오기2")]
     async void LoadItemData2()
     {
-        var dataSnapshot = await FirebaseRef.databaseReference.Child("Item").GetValueAsync();
+        var dataSnapshot = await FirebaseManager.databaseReference.Child("Item").GetValueAsync();
     
         if(dataSnapshot.HasChildren)
         {
