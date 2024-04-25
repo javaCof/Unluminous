@@ -13,80 +13,18 @@ public class MapGenerator : MonoBehaviour
     public float minDividePer = 0.4f;               //최소 맵 자르기 비율
     public float maxDividePer = 0.6f;               //최대 맵 자르기 비율
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
-    public enum TileID { FLOOR = 100, WALL, CORNER, PILLAR };                                 //타일 ID
+    public enum TileID { FLOOR = 100, WALL, CORNER, PILLAR };                               //타일 ID
     public enum ObjType { PLAYER, MONSTER, CHEST, POTAL }                                   //오브젝트 타입
 
-    public Color[] tileColors = { Color.white, Color.white, Color.black, Color.black, Color.black, Color.black };      //타일 색상
-    public Color myPlayerColor = Color.red;
-    public Color othPlayerColor = Color.blue;
-
-
-
-
-
-
-
-
-
-
-
-
+    [SerializeField] private Color[] tileColors = { Color.white, Color.white, Color.black, Color.black, Color.black, Color.black };
+    [SerializeField] private Color myPlayerColor = Color.red;
+    [SerializeField] private Color othPlayerColor = Color.blue;
 
     [HideInInspector] public Transform tilePos;     //타일 위치
     [HideInInspector] public Transform objectPos;   //오브젝트 위치
     [HideInInspector] public Transform poolPos;     //메모리풀 위치
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private Texture2D tileTexture;                   //타일 텍스쳐
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     class RoomNode
     {
@@ -158,37 +96,20 @@ public class MapGenerator : MonoBehaviour
         public ObjInfoList(List<ObjInfo> objs) => this.objs = objs;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     List<RectInt> rooms;                //방 리스트
     List<PathInfo> paths;               //통로 리스트
     List<RoomInfo> roomInfos;           //방 정보 리스트
     List<ObjInfo> objects;              //오브젝트 리스트
 
     GameManager game;
-
-    Vector3 playerSpawnPoint;
-
-    TileType[] mapTiles;
-
-
-    Dictionary<int, ObjectPool> objectsPool;
-
     PhotonView pv;
     PhotonReady pr;
+
+    TileType[] mapTiles;                //맵 타일
+    Texture2D tileTexture;              //타일 텍스쳐
+
+    Vector3 playerSpawnPoint;
+    Dictionary<int, ObjectPool> objectsPool;
 
     private void Awake()
     {
@@ -205,7 +126,6 @@ public class MapGenerator : MonoBehaviour
         roomInfos = new List<RoomInfo>();
         objects = new List<ObjInfo>();
         mapTiles = new TileType[mapSize.x * mapSize.y];
-
         tileTexture = new Texture2D(mapSize.x, mapSize.y);
 
         (tilePos = new GameObject("tile").transform).parent = mapPos;
@@ -220,6 +140,11 @@ public class MapGenerator : MonoBehaviour
         objectsPool[(int)TileID.CORNER] = new ResourcePool("tile/CurveL", mapSizeInt / 2, poolPos);
         objectsPool[(int)TileID.PILLAR] = new ResourcePool("tile/Collumn", mapSizeInt / 2, poolPos);
 
+        /*----------------------------------------Load From DB----------------------------------------*/
+        if (!PhotonNetwork.inRoom)
+            objectsPool[200] = new ResourcePool("object/PhotonPlayer", 1, poolPos);
+        else objectsPool[200] = new PhotonPool("object/PhotonPlayer", 1, PhotonPool.PhotonInstantiateOption.STANDARD);
+
         if (!PhotonNetwork.inRoom)
             objectsPool[10000] = new ResourcePool("object/Enemy1", 100, poolPos);
         else if (PhotonNetwork.isMasterClient)
@@ -229,6 +154,7 @@ public class MapGenerator : MonoBehaviour
             objectsPool[10001] = new ResourcePool("object/Enemy2", 100, poolPos);
         else if (PhotonNetwork.isMasterClient)
             objectsPool[10001] = new PhotonPool("object/Enemy2", 100);
+        /*--------------------------------------------------------------------------------------------*/
 
         StartCoroutine(LoadLevel());
     }
@@ -306,17 +232,6 @@ public class MapGenerator : MonoBehaviour
             pool.Value.Reset();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
     /*------------MAP DATA------------*/
     void GenerateMapData()
@@ -764,9 +679,6 @@ public class MapGenerator : MonoBehaviour
         return new Vector2Int((int)(pos.x / tileSize), (int)(pos.z / tileSize));
     }
 
-
-
-
     /*------------MAP OBJECT------------*/
     [PunRPC]
     void GenerateMapObject(string json)
@@ -806,15 +718,7 @@ public class MapGenerator : MonoBehaviour
     [PunRPC]
     void GeneratePlayer()
     {
-        if (PhotonNetwork.inRoom)
-        {
-            GameObject go = PhotonNetwork.Instantiate("PhotonPlayer", playerSpawnPoint, Quaternion.identity, 0);
-            go.transform.parent = objectPos;
-        }
-        else
-        {
-            GameObject.Instantiate(Resources.Load("PhotonPlayer"), playerSpawnPoint, Quaternion.identity, objectPos);
-        }
+        objectsPool[200].GetObject(playerSpawnPoint, Quaternion.identity, objectPos);
     }
     [PunRPC]
     void MapReadyOK()

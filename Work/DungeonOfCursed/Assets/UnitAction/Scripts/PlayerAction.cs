@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PlayerAction : UnitAction
+public class PlayerAction : UnitAction, IPhotonPoolObject
 {
     public float attackDist = 2f;
     public float actionDist = 2f;
@@ -170,5 +170,37 @@ public class PlayerAction : UnitAction
 
         //GetComponentInChildren
         //SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
+    }
+
+    public void OnPoolCreate()
+    {
+        if (pv.isMine)
+            pv.RPC("OnPlayerCreate", PhotonTargets.All);
+    }
+    public void OnPoolEnable()
+    {
+        if (pv.isMine)
+            pv.RPC("OnPlayerEnable", PhotonTargets.All);
+    }
+    public void OnPoolDisable()
+    {
+        if (pv.isMine)
+            pv.RPC("OnPlayerDisable", PhotonTargets.All);
+    }
+
+    [PunRPC] void OnPlayerCreate()
+    {
+        transform.parent = map.poolPos;
+        gameObject.SetActive(false);
+    }
+    [PunRPC] void OnPlayerEnable()
+    {
+        transform.parent = map.objectPos;
+        gameObject.SetActive(true);
+    }
+    [PunRPC] void OnPlayerDisable()
+    {
+        transform.parent = map.poolPos;
+        gameObject.SetActive(false);
     }
 }

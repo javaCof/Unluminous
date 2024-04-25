@@ -337,50 +337,46 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     {
         if (stream.isWriting)
         {
-            //stream.SendNext(gameObject.GetActive());
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(animMove);
         }
         else
         {
-            //gameObject.SetActive((bool)stream.ReceiveNext());
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
             animMove = (bool)stream.ReceiveNext();
         }
     }
 
-    void OnPhotonInstantiate(PhotonMessageInfo info)
-    {
-
-    }
-
-
-
-
-
-    [PunRPC] public void OnPoolCreate()
+    public void OnPoolCreate()
     {
         if (PhotonNetwork.isMasterClient)
-            pv.RPC("OnPoolCreate", PhotonTargets.Others);
+            pv.RPC("OnEnemyCreate", PhotonTargets.All);
+    }
+    public void OnPoolEnable()
+    {
+        if (PhotonNetwork.isMasterClient)
+            pv.RPC("OnEnemyEnable", PhotonTargets.All);
+    }
+    public void OnPoolDisable()
+    {
+        if (PhotonNetwork.isMasterClient)
+            pv.RPC("OnEnemyDisable", PhotonTargets.All);
+    }
 
+    [PunRPC] void OnEnemyCreate()
+    {
         transform.parent = map.poolPos;
         gameObject.SetActive(false);
     }
-    [PunRPC] public void OnPoolEnable()
+    [PunRPC] void OnEnemyEnable()
     {
-        if (PhotonNetwork.isMasterClient)
-            pv.RPC("OnPoolEnable", PhotonTargets.Others);
-
         transform.parent = map.objectPos;
         gameObject.SetActive(true);
     }
-    [PunRPC] public void OnPoolDisable()
+    [PunRPC] void OnEnemyDisable()
     {
-        if (PhotonNetwork.isMasterClient)
-            pv.RPC("OnPoolDisable", PhotonTargets.Others);
-
         transform.parent = map.poolPos;
         gameObject.SetActive(false);
     }

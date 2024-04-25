@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
 {
     public string nextScene;
 
+    [TextArea(0, 1000)]
+    public string ToDo;
+
     private bool now_loading;
     
     private void Awake()

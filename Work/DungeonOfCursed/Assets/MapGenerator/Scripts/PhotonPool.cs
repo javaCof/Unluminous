@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class PhotonPool : ObjectPool
 {
-    public PhotonPool(string name, int n) : base(n)
+    public enum PhotonInstantiateOption { STANDARD, SCENE_OBJECT };
+
+    public PhotonPool(string name, int n, PhotonInstantiateOption option = PhotonInstantiateOption.SCENE_OBJECT) : base(n)
     {
         for (int i = 0; i < n; i++)
         {
-            GameObject go = PhotonNetwork.InstantiateSceneObject(name, Vector3.zero, Quaternion.identity, 0, null);
+            GameObject go = (option == PhotonInstantiateOption.SCENE_OBJECT) ?
+                PhotonNetwork.InstantiateSceneObject(name, Vector3.zero, Quaternion.identity, 0, null) :
+                PhotonNetwork.Instantiate(name, Vector3.zero, Quaternion.identity, 0, null);
+
             objects.Add(go);
             go.GetComponent<IPhotonPoolObject>().OnPoolCreate();
         }
