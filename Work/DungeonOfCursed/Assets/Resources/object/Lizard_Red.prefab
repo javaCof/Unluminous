@@ -804,7 +804,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5264951392774710451}
-  - component: {fileID: 5264951392774710448}
   - component: {fileID: 5264951392774710449}
   - component: {fileID: 5264951392774710462}
   - component: {fileID: 4048416453354211595}
@@ -831,22 +830,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &5264951392774710448
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5264951392774710463}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!136 &5264951392774710449
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -897,16 +880,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDead: 0
   curHP: 0
-  roomNum: 0
+  roomNum: -1
   enableState: 1
   minAttackRange: 1.5
   maxAttackRange: 2
   attackDelay: 1
-  instantAttack: 0
+  instantAttack: 1
   removeDelay: 2
   id: 0
-  state: 0
-  target: {fileID: 0}
+  originPos: {x: 0, y: 0, z: 0}
 --- !u!114 &-6866774628261548489
 MonoBehaviour:
   m_ObjectHideFlags: 0

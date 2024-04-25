@@ -10,23 +10,25 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     public bool enableState = true;
     public float minAttackRange = 1.5f;
     public float maxAttackRange = 2f;
+    public float traceRange = 5f;
     public float attackDelay = 1f;
     public bool instantAttack = false;
     public float removeDelay = 2f;
 
     [HideInInspector] public int id;
+    [HideInInspector] public Vector3 originPos;
 
     private Animator anim;
     private NavMeshAgent nav;
     private MapGenerator map;
     private PhotonView pv;
 
-    public EnemyState state;
+    private EnemyState state;
     private Rect roomRect;
 
-    private GameObject[] players;
-    public Transform target;
-    private Vector3 originPos;
+    private Transform traceTarget;
+    private Transform attackTarget;
+
     private float attackDtime;
 
     private bool animMove;
@@ -44,9 +46,6 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     {
         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
-            isDead = false;
-            originPos = transform.position;
-
             SetSampleData();
             InitState(EnemyState.Search);
         }
@@ -89,14 +88,34 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
         roomRect = rect;
     }
 
-    //상태 초기화
+
+    public void Init()
+    {
+        
+    }
+
+    public void Reset()
+    {
+        curHP = stat.HP;
+        isDead = false;
+        enableState = true;
+        anim.applyRootMotion = false;
+    }
+
+    public void SetStat(UnitStatInfo stat)
+    {
+        
+    }
+
+
+
+
+
     void InitState(EnemyState _state)
     {
         state = _state;
         BeginState(state);
     }
-
-    //상태 시작
     void BeginState(EnemyState _state)
     {
         switch (_state)
@@ -117,36 +136,38 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
                 break;
         }
     }
-
-    //상태 진행중
     void UpdateState(EnemyState _state)
     {
         switch (_state)
         {
             case EnemyState.Search:
                 {
-                    SetTarget();
-                    if (target != null) ChangeState(EnemyState.Trace);
+                    SetTraceTarget();
+
+                    if (traceTarget != null) ChangeState(EnemyState.Trace);
                 }
                 break;
             case EnemyState.Trace:
                 {
-                    CheckTarget();
-                    if (target == null)
+                    CheckTraceTarget();
+
+                    if (traceTarget == null)
                     {
                         ChangeState(EnemyState.Repos);
                         break;
                     }
 
-                    SetNav(target.position, minAttackRange);
+                    SetNav(traceTarget.position, minAttackRange);
+
                     if (!InRoom()) ChangeState(EnemyState.Repos);
                     if (IsNavEnd()) ChangeState(EnemyState.Attack);
                 }
                 break;
             case EnemyState.Attack:
                 {
-                    CheckTarget();
-                    if (target == null)
+                    CheckTraceTarget();
+
+                    if (traceTarget == null)
                     {
                         ChangeState(EnemyState.Repos);
                         break;
@@ -155,24 +176,32 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
                     /*attack routine*/
                     if (Time.time - attackDtime > attackDelay)
                     {
+                        transform.LookAt(traceTarget);
+
                         if (PhotonNetwork.inRoom) pv.RPC("Attack_All", PhotonTargets.All);
                         else Attack_All();
 
                         attackDtime = Time.time;
                     }
 
-                    if (OutRange(target.position, maxAttackRange)) ChangeState(EnemyState.Trace);
+                    if (OutRange(traceTarget.position, maxAttackRange)) ChangeState(EnemyState.Trace);
                 }
                 break;
             case EnemyState.Repos:
                 {
+                    CheckTraceTarget();
+
+                    if (traceTarget != null)
+                    {
+                        ChangeState(EnemyState.Trace);
+                        break;
+                    }
+
                     if (IsNavEnd()) ChangeState(EnemyState.Search);
                 }
                 break;
         }
     }
-
-    //상태 종료
     void EndState(EnemyState _state)
     {
         switch (_state)
@@ -187,8 +216,6 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
                 break;
         }
     }
-
-    //상태 변경
     void ChangeState(EnemyState _state)
     {
         EndState(state);
@@ -196,14 +223,12 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
         BeginState(state);
     }
 
-    //추적목표 설정
-    void SetTarget()
+    void SetTraceTarget()
     {
-        target = null;
-        float minDist = -1;
+        traceTarget = null;
 
-        players = GameObject.FindGameObjectsWithTag("Player");
-        foreach (var obj in players)
+        float minDist = -1;
+        foreach (var obj in GameObject.FindGameObjectsWithTag("Player"))
         {
             PlayerAction player = obj.GetComponent<PlayerAction>();
 
@@ -212,117 +237,124 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
                 float dist = (player.transform.position - transform.position).sqrMagnitude;
                 if (minDist == -1 || dist < minDist)
                 {
-                    target = player.transform;
+                    traceTarget = player.transform;
                     minDist = dist;
                 }
             }
         }
-    }
 
-    //추적목표 검사
-    void CheckTarget()
+        if (traceTarget != null && Vector3.Distance(traceTarget.position, transform.position) > traceRange)
+            traceTarget = null;
+    }
+    void CheckTraceTarget()
     {
-        if (target == null) return;
-        PlayerAction player = target.GetComponent<PlayerAction>();
-        if (player.isDead || player.roomNum != roomNum)
-        {
-            target = null;
-        }
+        if (traceTarget == null) return;
+
+        PlayerAction player = traceTarget.GetComponent<PlayerAction>();
+        if (player.isDead || player.roomNum != roomNum || Vector3.Distance(traceTarget.position, transform.position) > traceRange)
+            traceTarget = null;
     }
 
-    //네비게이션 설정 (목적지, 정지거리)
     void SetNav(Vector3 dest, float stopDist)
     {
         nav.destination = dest;
         nav.stoppingDistance = stopDist;
         nav.isStopped = false;
     }
-
-    //방 내부에 있는지 검사
     bool InRoom()
     {
         Vector2 pos = new Vector2(transform.position.x, transform.position.z);
         return pos.x > roomRect.xMin && pos.x < roomRect.xMax && pos.y > roomRect.yMin && pos.y < roomRect.yMax;
     }
-
-    //대상이 특정 범위 내에 있는지 검사
     bool InRange(Vector3 target, float range) => (target - transform.position).sqrMagnitude < range * range;
-
-    //대상이 특정 범위를 벗어났는지 검사
     bool OutRange(Vector3 target, float range) => !InRange(target, range);
-
-    //현재 네비게이션 종료 확인
     bool IsNavEnd() => InRange(nav.destination, nav.stoppingDistance + 0.1f);
 
-    [PunRPC]
-    void Attack_All()
+    [PunRPC] void Attack_All()
     {
-        transform.LookAt(target);
         anim.SetTrigger("attack");
-
-        Attack_Master();
     }
-    public void Attack_Master()      //call by anim
+    public override void AttackAction()
     {
         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
-            if (Vector3.Distance(transform.position, target.position) <= maxAttackRange)
+            CheckAttackTarget();
+
+            if (attackTarget != null)
             {
                 if (PhotonNetwork.inRoom)
                 {
-                    target.GetComponent<PhotonView>().RPC("Hit_All", PhotonTargets.All, stat.ATK);
+                    attackTarget.GetComponent<PhotonView>().RPC("Hit_Owner", PhotonTargets.All, stat.ATK);
                 }
                 else
                 {
-                    target.GetComponent<PlayerAction>().Hit_All(stat.ATK);
+                    attackTarget.GetComponent<PlayerAction>().Hit_Owner(stat.ATK);
                 }
             }
         }
     }
-    [PunRPC]
-    public void Hit_All(float dmg)
+    void CheckAttackTarget()
     {
-        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
+        attackTarget = null;
+
+        float minDist = -1;
+        foreach (var obj in GameObject.FindGameObjectsWithTag("Player"))
         {
-            curHP -= dmg;
+            PlayerAction player = obj.GetComponent<PlayerAction>();
 
-            if (curHP <= 0)
+            if (!player.isDead && player.roomNum == this.roomNum)
             {
-                if (PhotonNetwork.inRoom)
+                float dist = (player.transform.position - transform.position).sqrMagnitude;
+                if (minDist == -1 || dist < minDist)
                 {
-                    pv.RPC("Dead_All", PhotonTargets.All);
+                    attackTarget = player.transform;
+                    minDist = dist;
                 }
-                else
-                {
-                    Dead_All();
-                }
-
-                return;
             }
         }
-        anim.SetTrigger("hit");
+
+        if (attackTarget != null && Vector3.Distance(attackTarget.position, transform.position) > maxAttackRange)
+            attackTarget = null;
     }
-    [PunRPC]
-    void Dead_All()
+
+    [PunRPC] public void Hit_Master(float dmg)
     {
-        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
+        if (isDead) return;
+
+        curHP -= dmg;
+
+        if (curHP <= 0)
         {
+            if (PhotonNetwork.inRoom)
+                pv.RPC("Dead_All", PhotonTargets.All);
+            else Dead_All();
+
             isDead = true;
             enableState = false;
-        }
 
+            StartCoroutine(RemoveObject(removeDelay));
+        }
+        else
+        {
+            if (PhotonNetwork.inRoom)
+                pv.RPC("Hit_All", PhotonTargets.All);
+            else Hit_All();
+        }
+    }
+    [PunRPC] void Hit_All()
+    {
+        anim.SetTrigger("hit");
+    }
+    [PunRPC] void Dead_All()
+    {
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
-
-        StartCoroutine(RemoveObject(removeDelay));
     }
     IEnumerator RemoveObject(float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
-            map.RemoveObject(gameObject, id);
-        else gameObject.SetActive(false);
+        map.RemoveObject(gameObject, id);
     }
 
     void UpdatePos()
@@ -351,34 +383,27 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
         }
     }
 
-    public void OnPoolCreate()
+    [PunRPC] public void OnPoolCreate()
     {
         if (PhotonNetwork.isMasterClient)
-            pv.RPC("OnEnemyCreate", PhotonTargets.All);
-    }
-    public void OnPoolEnable()
-    {
-        if (PhotonNetwork.isMasterClient)
-            pv.RPC("OnEnemyEnable", PhotonTargets.All);
-    }
-    public void OnPoolDisable()
-    {
-        if (PhotonNetwork.isMasterClient)
-            pv.RPC("OnEnemyDisable", PhotonTargets.All);
-    }
+            pv.RPC("OnPoolCreate", PhotonTargets.Others);
 
-    [PunRPC] void OnEnemyCreate()
-    {
         transform.parent = map.poolPos;
         gameObject.SetActive(false);
     }
-    [PunRPC] void OnEnemyEnable()
+    [PunRPC] public void OnPoolEnable()
     {
+        if (PhotonNetwork.isMasterClient)
+            pv.RPC("OnPoolEnable", PhotonTargets.Others);
+
         transform.parent = map.objectPos;
         gameObject.SetActive(true);
     }
-    [PunRPC] void OnEnemyDisable()
+    [PunRPC] public void OnPoolDisable()
     {
+        if (PhotonNetwork.isMasterClient)
+            pv.RPC("OnPoolDisable", PhotonTargets.Others);
+
         transform.parent = map.poolPos;
         gameObject.SetActive(false);
     }

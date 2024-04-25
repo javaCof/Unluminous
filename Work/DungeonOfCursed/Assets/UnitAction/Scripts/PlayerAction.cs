@@ -6,13 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class PlayerAction : UnitAction, IPhotonPoolObject
 {
-    public float attackDist = 2f;
     public float actionDist = 2f;
 
     [HideInInspector] public bool controllable = true;
 
     private Animator anim;
-    private CharacterController ctl;
     private MapGenerator map;
     private PhotonView pv;
 
@@ -23,11 +21,10 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
-        ctl = GetComponent<CharacterController>();
-        map = GameObject.FindObjectOfType<MapGenerator>();
+        map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
 
-        GameObject.FindObjectOfType<GameUI>().actionButton.onClick.AddListener(() => inpAction = true);
+        FindObjectOfType<GameUI>().actionButton.onClick.AddListener(() => inpAction = true);
     }
     private void Start()
     {
@@ -50,7 +47,6 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             inpAction = Input.GetMouseButtonDown(0);
-#elif UNITY_ANDROID
 #endif
             if (controllable && inpAction)
             {
@@ -60,6 +56,15 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
                 inpAction = false;
             }
         }
+    }
+
+
+    public void Reset()
+    {
+        curHP = stat.HP;
+        isDead = false;
+        controllable = true;
+        anim.applyRootMotion = false;
     }
 
     //임시 데이터 설정
@@ -81,18 +86,20 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
     {
         Vector3 camPos = Camera.main.transform.position;
         Vector3 lookVec = Camera.main.transform.forward * actionDist;
+
         Debug.DrawRay(Camera.main.transform.position, lookVec, Color.red, 0.01f);
 
         RaycastHit hit;
         Ray ray = new Ray(camPos, lookVec);
+
         target = null;
+
         if (Physics.Raycast(ray, out hit, actionDist, 1 << LayerMask.NameToLayer("LookTarget")))
             target = hit.collider;
     }
     void ShowLookTarget() { }
 
-    [PunRPC]
-    void Action_All()
+    [PunRPC] void Action_All()
     {
         if (target == null)
         {
@@ -103,14 +110,13 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
         switch (target.tag)
         {
             case "Enemy":
-                Attack_Owner();
+                anim.SetTrigger("attack");
                 break;
             case "Chest":
-                //target.GetComponent<Chest>().Open();
                 break;
         }
     }
-    public void Attack_Owner()      //call by anim
+    public override void AttackAction()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
@@ -118,88 +124,77 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
             {
                 if (PhotonNetwork.inRoom)
                 {
-                    target.GetComponent<PhotonView>().RPC("Hit_All", PhotonTargets.All, stat.ATK);
+                    target.GetComponent<PhotonView>().RPC("Hit_Master", PhotonNetwork.masterClient, stat.ATK);
                 }
                 else
                 {
-                    target.GetComponent<EnemyAction>().Hit_All(stat.ATK);
+                    target.GetComponent<EnemyAction>().Hit_Master(stat.ATK);
                 }
             }
         }
     }
-    [PunRPC] public void Hit_All(float dmg)
+
+    [PunRPC] public void Hit_Owner(float dmg)
     {
-        if (!PhotonNetwork.inRoom || pv.isMine)
+        if (isDead) return;
+
+        curHP -= dmg;
+
+        if (curHP <= 0)
         {
-            curHP -= dmg;
+            if (PhotonNetwork.inRoom)
+                pv.RPC("Dead_All", PhotonTargets.All);
+            else Dead_All();
 
-            if (curHP <= 0)
-            {
-                if (PhotonNetwork.inRoom)
-                {
-                    pv.RPC("Dead_All", PhotonTargets.All);
-                }
-                else
-                {
-                    Dead_All();
-                }
+            isDead = true;
+            controllable = false;
 
-                return;
-            }
+            StartCoroutine(DeadPlayer());
         }
+        else
+        {
+            if (PhotonNetwork.inRoom)
+                pv.RPC("Hit_All", PhotonTargets.All);
+            else Hit_All();
+        }
+    }
+    [PunRPC] public void Hit_All()
+    {
         anim.SetTrigger("hit");
     }
     [PunRPC] void Dead_All()
     {
-        if (!PhotonNetwork.inRoom || pv.isMine)
-        {
-            isDead = true;
-            controllable = false;
-            ctl.enabled = false;
-
-            StartCoroutine(DeadOwner());
-        }
-
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
     }
-    IEnumerator DeadOwner()             //플레이어 사망
+    IEnumerator DeadPlayer()
     {
         yield return new WaitForSeconds(1);
 
-
-        //GetComponentInChildren
-        //SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
+        SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
     }
 
-    public void OnPoolCreate()
+    [PunRPC] public void OnPoolCreate()
     {
         if (pv.isMine)
-            pv.RPC("OnPlayerCreate", PhotonTargets.All);
-    }
-    public void OnPoolEnable()
-    {
-        if (pv.isMine)
-            pv.RPC("OnPlayerEnable", PhotonTargets.All);
-    }
-    public void OnPoolDisable()
-    {
-        if (pv.isMine)
-            pv.RPC("OnPlayerDisable", PhotonTargets.All);
-    }
+            pv.RPC("OnPoolCreate", PhotonTargets.Others);
 
-    [PunRPC] void OnPlayerCreate()
-    {
         transform.parent = map.poolPos;
         gameObject.SetActive(false);
     }
-    [PunRPC] void OnPlayerEnable()
+    [PunRPC] public void OnPoolEnable()
     {
+        if (pv.isMine)
+            pv.RPC("OnPoolEnable", PhotonTargets.Others);
+
         transform.parent = map.objectPos;
         gameObject.SetActive(true);
     }
-    [PunRPC] void OnPlayerDisable()
+    [PunRPC] public void OnPoolDisable()
     {
+        if (pv.isMine)
+            pv.RPC("OnPoolDisable", PhotonTargets.Others);
+
         transform.parent = map.poolPos;
         gameObject.SetActive(false);
     }

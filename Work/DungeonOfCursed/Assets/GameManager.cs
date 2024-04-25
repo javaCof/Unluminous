@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
     public void ExitGame(bool askQuit)
     {
 #if UNITY_EDITOR
-        if (!askQuit || EditorUtility.DisplayDialog("���� ����", "������ �����Ͻðڽ��ϱ�?", "��", "�ƴϿ�"))
+        if (!askQuit || EditorUtility.DisplayDialog("게임 종료", "게임을 종료하시겠습니까?", "네", "아니요"))
             UnityEditor.EditorApplication.isPlaying = false;
 #else
         Application.Quit();

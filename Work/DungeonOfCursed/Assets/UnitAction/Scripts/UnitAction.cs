@@ -10,4 +10,6 @@ public abstract class UnitAction : MonoBehaviour
     public float curHP;
 
     public int roomNum;
+
+    public abstract void AttackAction();
 }

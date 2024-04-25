@@ -403,7 +403,7 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.BATTLE:
                     {
-                        AddObjectRandom(Random.Range(10005, 10006), 5, i, objRect);
+                        AddObjectRandom(Random.Range(10003, 10004), 5, i, objRect);
                     }
                     break;
                 case RoomType.TREASURE:
@@ -702,8 +702,10 @@ public class MapGenerator : MonoBehaviour
 
                     if (go.tag == "Enemy")
                     {
-                        go.GetComponent<EnemyAction>().id = obj.objID;
-                        go.GetComponent<EnemyAction>().SetRoom(obj.roomID, objRoom);
+                        EnemyAction enemy = go.GetComponent<EnemyAction>();
+                        enemy.id = obj.objID;
+                        enemy.originPos = obj.pos;
+                        enemy.SetRoom(obj.roomID, objRoom);
                     }
                         
                 }

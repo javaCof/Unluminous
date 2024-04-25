@@ -73,14 +73,14 @@ public class FirebaseManager
             var equips = equipData[equipKey] as Dictionary<string, object>;
             if (equips != null)
             {
-                Debug.Log("Monster Key: " + equipKey);
+                //Debug.Log("Monster Key: " + equipKey);
 
                 equip.Add(equipKey, equips);
 
                 foreach (var attributeKey in equips.Keys)
                 {
                     var attributeValue = equips[attributeKey];
-                    Debug.Log(attributeKey + ": " + attributeValue);
+                    //Debug.Log(attributeKey + ": " + attributeValue);
                 }
             }
         }
