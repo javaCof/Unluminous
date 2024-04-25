@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 1206751227178452637}
   - component: {fileID: 1206751227178452634}
   - component: {fileID: 1206751227178452635}
+  - component: {fileID: 1690365847625318828}
+  - component: {fileID: 2005452253282965794}
   m_Layer: 0
   m_Name: WolfBoss_Red
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -86,6 +88,55 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1690365847625318828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206751227178452632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce0949c34057d64989f02378a746e16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDead: 0
+  curHP: 0
+  roomNum: 0
+  enableState: 1
+  minAttackRange: 1.5
+  maxAttackRange: 2
+  attackDelay: 1
+  instantAttack: 0
+  removeDelay: 2
+  id: 0
+--- !u!114 &2005452253282965794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206751227178452632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 1690365847625318828}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!1 &7957738055539611691
 GameObject:
   m_ObjectHideFlags: 0

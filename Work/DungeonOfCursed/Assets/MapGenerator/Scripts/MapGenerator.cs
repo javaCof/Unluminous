@@ -159,6 +159,7 @@ public class MapGenerator : MonoBehaviour
     {
         UpdateMapTexture();
     }
+    [ContextMenu(":(")]
     [PunRPC] public void ResetLevel()
     {
         StartCoroutine(LoadLevel());
@@ -697,6 +698,7 @@ public class MapGenerator : MonoBehaviour
                         rooms[obj.roomID].x * tileSize, rooms[obj.roomID].y * tileSize,
                         rooms[obj.roomID].width * tileSize, rooms[obj.roomID].height * tileSize
                         );
+                    if (go == null) Debug.Log(obj.objID);
 
                     if (go.tag == "Enemy")
                     {

@@ -3958,7 +3958,7 @@ GameObject:
   - component: {fileID: 8113958036506924606}
   m_Layer: 0
   m_Name: dragon2_Blue
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

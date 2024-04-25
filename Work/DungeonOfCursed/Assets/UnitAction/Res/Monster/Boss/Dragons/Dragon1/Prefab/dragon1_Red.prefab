@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8981028633980220614}
   m_Layer: 0
   m_Name: dragon1_Red
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

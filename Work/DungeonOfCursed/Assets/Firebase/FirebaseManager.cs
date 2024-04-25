@@ -25,14 +25,14 @@ public class FirebaseManager
             var monsters = monsterData[monsterKey] as Dictionary<string, object>;
             if (monsters != null)
             {
-                Debug.Log("Monster Key: " + monsterKey);
+                //Debug.Log("Monster Key: " + monsterKey);
 
                 monster.Add(monsterKey, monsters);
 
                 foreach (var attributeKey in monsters.Keys)
                 {
                     var attributeValue = monsters[attributeKey];
-                    Debug.Log(attributeKey + ": " + attributeValue);
+                   // Debug.Log(attributeKey + ": " + attributeValue);
                 }
             }
         }
