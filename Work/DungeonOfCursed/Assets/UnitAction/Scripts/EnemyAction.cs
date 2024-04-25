@@ -14,6 +14,8 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     public bool instantAttack = false;
     public float removeDelay = 2f;
 
+    [HideInInspector] public int id;
+
     private Animator anim;
     private NavMeshAgent nav;
     private MapGenerator map;
@@ -35,7 +37,7 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     {
         anim = GetComponentInChildren<Animator>();
         nav = GetComponent<NavMeshAgent>();
-        map = GameObject.FindObjectOfType<MapGenerator>();
+        map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
     }
     void Start()
@@ -319,7 +321,7 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
         yield return new WaitForSeconds(delay);
 
         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
-            map.RemoveObject(gameObject);
+            map.RemoveObject(gameObject, id);
         else gameObject.SetActive(false);
     }
 

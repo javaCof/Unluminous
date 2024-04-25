@@ -27,6 +27,7 @@ public class UISizeFitter : MonoBehaviour
         foreach (var txt in canvas.GetComponentsInChildren<Text>(true))
         {
             txt.fontSize = (int)(txt.fontSize * heightRate);
+            txt.resizeTextForBestFit = false;
             if (font != null) txt.font = font;
         }
     }

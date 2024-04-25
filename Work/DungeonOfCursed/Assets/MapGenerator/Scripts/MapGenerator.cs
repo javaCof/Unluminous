@@ -16,7 +16,6 @@ public class MapGenerator : MonoBehaviour
     public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
     public enum TileID { FLOOR = 100, WALL, CORNER, PILLAR };                               //타일 ID
-    public enum ObjType { PLAYER, MONSTER, CHEST, POTAL }                                   //오브젝트 타입
 
     [SerializeField] private Color[] tileColors = { Color.white, Color.white, Color.black, Color.black, Color.black, Color.black };
     [SerializeField] private Color myPlayerColor = Color.red;
@@ -65,24 +64,22 @@ public class MapGenerator : MonoBehaviour
     {
         public RoomType type;
         public RectInt rect;
-        public Transform pos;
 
-        public RoomInfo(RoomType type, RectInt rect, Transform pos)
+        public RoomInfo(RoomType type, RectInt rect)
         {
             this.type = type;
             this.rect = rect;
-            this.pos = pos;
         }
     }
 
     [System.Serializable]
     public class ObjInfo
     {
-        public ObjType objID;
+        public int objID;
         public int roomID;
         public Vector3 pos;
 
-        public ObjInfo(ObjType objID, int roomID, Vector3 pos)
+        public ObjInfo(int objID, int roomID, Vector3 pos)
         {
             this.objID = objID;
             this.roomID = roomID;
@@ -125,6 +122,7 @@ public class MapGenerator : MonoBehaviour
         paths = new List<PathInfo>();
         roomInfos = new List<RoomInfo>();
         objects = new List<ObjInfo>();
+
         mapTiles = new TileType[mapSize.x * mapSize.y];
         tileTexture = new Texture2D(mapSize.x, mapSize.y);
 
@@ -145,15 +143,14 @@ public class MapGenerator : MonoBehaviour
             objectsPool[200] = new ResourcePool("object/PhotonPlayer", 1, poolPos);
         else objectsPool[200] = new PhotonPool("object/PhotonPlayer", 1, PhotonPool.PhotonInstantiateOption.STANDARD);
 
-        if (!PhotonNetwork.inRoom)
-            objectsPool[10000] = new ResourcePool("object/Enemy1", 100, poolPos);
-        else if (PhotonNetwork.isMasterClient)
-            objectsPool[10000] = new PhotonPool("object/Enemy1", 100);
-
-        if (!PhotonNetwork.inRoom)
-            objectsPool[10001] = new ResourcePool("object/Enemy2", 100, poolPos);
-        else if (PhotonNetwork.isMasterClient)
-            objectsPool[10001] = new PhotonPool("object/Enemy2", 100);
+        CreateObjectPool("object/Lizard_Blue", 10000, 20);
+        CreateObjectPool("object/Lizard_Red", 10001, 20);
+        CreateObjectPool("object/Skeleton", 10002, 20);
+        CreateObjectPool("object/Spider_black", 10003, 20);
+        CreateObjectPool("object/Spider_brown", 10004, 20);
+        CreateObjectPool("object/WolfBoss_Green", 10005, 20);
+        CreateObjectPool("object/WolfBoss_Red", 10006, 20);
+        CreateObjectPool("object/Potal", 20000, 1);
         /*--------------------------------------------------------------------------------------------*/
 
         StartCoroutine(LoadLevel());
@@ -162,13 +159,14 @@ public class MapGenerator : MonoBehaviour
     {
         UpdateMapTexture();
     }
-
-    public void ResetLevel()
+    [PunRPC] public void ResetLevel()
     {
         StartCoroutine(LoadLevel());
     }
     IEnumerator LoadLevel()
     {
+        yield return game.StartLoading();
+
         if (PhotonNetwork.inRoom)
         {
             //멀티용 맵 생성
@@ -182,6 +180,13 @@ public class MapGenerator : MonoBehaviour
 
         //로딩화면 제거
         yield return game.EndLoading();
+    }
+    void CreateObjectPool(string name, int id, int n)
+    {
+        if (!PhotonNetwork.inRoom)
+            objectsPool[id] = new ResourcePool(name, n, poolPos);
+        else if (PhotonNetwork.isMasterClient)
+            objectsPool[id] = new PhotonPool(name, n);
     }
 
     IEnumerator GenerateRandomMapLocal()
@@ -371,14 +376,14 @@ public class MapGenerator : MonoBehaviour
             else
                 type = RoomType.BATTLE;
 
-            Transform roomPos = new GameObject("room_" + i).transform;
-            roomPos.parent = objectPos;
-            roomInfos.Add(new RoomInfo(type, rooms[i], roomPos));
+            roomInfos.Add(new RoomInfo(type, rooms[i]));
         }
     }
     void SetObjectData()
     {
-        objects.AddRange(new List<ObjInfo>(PhotonNetwork.inRoom ? PhotonNetwork.room.PlayerCount : 1));
+        int playerCount = PhotonNetwork.inRoom ? PhotonNetwork.room.PlayerCount : 1;
+        for (int i = 0; i < playerCount; i++)
+            objects.Add(null);
 
         for (int i = 0; i < roomInfos.Count; i++)
         {
@@ -390,22 +395,19 @@ public class MapGenerator : MonoBehaviour
                 case RoomType.START:
                     {
                         if (PhotonNetwork.inRoom)
-                            AddObjectRandom(ObjType.PLAYER, PhotonNetwork.room.PlayerCount, i, objRect, true);
+                            AddObjectRandom(200, PhotonNetwork.room.PlayerCount, i, objRect, true);
                         else
-                            AddObjectCenter(ObjType.PLAYER, i, objRect, true);
+                            AddObjectCenter(200, i, objRect, true);
                     }
                     break;
                 case RoomType.BATTLE:
                     {
-                        AddObjectRandom(ObjType.MONSTER, 5, i, objRect);
+                        AddObjectRandom(Random.Range(10000, 10007), 5, i, objRect);
                     }
                     break;
                 case RoomType.TREASURE:
                     break;
                 case RoomType.BOSS:
-                    {
-                        AddObjectCenter(ObjType.POTAL, i, objRect);
-                    }
                     break;
                 case RoomType.ELITE:
                     break;
@@ -413,32 +415,30 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.POTAL:
                     {
-                        AddObjectCenter(ObjType.POTAL, i, objRect);
+                        AddObjectCenter(20000, i, objRect);
                     }
                     break;
             }
         }
     }
-    void AddObjectCenter(ObjType obj, int roomId, RectInt roomRect, bool addHead = false)
+    void AddObjectCenter(int objId, int roomId, RectInt roomRect, bool addHead = false)
     {
-        Vector3 pos = new Vector3(roomRect.center.x * tileSize, 5f, roomRect.center.y * tileSize);
+        Vector3 pos = new Vector3(roomRect.center.x * tileSize, 1f, roomRect.center.y * tileSize);
 
-        if (addHead)
-            objects[0] = new ObjInfo(obj, roomId, pos);
-        else objects.Add(new ObjInfo(obj, roomId, pos));
+        if (addHead) objects[0] = new ObjInfo(objId, roomId, pos);
+        else objects.Add(new ObjInfo(objId, roomId, pos));
     }
-    void AddObjectRandom(ObjType obj, int count, int roomId, RectInt roomRect, bool addHead = false)
+    void AddObjectRandom(int objId, int count, int roomId, RectInt roomRect, bool addHead = false)
     {
         CombinationRect objComb = new CombinationRect(roomRect);
 
         for (int i = 0; i < count; i++)
         {
             Vector2Int combPos = objComb.GetRandom();
-            Vector3 pos = new Vector3(combPos.x * tileSize, 5f, combPos.y * tileSize);
+            Vector3 pos = new Vector3(combPos.x * tileSize, 1f, combPos.y * tileSize);
 
-            if (addHead)
-                objects[i] = new ObjInfo(obj, roomId, pos);
-            else objects.Add(new ObjInfo(obj, roomId, pos));
+            if (addHead) objects[i] = new ObjInfo(objId, roomId, pos);
+            else objects.Add(new ObjInfo(objId, roomId, pos));
         }
     }
 
@@ -688,32 +688,29 @@ public class MapGenerator : MonoBehaviour
 
         foreach (ObjInfo obj in objs)
         {
-            switch (obj.objID)
+            if (obj.objID != 200)
             {
-                case ObjType.MONSTER:
-                    {
-                        if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
-                        {
-                            GameObject go = GenerateObject(obj);
-                            Rect objRoom = new Rect(
-                                rooms[obj.roomID].x * tileSize, rooms[obj.roomID].y * tileSize,
-                                rooms[obj.roomID].width * tileSize, rooms[obj.roomID].height * tileSize
-                                );
-                            go.GetComponent<EnemyAction>().SetRoom(obj.roomID, objRoom);
-                        }
-                    }
-                    break;
-                case ObjType.POTAL:
-                    {
+                if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
+                {
+                    GameObject go = GenerateObject(obj);
+                    Rect objRoom = new Rect(
+                        rooms[obj.roomID].x * tileSize, rooms[obj.roomID].y * tileSize,
+                        rooms[obj.roomID].width * tileSize, rooms[obj.roomID].height * tileSize
+                        );
 
+                    if (go.tag == "Enemy")
+                    {
+                        go.GetComponent<EnemyAction>().id = obj.objID;
+                        go.GetComponent<EnemyAction>().SetRoom(obj.roomID, objRoom);
                     }
-                    break;
+                        
+                }
             }
         }
     }
     GameObject GenerateObject(ObjInfo info)
     {
-        return objectsPool[Random.Range(10000, 10002)].GetObject(info.pos, Quaternion.identity, roomInfos[info.roomID].pos);
+        return objectsPool[info.objID].GetObject(info.pos, Quaternion.identity, objectPos);
     }
     [PunRPC]
     void GeneratePlayer()
@@ -738,7 +735,7 @@ public class MapGenerator : MonoBehaviour
         }
         return -1;
     }
-    public void RemoveObject(GameObject go, int id = 10000)
+    public void RemoveObject(GameObject go, int id)
     {
         objectsPool[id].DisableObject(go);
     }
