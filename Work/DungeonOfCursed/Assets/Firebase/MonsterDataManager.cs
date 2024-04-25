@@ -99,19 +99,40 @@ public class MonsterDataManager : MonoBehaviour
         // }
     }
 
-    [ContextMenu("정보 다시")]
+    [ContextMenu("키 정보 수정")]
     public async void RenameMonsterKey()
     {
         // 1. 데이터 가져오기
-        var golemData = await FirebaseManager.databaseReference.Child("Equip").Child("Helmet").Child("전설의 투구 ").GetValueAsync();
+        var monsterDataSnapshot = await FirebaseManager.databaseReference.Child("Monster").Child("전설의 투구 ").GetValueAsync();
 
         // 2. "???"으로 새 키에 데이터 복사
-        await FirebaseManager.databaseReference.Child("Equip").Child("Helmet").Child("전설의 투구").SetValueAsync(golemData.Value);
+        await FirebaseManager.databaseReference.Child("Monster").Child("전설의 투구").SetValueAsync(monsterDataSnapshot.Value);
 
         // 3. 기존 키 삭제
-        await FirebaseManager.databaseReference.Child("Equip").Child("Helmet").Child("전설의 투구 ").RemoveValueAsync();
+        await FirebaseManager.databaseReference.Child("Monster").Child("전설의 투구 ").RemoveValueAsync();
 
         Debug.Log("키 변경이 완료되었습니다.");
+        
+    }
+
+    [ContextMenu("Value 정보 수정")]
+     public async void RenameMonsterValue()
+    {
+        // 1. 데이터 가져오기 , monster.Child("???") 수정할 id만 바꿔주기
+        var monsterDataSnapshot = await FirebaseManager.databaseReference.Child("Monster").Child("12010").GetValueAsync();
+        var monsterData = monsterDataSnapshot.Value as Dictionary<string, object>;
+
+        //ex)수정 부분이 dec 이면 
+        if(monsterData != null && monsterData.ContainsKey("atk"))
+        {
+            monsterData["atk"] = 5;
+            //monsterData["name"] = "알비노 그 긴거"; 스트링 형식은 "" 안에 적기
+        }
+
+        //monster.child("???") id부분만 바꿔서 수정
+        await FirebaseManager.databaseReference.Child("Monster").Child("12010").SetValueAsync(monsterData);
+
+        Debug.Log("Value값 변경이 완료되었습니다.");
         
     }
 
