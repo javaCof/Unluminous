@@ -143,13 +143,13 @@ public class MapGenerator : MonoBehaviour
             objectsPool[200] = new ResourcePool("object/PhotonPlayer", 1, poolPos);
         else objectsPool[200] = new PhotonPool("object/PhotonPlayer", 1, PhotonPool.PhotonInstantiateOption.STANDARD);
 
-        CreateObjectPool("object/Lizard_Blue", 10000, 20);
-        CreateObjectPool("object/Lizard_Red", 10001, 20);
-        CreateObjectPool("object/Skeleton", 10002, 20);
-        CreateObjectPool("object/Spider_black", 10003, 20);
-        CreateObjectPool("object/Spider_brown", 10004, 20);
-        CreateObjectPool("object/WolfBoss_Green", 10005, 20);
-        CreateObjectPool("object/WolfBoss_Red", 10006, 20);
+        CreateObjectPool("object/Lizard_Blue", 10000, 100);
+        CreateObjectPool("object/Lizard_Red", 10001, 100);
+        CreateObjectPool("object/Skeleton", 10002, 100);
+        CreateObjectPool("object/Spider_black", 10003, 100);
+        CreateObjectPool("object/Spider_brown", 10004, 100);
+        CreateObjectPool("object/WolfBoss_Green", 10005, 100);
+        CreateObjectPool("object/WolfBoss_Red", 10006, 100);
         CreateObjectPool("object/Potal", 20000, 1);
         /*--------------------------------------------------------------------------------------------*/
 
@@ -159,7 +159,7 @@ public class MapGenerator : MonoBehaviour
     {
         UpdateMapTexture();
     }
-    [ContextMenu(":(")]
+    [ContextMenu("Reset Map")]
     [PunRPC] public void ResetLevel()
     {
         StartCoroutine(LoadLevel());
@@ -403,7 +403,7 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.BATTLE:
                     {
-                        AddObjectRandom(Random.Range(10000, 10007), 5, i, objRect);
+                        AddObjectRandom(Random.Range(10005, 10006), 5, i, objRect);
                     }
                     break;
                 case RoomType.TREASURE:

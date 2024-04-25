@@ -89,8 +89,8 @@ MonoBehaviour:
   isDead: 0
   curHP: 0
   roomNum: 0
-  attackDist: 2
-  actionDist: 2
+  attackDist: 20
+  actionDist: 20
   controllable: 1
 --- !u!114 &7753764107837755533
 MonoBehaviour:

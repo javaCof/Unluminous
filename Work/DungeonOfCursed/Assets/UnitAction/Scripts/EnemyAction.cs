@@ -21,11 +21,11 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     private MapGenerator map;
     private PhotonView pv;
 
-    private EnemyState state;
+    public EnemyState state;
     private Rect roomRect;
 
     private GameObject[] players;
-    private Transform target;
+    public Transform target;
     private Vector3 originPos;
     private float attackDtime;
 
