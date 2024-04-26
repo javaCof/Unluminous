@@ -5,29 +5,29 @@ public class MonsterDataManager : MonoBehaviour
 {
     public class Monster
     {
-        public int id;
         public int type;
         public float hp;
         public float atk;
         public float def;
         public float spd;
         public string dec;
+        public string name;
 
-        public Monster(int id, int type, float hp, float atk, float def, float spd, string dec)
+        public Monster(int type, float hp, float atk, float def, float spd, string dec, string name)
         {
-            this.id = id;
             this.type = type;
             this.hp = hp;
             this.atk = atk;
             this.def = def;
             this.spd = spd;
             this.dec = dec;
+            this.name = name;
         }
     }
 
     public Dictionary<int, Monster> monsters = new Dictionary<int, Monster>();
 
-    public int id;
+    public string id;
     public int type;
     public float hp;
     public int atk;
@@ -45,20 +45,20 @@ public class MonsterDataManager : MonoBehaviour
     [ContextMenu("몬스터 정보 저장")]
     void SaveMonsterData()
     {
-        var monsterData = new Monster(id, type, hp, atk, def, spd, dec);
+        var monsterData = new Monster(type, hp, atk, def, spd, dec, monsterName);
         string jsonData = JsonUtility.ToJson(monsterData);
         
-        FirebaseManager.databaseReference.Child("Monster").Child(monsterName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Monster").Child(id).SetRawJsonValueAsync(jsonData);
         Debug.Log(jsonData);
     }
 
     [ContextMenu("몬스터 정보 불러오기")]
-    async void LoadMonsterData()
+    void LoadMonsterData()
     {
         //var dataSnapshot = await FirebaseR.databaseReference.Child("Monster").GetValueAsync();
         //var monsterData = await FirebaseR.MonsterData();
 
-        await FirebaseManager.MonsterLoadData();
+        //await FirebaseManager.MonsterLoadData();
         if(FirebaseManager.monsterDataLoad.HasChildren)
         {
             foreach(var monsterDataSnapshot in FirebaseManager.monsterDataLoad.Children)
