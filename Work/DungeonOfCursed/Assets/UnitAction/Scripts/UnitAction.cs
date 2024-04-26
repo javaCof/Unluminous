@@ -4,23 +4,12 @@ using UnityEngine;
 
 public abstract class UnitAction : MonoBehaviour
 {
-    [HideInInspector] public bool isDead;
-    [HideInInspector] public int id;
-    [HideInInspector] public UnitStatInfo stat;
-    [HideInInspector] public float curHP;
-    [HideInInspector] public int roomNum;
+    public bool isDead;
 
-    protected void SetStat()
-    {
-        //if (id == 200) return;
+    public UnitStatInfo stat;
+    public float curHP;
 
-        //stat = new UnitStatInfo();
-        //stat.HP = (float)FirebaseManager.monster[id.ToString()]["hp"];
-        //stat.ATK = (float)FirebaseManager.monster[id.ToString()]["atk"];
-        //stat.DEF = (float)FirebaseManager.monster[id.ToString()]["def"];
-        //stat.SPD = (float)FirebaseManager.monster[id.ToString()]["spd"];
-        //curHP = stat.HP;
-    }
+    public int roomNum;
 
     public abstract void AttackAction();
 }

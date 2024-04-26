@@ -45,10 +45,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.64
+  m_Radius: 1.33
   m_Height: 2.61
   m_Direction: 2
-  m_Center: {x: 0, y: 0.69, z: 0}
+  m_Center: {x: 0, y: 1.36, z: 0}
 --- !u!195 &2802540827995534360
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -87,12 +87,12 @@ MonoBehaviour:
   curHP: 0
   roomNum: -1
   enableState: 1
-  minAttackRange: 3
-  maxAttackRange: 4
-  traceRange: 7
+  minAttackRange: 3.3
+  maxAttackRange: 3.8
+  traceRange: 13
   attackDelay: 1
   instantAttack: 1
-  removeDelay: 2
+  removeDelay: 1.8
   id: 0
   originPos: {x: 0, y: 0, z: 0}
 --- !u!114 &-7679390295509109960

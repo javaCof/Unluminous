@@ -30,16 +30,18 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
+            isDead = false;
             roomNum = -1;
 
-            SetStat();
+            SetSampleData();
         }
     }
     private void Update()
     {
+        UpdateRoomNum();
+
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            UpdateRoomNum();
             SetLookTarget();
             ShowLookTarget();
 
@@ -55,12 +57,25 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
             }
         }
     }
+
+
     public void Reset()
     {
         curHP = stat.HP;
         isDead = false;
         controllable = true;
         anim.applyRootMotion = false;
+    }
+
+    //임시 데이터 설정
+    void SetSampleData()
+    {
+        stat = new UnitStatInfo();
+        stat.HP = 30;
+        stat.ATK = 5;
+        stat.DEF = 5;
+        stat.SPD = 1;
+        curHP = stat.HP;
     }
 
     void UpdateRoomNum()
@@ -159,20 +174,6 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
         SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
     }
 
-    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        if (stream.isWriting)
-        {
-            stream.SendNext(isDead);
-            stream.SendNext(roomNum);
-        }
-        else
-        {
-            isDead = (bool)stream.ReceiveNext();
-            roomNum = (int)stream.ReceiveNext();
-        }
-    }
-
     [PunRPC] public void OnPoolCreate()
     {
         if (pv.isMine)
@@ -190,8 +191,6 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
         transform.localPosition = pos;
         transform.localRotation = rot;
         gameObject.SetActive(true);
-
-        Reset();
     }
     [PunRPC] public void OnPoolDisable()
     {

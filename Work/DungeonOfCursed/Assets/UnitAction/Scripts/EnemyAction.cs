@@ -14,7 +14,8 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     public float attackDelay = 1f;
     public bool instantAttack = false;
     public float removeDelay = 2f;
-    
+
+    [HideInInspector] public int id;
     [HideInInspector] public Vector3 originPos;
 
     private Animator anim;
@@ -45,7 +46,7 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     {
         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
-            SetStat();
+            SetSampleData();
             InitState(EnemyState.Search);
         }
         else
@@ -68,6 +69,31 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
             UpdateAnimMove(animMove);
         }
     }
+
+    //임시 데이터 설정
+    void SetSampleData()
+    {
+        stat = new UnitStatInfo();
+        stat.HP = 30;
+        stat.ATK = 1;
+        stat.DEF = 5;
+        stat.SPD = 1;
+        curHP = stat.HP;
+    }
+
+    //방 정보 설정
+    public void SetRoom(int id, Rect rect)
+    {
+        roomNum = id;
+        roomRect = rect;
+    }
+
+
+    public void Init()
+    {
+        
+    }
+
     public void Reset()
     {
         curHP = stat.HP;
@@ -76,10 +102,9 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
         anim.applyRootMotion = false;
     }
 
-    public void SetRoom(int id, Rect rect)
+    public void SetStat(UnitStatInfo stat)
     {
-        roomNum = id;
-        roomRect = rect;
+        
     }
 
     void InitState(EnemyState _state)
@@ -255,8 +280,7 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
             {
                 if (PhotonNetwork.inRoom)
                 {
-                    PhotonView othPv = attackTarget.GetComponent<PhotonView>();
-                    othPv.RPC("Hit_Owner", othPv.owner, stat.ATK);
+                    attackTarget.GetComponent<PhotonView>().RPC("Hit_Owner", PhotonTargets.All, stat.ATK);
                 }
                 else
                 {
@@ -294,7 +318,6 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
         if (isDead) return;
 
         curHP -= dmg;
-        attackDtime = Time.time;
 
         if (curHP <= 0)
         {
@@ -344,18 +367,12 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
     {
         if (stream.isWriting)
         {
-            stream.SendNext(isDead);
-            stream.SendNext(roomNum);
-
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
             stream.SendNext(animMove);
         }
         else
         {
-            isDead = (bool)stream.ReceiveNext();
-            roomNum = (int)stream.ReceiveNext();
-
             curPos = (Vector3)stream.ReceiveNext();
             curRot = (Quaternion)stream.ReceiveNext();
             animMove = (bool)stream.ReceiveNext();
@@ -379,8 +396,6 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
         transform.localPosition = pos;
         transform.localRotation = rot;
         gameObject.SetActive(true);
-
-        Reset();
     }
     [PunRPC] public void OnPoolDisable()
     {

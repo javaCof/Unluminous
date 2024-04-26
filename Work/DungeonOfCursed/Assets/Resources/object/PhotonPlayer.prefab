@@ -70,8 +70,8 @@ MonoBehaviour:
   jumpable: 1
   jumpForce: 8
   gravity: 20
-  mouseSensitivityX: 10
-  mouseSensitivityY: 10
+  mouseSensitivityX: 20
+  mouseSensitivityY: 20
   maxCamRotateAngle: 45
   camOffset: {x: 0, y: 1.72, z: 0.4}
 --- !u!114 &2958236034093024014
@@ -113,7 +113,6 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents:
   - {fileID: 1637102306246264385}
-  - {fileID: 2958236034093024014}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

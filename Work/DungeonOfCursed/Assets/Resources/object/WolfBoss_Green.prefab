@@ -196,6 +196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4725821946295790910}
   - component: {fileID: 4725821946295790897}
+  - component: {fileID: 4384398211726071460}
   m_Layer: 0
   m_Name: wolfBoss_Green
   m_TagString: Untagged
@@ -240,6 +241,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4384398211726071460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4725821946295790896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8924811c157ad0444ab160b95231be33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4725821946456360831
 GameObject:
   m_ObjectHideFlags: 0
@@ -2353,9 +2366,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.96
-  m_Height: 3.4
+  m_Height: 5.68
   m_Direction: 2
-  m_Center: {x: 0, y: 0.98, z: 0}
+  m_Center: {x: 0, y: 1.36, z: 0}
 --- !u!195 &7140234444088934823
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2365,7 +2378,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 7140234444088934816}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 1.74
+  m_Radius: 2.88
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -2395,10 +2408,11 @@ MonoBehaviour:
   roomNum: -1
   enableState: 1
   minAttackRange: 5
-  maxAttackRange: 8
+  maxAttackRange: 5.5
+  traceRange: 13.5
   attackDelay: 1
   instantAttack: 1
-  removeDelay: 2
+  removeDelay: 6.5
   id: 0
   originPos: {x: 0, y: 0, z: 0}
 --- !u!114 &6623787667841266153
