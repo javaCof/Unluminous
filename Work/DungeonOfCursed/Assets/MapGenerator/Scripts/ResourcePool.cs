@@ -23,9 +23,9 @@ public class ResourcePool : ObjectPool
     {
         if (idx < objects.Count)
         {
-            objects[idx].transform.position = pos;
-            objects[idx].transform.rotation = rot;
             objects[idx].transform.parent = parent;
+            objects[idx].transform.localPosition = pos;
+            objects[idx].transform.localRotation = rot;
             objects[idx].SetActive(true);
             return objects[idx++];
         }

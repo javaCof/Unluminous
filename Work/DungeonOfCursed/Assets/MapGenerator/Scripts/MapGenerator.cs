@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+    [Tooltip("생성되는 몬스터 (10000~10006)")]
+    public int mon_id = 10000;
+
     public Camera mainCam;                          //카메라
     public Transform mapPos;                        //맵 위치
     public Texture2D mapTexture;                    //맵 텍스쳐
@@ -403,7 +406,7 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.BATTLE:
                     {
-                        AddObjectRandom(Random.Range(10003, 10004), 5, i, objRect);
+                        AddObjectRandom(mon_id, 5, i, objRect);
                     }
                     break;
                 case RoomType.TREASURE:

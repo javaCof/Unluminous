@@ -17,43 +17,36 @@ public class Potal : MonoBehaviour, IPhotonPoolObject
     {
         if (oth.tag == "Player")
         {
-            if (PhotonNetwork.inRoom)
+            if (!PhotonNetwork.inRoom)
+                map.ResetLevel();
+            else if (oth.GetComponent<PhotonView>().isMine)
                 map.GetComponent<PhotonView>().RPC("ResetLevel", PhotonTargets.MasterClient);
-            else map.ResetLevel();
         }
     }
 
-    public void OnPoolCreate()
+    [PunRPC] public void OnPoolCreate()
     {
         if (pv.isMine)
-            pv.RPC("OnPotalCreate", PhotonTargets.All);
-    }
-    public void OnPoolEnable()
-    {
-        if (pv.isMine)
-            pv.RPC("OnPotalEnable", PhotonTargets.All);
-    }
-    public void OnPoolDisable()
-    {
-        if (pv.isMine)
-            pv.RPC("OnPotalDisable", PhotonTargets.All);
-    }
+            pv.RPC("OnPoolCreate", PhotonTargets.Others);
 
-    [PunRPC]
-    void OnPotalCreate()
-    {
         transform.parent = map.poolPos;
         gameObject.SetActive(false);
     }
-    [PunRPC]
-    void OnPotalEnable()
+    [PunRPC] public void OnPoolEnable(Vector3 pos, Quaternion rot)
     {
+        if (pv.isMine)
+            pv.RPC("OnPoolEnable", PhotonTargets.Others, pos, rot);
+
         transform.parent = map.objectPos;
+        transform.localPosition = pos;
+        transform.localRotation = rot;
         gameObject.SetActive(true);
     }
-    [PunRPC]
-    void OnPotalDisable()
+    [PunRPC] public void OnPoolDisable()
     {
+        if (pv.isMine)
+            pv.RPC("OnPoolDisable", PhotonTargets.Others);
+
         transform.parent = map.poolPos;
         gameObject.SetActive(false);
     }

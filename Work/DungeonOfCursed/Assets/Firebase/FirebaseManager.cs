@@ -49,14 +49,14 @@ public class FirebaseManager
             var items = itemData[itemKey] as Dictionary<string, object>;
             if (items != null)
             {
-                Debug.Log("itemKey Key: " + itemKey);
+                //Debug.Log("itemKey Key: " + itemKey);
 
                 item.Add(itemKey, items);
 
                 foreach (var attributeKey in items.Keys)
                 {
                     var attributeValue = items[attributeKey];
-                    Debug.Log(attributeKey + ": " + attributeValue);
+                    //Debug.Log(attributeKey + ": " + attributeValue);
                 }
             }
         }

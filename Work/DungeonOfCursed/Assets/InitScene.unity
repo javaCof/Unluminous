@@ -184,4 +184,5 @@ MonoBehaviour:
     \uC774\uB984 \uB3D9\uAE30\uD654\n\n[\uC624\uB958\uC0AC\uD56D]\n\uBA40\uD2F0 \uB3D9\uC791
     \uC548\uD568\n\uBAA8\uBC14\uC77C \uC2F1\uAE00 \uD3EC\uD0C8 \uC624\uB958\nCoroutine
     couldn't be started because the the game object 'WolfBoss_Green(Clone)' is inactive!\nUnityEngine.MonoBehaviour:StartCoroutine
-    (System.Collections.IEnumerator)"
+    (System.Collections.IEnumerator)\n\noth player \uB3D9\uC791\uC548\uD568\n-> roominfo
+    \uB3D9\uAE30\uD654 \uC548\uB428"

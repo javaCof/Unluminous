@@ -107,10 +107,6 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
         
     }
 
-
-
-
-
     void InitState(EnemyState _state)
     {
         state = _state;
@@ -391,12 +387,14 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
         transform.parent = map.poolPos;
         gameObject.SetActive(false);
     }
-    [PunRPC] public void OnPoolEnable()
+    [PunRPC] public void OnPoolEnable(Vector3 pos, Quaternion rot)
     {
         if (PhotonNetwork.isMasterClient)
-            pv.RPC("OnPoolEnable", PhotonTargets.Others);
+            pv.RPC("OnPoolEnable", PhotonTargets.Others, pos, rot);
 
         transform.parent = map.objectPos;
+        transform.localPosition = pos;
+        transform.localRotation = rot;
         gameObject.SetActive(true);
     }
     [PunRPC] public void OnPoolDisable()

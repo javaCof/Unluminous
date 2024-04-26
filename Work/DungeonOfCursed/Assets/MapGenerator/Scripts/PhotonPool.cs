@@ -23,9 +23,7 @@ public class PhotonPool : ObjectPool
     {
         if (idx < objects.Count)
         {
-            objects[idx].transform.position = pos;
-            objects[idx].transform.rotation = rot;
-            objects[idx].GetComponent<IPhotonPoolObject>().OnPoolEnable();
+            objects[idx].GetComponent<IPhotonPoolObject>().OnPoolEnable(pos, rot);
 
             return objects[idx++];
         }
