@@ -89,7 +89,6 @@ MonoBehaviour:
   isDead: 0
   curHP: 0
   roomNum: 0
-  attackDist: 20
   actionDist: 20
   controllable: 1
 --- !u!114 &7753764107837755533
@@ -114,6 +113,7 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents:
   - {fileID: 1637102306246264385}
+  - {fileID: 2958236034093024014}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

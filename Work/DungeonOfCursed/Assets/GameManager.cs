@@ -17,30 +17,30 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
     }
-    private void Start()
+    IEnumerator Start()
     {
-        StartCoroutine(MonsterLoad());
-        SceneManager.LoadSceneAsync(nextScene);
+        yield return StartLoading();
+
+        yield return MonsterLoad();
+        yield return ItemLoad();
+        yield return EquipLoad();
+
+        yield return ChangeScene("InitScene", nextScene);
+
+        yield return EndLoading();
     }
 
     IEnumerator MonsterLoad() 
     {
         yield return FirebaseManager.MonsterLoadData();
-        Debug.Log("몬스터 로드 완료");
-        StartCoroutine(ItemLoad());
     }
-
     IEnumerator ItemLoad()
     {
         yield return FirebaseManager.ItemLoadData();
-        Debug.Log("아이템 로드 완료");
-        StartCoroutine(EquipLoad());
     }
-
     IEnumerator EquipLoad()
     {
         yield return FirebaseManager.EquipLoadData();
-        Debug.Log("장비 로드 완료");
     }
 
     public IEnumerator MoveToScene(string scene, float delay=0)
