@@ -87,8 +87,8 @@ MonoBehaviour:
   curHP: 0
   roomNum: -1
   enableState: 1
-  minAttackRange: 3.3
-  maxAttackRange: 3.8
+  minAttackRange: 4.3
+  maxAttackRange: 4.8
   traceRange: 13
   attackDelay: 1
   instantAttack: 1

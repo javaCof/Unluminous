@@ -1224,6 +1224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca45815fb20ad2f48b748cfca77cb1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mon_id: 10002
   mainCam: {fileID: 951486410}
   mapPos: {fileID: 1897770998}
   mapTexture: {fileID: 2800000, guid: 3c4a14e0c1ede4241817ffb10b0936f3, type: 3}
@@ -2489,8 +2490,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 960, y: 1080}
-  m_SizeDelta: {x: 1920, y: 2160}
+  m_AnchoredPosition: {x: 480, y: 540}
+  m_SizeDelta: {x: 960, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224575832414858106
 RectTransform:
@@ -2509,8 +2510,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 2897.28, y: 1080}
-  m_SizeDelta: {x: 1885.44, y: 2160}
+  m_AnchoredPosition: {x: 1448.64, y: 540}
+  m_SizeDelta: {x: 942.72, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224668971691279501
 RectTransform:
@@ -2571,8 +2572,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -379.19995, y: -388.8}
-  m_SizeDelta: {x: 864, y: 864}
+  m_AnchoredPosition: {x: -189.59998, y: -194.4}
+  m_SizeDelta: {x: 432, y: 432}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224799043975527508
 RectTransform:
@@ -2595,8 +2596,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 111.936035, y: -330.47998}
-  m_SizeDelta: {x: 864, y: 864}
+  m_AnchoredPosition: {x: 55.968018, y: -165.23999}
+  m_SizeDelta: {x: 432, y: 432}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224889228430680227
 RectTransform:
