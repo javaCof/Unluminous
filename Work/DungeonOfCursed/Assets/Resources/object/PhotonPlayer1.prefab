@@ -87,6 +87,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDead: 0
+  id: 0
   curHP: 0
   roomNum: 0
   actionDist: 20
@@ -113,6 +114,7 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents:
   - {fileID: 1637102306246264385}
+  - {fileID: 2958236034093024014}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1

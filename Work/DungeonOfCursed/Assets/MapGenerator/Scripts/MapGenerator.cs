@@ -162,6 +162,7 @@ public class MapGenerator : MonoBehaviour
     {
         UpdateMapTexture();
     }
+
     [ContextMenu("Reset Map")]
     [PunRPC] public void ResetLevel()
     {

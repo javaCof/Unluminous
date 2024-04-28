@@ -13,20 +13,6 @@ public class MenuUI : MonoBehaviour
         game = FindObjectOfType<GameManager>();
     }
 
-    private void Start()
-    {
-        Debug.Log("데이터베이스");
-        foreach (var i in FirebaseManager.monster)
-        {
-            Debug.Log("key : " + i.Key);
-            foreach (var j in i.Value)
-            {
-                Debug.Log("" + j.Key + " | " + j.Value.ToString());
-            }
-            Debug.Log("");
-        }
-    }
-
     public void OnSingleButtonClick()
     {
         StartCoroutine(SingleLoad());

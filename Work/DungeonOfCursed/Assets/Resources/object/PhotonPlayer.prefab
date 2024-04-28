@@ -2855,8 +2855,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7931707577465242781}
   - component: {fileID: 7931707577472248369}
+  - component: {fileID: 6700112293617965991}
   m_Layer: 0
-  m_Name: warrior 3
+  m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2901,6 +2902,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6700112293617965991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7931707577464821949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8924811c157ad0444ab160b95231be33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7931707577464821951
 GameObject:
   m_ObjectHideFlags: 0
@@ -7025,9 +7038,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDead: 0
+  id: 0
   curHP: 0
   roomNum: 0
-  actionDist: 20
+  actionDist: 5
   controllable: 1
 --- !u!114 &1395430225
 MonoBehaviour:
@@ -7051,6 +7065,7 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents:
   - {fileID: 1395430223}
+  - {fileID: 1395430224}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0
   instantiationId: -1
