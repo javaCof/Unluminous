@@ -1,0 +1,1473 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1471071445758983040
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758551968}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:shell3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758551968
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983040}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.09986118, y: 0.86260366, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1471071445758551970}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1471071445758983042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758551970}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:shell2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758551970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983042}
+  m_LocalRotation: {x: 0.15593877, y: -0.026131434, z: -0.022685066, w: 0.9871604}
+  m_LocalPosition: {x: -0.09986118, y: 0.86260366, z: -5.5227317e-10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758551968}
+  m_Father: {fileID: 1471071445758551972}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 5.9258294, y: 4.9442067, z: 5.8238406}
+--- !u!1 &1471071445758983044
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758551972}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:shell1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758551972
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983044}
+  m_LocalRotation: {x: 0.103066176, y: 0.006455758, z: 0.012374605, w: 0.99457663}
+  m_LocalPosition: {x: -0.021867458, y: 0.72833383, z: -0.00002329991}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758551970}
+  m_Father: {fileID: 1471071445758552032}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: -1.1515388, y: 0.4620916, z: 4.196263}
+--- !u!1 &1471071445758983046
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758551974}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:Root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758551974
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983046}
+  m_LocalRotation: {x: -0.025461782, y: 0.042687077, z: -0.03540254, w: 0.9981364}
+  m_LocalPosition: {x: -0.84291077, y: 0.9402918, z: 0.23998229}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552042}
+  m_Father: {fileID: 1471071445758552038}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 1.7607733, y: -0.33449268, z: -1.1934214}
+--- !u!1 &1471071445758983050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758551978}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:tail2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758551978
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983050}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.49433526, y: -0.235938, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1471071445758551980}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1471071445758983052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758551980}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:tail1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758551980
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983052}
+  m_LocalRotation: {x: 0, y: -0, z: -0.25607887, w: 0.9666559}
+  m_LocalPosition: {x: -0.31202632, y: -0.099675074, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758551978}
+  m_Father: {fileID: 1471071445758551982}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -0.08098281, y: -0.017955432, z: -24.781765}
+--- !u!1 &1471071445758983054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758551982}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:tail
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758551982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983054}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.4212205, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758551980}
+  m_Father: {fileID: 1471071445758552042}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: -0.061233822, y: 0.0815162, z: -24.665623}
+--- !u!1 &1471071445758983072
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552000}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:lip3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552000
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983072}
+  m_LocalRotation: {x: 0.06651315, y: -0.019167054, z: 0.2916523, w: 0.95401657}
+  m_LocalPosition: {x: 0.028147543, y: -0.043945327, z: 1.8896809e-10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552014}
+  m_Father: {fileID: 1471071445758552044}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 2.8056056, y: 1.2621188, z: 35.330193}
+--- !u!1 &1471071445758983074
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552002}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:lip2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552002
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983074}
+  m_LocalRotation: {x: -0.007600953, y: 0.0022822008, z: -0.086905025, w: 0.996185}
+  m_LocalPosition: {x: 0.114911444, y: -0.020154998, z: 5.2496046e-10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552004}
+  m_Father: {fileID: 1471071445758552044}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -4.8376107, y: 1.6942863, z: -3.4511955}
+--- !u!1 &1471071445758983076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552004}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:lip1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552004
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983076}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.59498924, y: -0.08194462, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1471071445758552002}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1471071445758983078
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552006}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:l_front_upperarm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983078}
+  m_LocalRotation: {x: 0.14240079, y: 0.015237502, z: -0.008981649, w: 0.989651}
+  m_LocalPosition: {x: 0.021600308, y: -0.005736328, z: 0.44486004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552062}
+  m_Father: {fileID: 1471071445758552056}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 21.354992, y: 2.050831, z: -1.0762751}
+--- !u!1 &1471071445758983080
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552008}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:r_back_foot2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552008
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983080}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: -6.123234e-17}
+  m_LocalPosition: {x: -0.13600509, y: -0.007298867, z: -0.32545194}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1471071445758552010}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
+--- !u!1 &1471071445758983082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552010}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:r_back_foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552010
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983082}
+  m_LocalRotation: {x: -0.16918032, y: -0.041327935, z: 0.15767369, w: 0.9720129}
+  m_LocalPosition: {x: -0.052026, y: -0.4733181, z: -0.037215}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552008}
+  m_Father: {fileID: 1471071445758552022}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 1.3781836, y: 0.32743567, z: -0.41990426}
+--- !u!1 &1471071445758983084
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552012}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:neck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552012
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983084}
+  m_LocalRotation: {x: -0.042285603, y: 0.084584944, z: 0.17543913, w: 0.979938}
+  m_LocalPosition: {x: 0.7420437, y: -0.044457585, z: 0.018650716}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552044}
+  m_Father: {fileID: 1471071445758552046}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: -6.621043, y: 14.433895, z: -12.660385}
+--- !u!1 &1471071445758983086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552014}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:lip4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552014
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983086}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.24812722, y: -0.50626814, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1471071445758552000}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1471071445758983088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552016}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:r_front_forearm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552016
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983088}
+  m_LocalRotation: {x: 0.022629308, y: -0.0058538197, z: 0.014503925, w: 0.9996216}
+  m_LocalPosition: {x: 0.121673994, y: -0.449592, z: -0.172977}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552030}
+  m_Father: {fileID: 1471071445758552024}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -11.145443, y: 0.5225059, z: -2.6436887}
+--- !u!1 &1471071445758983090
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552018}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:r_back_upperleg
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983090}
+  m_LocalRotation: {x: 0.15425333, y: 0.013256439, z: -0.10517889, w: 0.98232764}
+  m_LocalPosition: {x: -0.377361, y: -0.119555995, z: -0.42554098}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552022}
+  m_Father: {fileID: 1471071445758552020}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -9.053961, y: -0.37319645, z: 7.859171}
+--- !u!1 &1471071445758983092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552020}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:r_back_thight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983092}
+  m_LocalRotation: {x: 0.0045984006, y: -0.032149374, z: -0.0872072, w: 0.99566066}
+  m_LocalPosition: {x: 0.38425627, y: 0.22291936, z: -0.60053426}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552018}
+  m_Father: {fileID: 1471071445758552042}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 11.774408, y: -2.0173938, z: -12.749687}
+--- !u!1 &1471071445758983094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552022}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:r_back_lowerleg
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983094}
+  m_LocalRotation: {x: 0.038693905, y: 0.015169988, z: -0.05166357, w: 0.9977994}
+  m_LocalPosition: {x: -0.165015, y: -0.408318, z: -0.113097}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552010}
+  m_Father: {fileID: 1471071445758552018}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -5.9427443, y: -0.42156893, z: 5.8404703}
+--- !u!1 &1471071445758983096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552024}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:r_front_upperarm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552024
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983096}
+  m_LocalRotation: {x: 0.07502757, y: 0.012476503, z: -0.0013421694, w: 0.9971025}
+  m_LocalPosition: {x: 0.0216, y: -0.0057360004, z: -0.44485798}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552016}
+  m_Father: {fileID: 1471071445758552026}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -14.722156, y: -1.4976982, z: -0.7107341}
+--- !u!1 &1471071445758983098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552026}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:r_front_shoulder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552026
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983098}
+  m_LocalRotation: {x: 0.03814328, y: -0.16599545, z: 0.23653446, w: 0.9565783}
+  m_LocalPosition: {x: -0.08540617, y: -0.038084093, z: -0.64429057}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552024}
+  m_Father: {fileID: 1471071445758552046}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 24.554707, y: 3.96241, z: 3.6519215}
+--- !u!1 &1471071445758983100
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552028}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:r_front_hand2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983100}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: -6.123234e-17}
+  m_LocalPosition: {x: 0.09165912, y: -0.032811042, z: -0.3170759}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1471071445758552030}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180}
+--- !u!1 &1471071445758983102
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552030}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:r_front_hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552030
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983102}
+  m_LocalRotation: {x: -0.059035327, y: 0.0099910125, z: -0.17116682, w: 0.9834211}
+  m_LocalPosition: {x: 5.983885e-11, y: -0.54125905, z: 6.2136235e-10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552028}
+  m_Father: {fileID: 1471071445758552016}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0.06474909, y: -1.3425596, z: 1.4391333}
+--- !u!1 &1471071445758983104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552032}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:belly1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983104}
+  m_LocalRotation: {x: 0.0056192256, y: -0.0014227885, z: -0.12108297, w: 0.9926255}
+  m_LocalPosition: {x: 0.9170044, y: -0.08213829, z: 1.0658141e-16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552046}
+  - {fileID: 1471071445758551972}
+  m_Father: {fileID: 1471071445758552042}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1471071445758983106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552034}
+  - component: {fileID: 1471071445751580678}
+  - component: {fileID: 1471071445758983107}
+  m_Layer: 0
+  m_Name: turtle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983106}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552038}
+  - {fileID: 1471071445758552036}
+  m_Father: {fileID: 6995820811867571139}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1471071445751580678
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983106}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 312893f539145244eb941380e62dd9e8, type: 3}
+  m_Controller: {fileID: 9100000, guid: 4be2736b11b682847972d54a488c7c41, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1471071445758983107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8924811c157ad0444ab160b95231be33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1471071445758983108
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552036}
+  - component: {fileID: 1471071445755868870}
+  m_Layer: 0
+  m_Name: Tortoise
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552036
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983108}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1471071445758552034}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &1471071445755868870
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983108}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5406c8654b7862942ba99eac91a70354, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 4300000, guid: 312893f539145244eb941380e62dd9e8, type: 3}
+  m_Bones:
+  - {fileID: 1471071445758551974}
+  - {fileID: 1471071445758552042}
+  - {fileID: 1471071445758552032}
+  - {fileID: 1471071445758552046}
+  - {fileID: 1471071445758552012}
+  - {fileID: 1471071445758552044}
+  - {fileID: 1471071445758552002}
+  - {fileID: 1471071445758552004}
+  - {fileID: 1471071445758552000}
+  - {fileID: 1471071445758552014}
+  - {fileID: 1471071445758552056}
+  - {fileID: 1471071445758552006}
+  - {fileID: 1471071445758552062}
+  - {fileID: 1471071445758552060}
+  - {fileID: 1471071445758552026}
+  - {fileID: 1471071445758552024}
+  - {fileID: 1471071445758552016}
+  - {fileID: 1471071445758552030}
+  - {fileID: 1471071445758551972}
+  - {fileID: 1471071445758551970}
+  - {fileID: 1471071445758551968}
+  - {fileID: 1471071445758551982}
+  - {fileID: 1471071445758551980}
+  - {fileID: 1471071445758551978}
+  - {fileID: 1471071445758552050}
+  - {fileID: 1471071445758552048}
+  - {fileID: 1471071445758552052}
+  - {fileID: 1471071445758552040}
+  - {fileID: 1471071445758552020}
+  - {fileID: 1471071445758552018}
+  - {fileID: 1471071445758552022}
+  - {fileID: 1471071445758552010}
+  - {fileID: 1471071445758552008}
+  - {fileID: 1471071445758552028}
+  - {fileID: 1471071445758552058}
+  - {fileID: 1471071445758552054}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 1471071445758551974}
+  m_AABB:
+    m_Center: {x: 1.2761898, y: 0.8268434, z: 0.04235655}
+    m_Extent: {x: 2.607065, y: 2.1377563, z: 2.0004156}
+  m_DirtyAABB: 0
+--- !u!1 &1471071445758983110
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552038}
+  m_Layer: 0
+  m_Name: MasterController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983110}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758551974}
+  m_Father: {fileID: 1471071445758552034}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1471071445758983112
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552040}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:l_back_foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552040
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983112}
+  m_LocalRotation: {x: -0.21698418, y: -0.19040768, z: -0.3236923, w: 0.9010472}
+  m_LocalPosition: {x: -0.05202695, y: -0.4733187, z: 0.03721561}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552054}
+  m_Father: {fileID: 1471071445758552052}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -3.752127, y: 2.851565, z: 2.6909993}
+--- !u!1 &1471071445758983114
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552042}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:hip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552042
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983114}
+  m_LocalRotation: {x: -0.005603353, y: 0.0014208324, z: 0.12108663, w: 0.9926251}
+  m_LocalPosition: {x: 0.007147582, y: -0.22283536, z: 0.0029455118}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552032}
+  - {fileID: 1471071445758552050}
+  - {fileID: 1471071445758552020}
+  - {fileID: 1471071445758551982}
+  m_Father: {fileID: 1471071445758551974}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1471071445758983116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552044}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:chin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552044
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983116}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.32331416, y: -0.022598721, z: 0.0000000014242301}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552002}
+  - {fileID: 1471071445758552000}
+  m_Father: {fileID: 1471071445758552012}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 7.3494253, y: -4.2371473, z: -13.543618}
+--- !u!1 &1471071445758983118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552046}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:chest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552046
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983118}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.8393876, y: 0.18083155, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552056}
+  - {fileID: 1471071445758552012}
+  - {fileID: 1471071445758552026}
+  m_Father: {fileID: 1471071445758552032}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1471071445758983120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552048}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:l_back_upperleg
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552048
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983120}
+  m_LocalRotation: {x: 0.17668004, y: 0.009480278, z: 0.15212266, w: 0.97239554}
+  m_LocalPosition: {x: -0.3773602, y: -0.11955726, z: 0.4255421}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552052}
+  m_Father: {fileID: 1471071445758552050}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 10.058385, y: 0.56393504, z: 8.756326}
+--- !u!1 &1471071445758983122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552050}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:l_back_thight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552050
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983122}
+  m_LocalRotation: {x: -0.07185499, y: 0.08378485, z: 0.028210105, w: 0.9934894}
+  m_LocalPosition: {x: 0.37922898, y: 0.20995063, z: 0.60249865}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552048}
+  m_Father: {fileID: 1471071445758552042}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: -14.393553, y: 0.7050668, z: -17.770102}
+--- !u!1 &1471071445758983124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552052}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:l_back_lowerleg
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552052
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983124}
+  m_LocalRotation: {x: 0.116037786, y: 0.009357487, z: 0.11305154, w: 0.9867457}
+  m_LocalPosition: {x: -0.16501436, y: -0.40831706, z: 0.113095775}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552040}
+  m_Father: {fileID: 1471071445758552048}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 6.3689613, y: 0.41099837, z: 6.24154}
+--- !u!1 &1471071445758983126
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552054}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:l_back_foot2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552054
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983126}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0521054, y: -0.007823183, z: 0.34884706}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1471071445758552040}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1471071445758983128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552056}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:l_front_shoulder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983128}
+  m_LocalRotation: {x: -0.13801473, y: -0.1226528, z: -0.116606645, w: 0.9758643}
+  m_LocalPosition: {x: -0.085406855, y: -0.038041465, z: 0.6442803}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552006}
+  m_Father: {fileID: 1471071445758552046}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -33.147182, y: -4.5482235, z: 6.316504}
+--- !u!1 &1471071445758983130
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552058}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:l_front_hand2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983130}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.09165898, y: -0.032810573, z: 0.31707555}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1471071445758552060}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1471071445758983132
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552060}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:l_front_hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552060
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983132}
+  m_LocalRotation: {x: -0.079846986, y: 0.10309828, z: 0.15509433, w: 0.9792553}
+  m_LocalPosition: {x: 2.563561e-10, y: -0.5412595, z: -3.5457054e-10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552058}
+  m_Father: {fileID: 1471071445758552062}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -5.805056, y: 0.49432683, z: 1.4213322}
+--- !u!1 &1471071445758983134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1471071445758552062}
+  m_Layer: 0
+  m_Name: Tortoise_rig_0002:l_front_forearm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1471071445758552062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1471071445758983134}
+  m_LocalRotation: {x: 0.10833244, y: -0.0027283207, z: -0.025028456, w: 0.9937959}
+  m_LocalPosition: {x: 0.12167388, y: -0.44959268, z: 0.1729754}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552060}
+  m_Father: {fileID: 1471071445758552006}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 15.9572, y: -0.9881495, z: -3.8297584}
+--- !u!1 &6995820811867571143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6995820811867571139}
+  - component: {fileID: 6995820811867571140}
+  - component: {fileID: 6995820811867571141}
+  - component: {fileID: 6995820811867571142}
+  - component: {fileID: 6995820811867571136}
+  - component: {fileID: 6995820811867571138}
+  m_Layer: 0
+  m_Name: Turtle
+  m_TagString: Enemy
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6995820811867571139
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6995820811867571143}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1471071445758552034}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &6995820811867571140
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6995820811867571143}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &6995820811867571141
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6995820811867571143}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.09
+  m_Height: 4.4
+  m_Direction: 2
+  m_Center: {x: 0, y: 1.13, z: 0}
+--- !u!195 &6995820811867571142
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6995820811867571143}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 2.36
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2.32
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &6995820811867571136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6995820811867571143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce0949c34057d64989f02378a746e16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDead: 0
+  id: 0
+  curHP: 0
+  roomNum: 0
+  enableState: 1
+  minAttackRange: 4
+  maxAttackRange: 4.5
+  traceRange: 13
+  attackDelay: 1
+  instantAttack: 0
+  removeDelay: 3.5
+  originPos: {x: 0, y: 0, z: 0}
+--- !u!114 &6995820811867571138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6995820811867571143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 3
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 6995820811867571136}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
