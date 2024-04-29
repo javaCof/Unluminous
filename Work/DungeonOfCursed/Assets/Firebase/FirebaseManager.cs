@@ -10,10 +10,18 @@ public class FirebaseManager
     public static DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
     public static DataSnapshot monsterDataLoad;
     public static DataSnapshot itemDataLoad;
-    public static DataSnapshot equipDataLoad;
+    public static DataSnapshot helmetDataLoad;
+    public static DataSnapshot armorDataLoad;
+    public static DataSnapshot pantsDataLoad;
+    public static DataSnapshot setDataLoad;
     public static Dictionary<string, Dictionary<string, object>> monster = new Dictionary<string, Dictionary<string, object>>();
     public static Dictionary<string, Dictionary<string, object>> item = new Dictionary<string, Dictionary<string, object>>();
-    public static Dictionary<string, Dictionary<string, object>> equip = new Dictionary<string, Dictionary<string, object>>();
+    public static Dictionary<string, Dictionary<string, object>> helmet = new Dictionary<string, Dictionary<string, object>>();
+    public static Dictionary<string, Dictionary<string, object>> armor = new Dictionary<string, Dictionary<string, object>>();
+    public static Dictionary<string, Dictionary<string, object>> pants = new Dictionary<string, Dictionary<string, object>>();
+    public static Dictionary<string, Dictionary<string, object>> setEquip = new Dictionary<string, Dictionary<string, object>>();
+    
+    
 
     public static async Task MonsterLoadData()
     {
@@ -65,23 +73,49 @@ public class FirebaseManager
     public static async Task EquipLoadData()
 
     {
-        equipDataLoad = await databaseReference.Child("Equip").GetValueAsync();
+        helmetDataLoad = await databaseReference.Child("Equip").Child("Helmet").GetValueAsync();
+        armorDataLoad = await databaseReference.Child("Equip").Child("Armor").GetValueAsync();
+        pantsDataLoad = await databaseReference.Child("Equip").Child("Pants").GetValueAsync();
+        setDataLoad = await databaseReference.Child("Equip").Child("SetEquip").GetValueAsync();
 
-        var equipData = equipDataLoad.Value as Dictionary<string, object>;
-        foreach (var equipKey in equipData.Keys)
+        var helmetData = helmetDataLoad.Value as Dictionary<string, object>;
+        var armorData = armorDataLoad.Value as Dictionary<string, object>;
+        var pantsData = pantsDataLoad.Value as Dictionary<string, object>;
+        var setData = setDataLoad.Value as Dictionary<string, object>;
+
+        foreach (var helmetKey in helmetData.Keys)
         {
-            var equips = equipData[equipKey] as Dictionary<string, object>;
-            if (equips != null)
+            var helmets = helmetData[helmetKey] as Dictionary<string, object>;
+            if (helmets != null)
             {
-                //Debug.Log("Monster Key: " + equipKey);
+                helmet.Add(helmetKey, helmets);
+            }
+        }
 
-                equip.Add(equipKey, equips);
+        foreach (var armorKey in armorData.Keys)
+        {
+            var armors = armorData[armorKey] as Dictionary<string, object>;
+            if (armors != null)
+            {
+                armor.Add(armorKey, armors);
+            }
+        }
 
-                foreach (var attributeKey in equips.Keys)
-                {
-                    var attributeValue = equips[attributeKey];
-                    //Debug.Log(attributeKey + ": " + attributeValue);
-                }
+        foreach (var pantsKey in pantsData.Keys)
+        {
+            var pantses = pantsData[pantsKey] as Dictionary<string, object>;
+            if (pantses != null)
+            {
+                pants.Add(pantsKey, pantses);
+            }
+        }
+
+        foreach (var setEquipKey in setData.Keys)
+        {
+            var sets = setData[setEquipKey] as Dictionary<string, object>;
+            if (sets != null)
+            {
+                setEquip.Add(setEquipKey, sets);
             }
         }
     }

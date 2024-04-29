@@ -6,7 +6,6 @@ public class EquipDataManager : MonoBehaviour
 {
     public class Equip
     {
-        public int id;
         public int set;
         public float hp;
         public float atk;
@@ -14,10 +13,10 @@ public class EquipDataManager : MonoBehaviour
         public float speed;
         public int price;
         public string dec;
+        public string name;
 
-        public Equip(int id, int set, float hp, float atk, float def, float speed, int price, string dec)
+        public Equip(int set, float hp, float atk, float def, float speed, int price, string dec, string name)
         {
-            this.id = id;
             this.set = set;
             this.hp = hp;
             this.atk = atk;
@@ -25,12 +24,13 @@ public class EquipDataManager : MonoBehaviour
             this.speed = speed;
             this.price = price;
             this.dec = dec;
+            this.name = name;
         }
     }
 
 
     public string equipName;
-    public int id;
+    public string id;
     public int set;
     public float hp;
     public float atk;
@@ -42,9 +42,9 @@ public class EquipDataManager : MonoBehaviour
     [ContextMenu("헬멧 데이터 저장")]
     void SaveHelmetData()
     {
-        var data = new Equip(id, set, hp, atk, def, speed, price, dec);
+        var data = new Equip(set, hp, atk, def, speed, price, dec, equipName);
         string jsonData = JsonUtility.ToJson(data);
-        FirebaseManager.databaseReference.Child("Equip").Child("Helmet").Child(equipName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Equip").Child("Helmet").Child(id).SetRawJsonValueAsync(jsonData);
 
         Debug.Log(data);
     }
@@ -52,9 +52,9 @@ public class EquipDataManager : MonoBehaviour
     [ContextMenu("하의 데이터 저장")]
     void SavePantsData()
     {
-        var data = new Equip(id, set, hp, atk, def, speed, price, dec);
+        var data = new Equip(set, hp, atk, def, speed, price, dec, equipName);
         string jsonData = JsonUtility.ToJson(data);
-        FirebaseManager.databaseReference.Child("Equip").Child("Pants").Child(equipName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Equip").Child("Pants").Child(id).SetRawJsonValueAsync(jsonData);
 
         Debug.Log(data);
     }
@@ -62,9 +62,9 @@ public class EquipDataManager : MonoBehaviour
     [ContextMenu("상의 데이터 저장")]
     void SaveArmorData()
     {
-        var data = new Equip(id, set, hp, atk, def, speed, price, dec);
+        var data = new Equip(set, hp, atk, def, speed, price, dec, equipName);
         string jsonData = JsonUtility.ToJson(data);
-        FirebaseManager.databaseReference.Child("Equip").Child("Armor").Child(equipName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Equip").Child("Armor").Child(id).SetRawJsonValueAsync(jsonData);
 
         Debug.Log(data);
     }
@@ -72,9 +72,9 @@ public class EquipDataManager : MonoBehaviour
     [ContextMenu("세트 데이터 저장")]
     void SaveEquipData()
     {
-        var data = new Equip(id, set, hp, atk, def, speed, price, dec);
+        var data = new Equip(set, hp, atk, def, speed, price, dec, equipName);
         string jsonData = JsonUtility.ToJson(data);
-        FirebaseManager.databaseReference.Child("Equip").Child("SetEquip").Child(equipName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Equip").Child("SetEquip").Child(id).SetRawJsonValueAsync(jsonData);
 
         Debug.Log(data);
     }

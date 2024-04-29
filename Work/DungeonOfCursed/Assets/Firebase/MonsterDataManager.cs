@@ -85,13 +85,13 @@ public class MonsterDataManager : MonoBehaviour
         }
     }
 
-    [ContextMenu("골렘 정보 불러오기")]
-    void Golem()
+    [ContextMenu("속성 한가지 불러오기")]
+    void Boolluogi()
     {
         //var monsterData = FirebaseManager.monsterData["11002"] as Dictionary<string, object>;
         
         
-        Debug.Log(FirebaseManager.monster["11002"]["name"]);
+        Debug.Log(FirebaseManager.armor["2100"]["name"]);
 
         // if((string)monsterData["name"] == "트리플 쉘 터틀")
         // {

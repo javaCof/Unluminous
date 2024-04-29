@@ -6,30 +6,30 @@ public class ItemDataManager : MonoBehaviour
 {
     public class Item
     {
-        public int id;
         public int price;
         public string dec;
+        public string name;
 
-        public Item(int id, int price, string dec)
+        public Item(int price, string dec, string name)
         {
-            this.id = id;
             this.price = price;
             this.dec = dec;
+            this.name = name;
         }
     }
 
     public string itemName;
-    public int id;
+    public string id;
     public int price;
     public string dec;
 
     [ContextMenu("아이템 정보 저장")]
     void SaveItemData()
     {  
-        var Item = new Item(id, price, dec);
+        var Item = new Item(price, dec, itemName);
         string jsonData = JsonUtility.ToJson(Item);
 
-        FirebaseManager.databaseReference.Child("Item").Child(itemName).SetRawJsonValueAsync(jsonData);
+        FirebaseManager.databaseReference.Child("Item").Child(id).SetRawJsonValueAsync(jsonData);
     }
 
     [ContextMenu("아이템 정보 불러오기")]
