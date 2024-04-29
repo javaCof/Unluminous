@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - RoomItem
+  - Trader
   layers:
   - Default
   - TransparentFX

@@ -22,6 +22,7 @@ public class PlayerMove : MonoBehaviour
     private CharacterController ctl;
     private Transform cam;
     private PhotonView pv;
+    private GameUI ui;
 
     private bool inpJump;
     private Vector3 moveVec;
@@ -39,9 +40,10 @@ public class PlayerMove : MonoBehaviour
         pv = GetComponent<PhotonView>();
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
-        cam = GameObject.FindObjectOfType<MapGenerator>().mainCam.transform;
+        cam = FindObjectOfType<MapGenerator>().mainCam.transform;
+        ui = FindObjectOfType<GameUI>();
 
-        GameObject.FindObjectOfType<GameUI>().jumpButton.onClick.AddListener(() => inpJump = true);
+        ui.jumpButton.onClick.AddListener(() => inpJump = true);
     }
     private void Start()
     {
@@ -88,7 +90,6 @@ public class PlayerMove : MonoBehaviour
             if (!action.isDead)
                 CameraUpdate();
         }
-            
     }
 
     void Move()
@@ -136,12 +137,18 @@ public class PlayerMove : MonoBehaviour
         float dMouseX = Input.GetAxisRaw("Mouse X");
         float dMouseY = Input.GetAxisRaw("Mouse Y");
 #elif UNITY_ANDROID
-        float dMouseX = UltimateJoystick.GetHorizontalAxis("rightJoyStick")/5;
-        float dMouseY = UltimateJoystick.GetVerticalAxis("rightJoyStick")/5;
+        //float dMouseX = UltimateJoystick.GetHorizontalAxis("rightJoyStick")/5;
+        //float dMouseY = UltimateJoystick.GetVerticalAxis("rightJoyStick")/5;
 
         //float dMouseX = Mathf.Abs(inpX) > 0.1f ? Mathf.Sign(inpX) / 5 : 0;
         //float dMouseY = Mathf.Abs(inpY) > 0.1f ? Mathf.Sign(inpY) / 5 : 0;
+
+        float dMouseX = ui.touchPad.dTouchPoint.x / 10;
+        float dMouseY = ui.touchPad.dTouchPoint.y / 10;
+
+        //Debug.Log("" + dMouseX + " " + dMouseY);
 #endif
+
         camRotateY = dMouseX * 100f * mouseSensitivityX * Time.deltaTime;
         camRotateX = -dMouseY * 100f * mouseSensitivityY * Time.deltaTime;
     }

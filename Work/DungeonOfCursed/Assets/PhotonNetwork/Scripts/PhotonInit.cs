@@ -29,9 +29,12 @@ public class PhotonInit : MonoBehaviour
 
         if (!PhotonNetwork.connected)
         {
-            PhotonNetwork.ConnectUsingSettings(version);
-            PhotonNetwork.logLevel = LogLevel;
-            PhotonNetwork.playerName = "USER_" + Random.Range(1, 9999);
+            if (PhotonNetwork.ConnectUsingSettings(version))
+            {
+                PhotonNetwork.logLevel = LogLevel;
+                PhotonNetwork.playerName = "USER_" + Random.Range(1, 9999);
+            }
+            else game.ErrorGame(ERROR_CODE.PHOTON_CONNECT_ERROR);
         }
     }
 

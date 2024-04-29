@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerAction : UnitAction, IPhotonPoolObject
 {
     public float actionDist = 2f;
+    public GameObject hitEffect;
 
     [HideInInspector] public bool controllable = true;
 
@@ -15,7 +16,7 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
     private PhotonView pv;
 
     private Collider target;
-
+    private Vector3 hitPoint;
     private bool inpAction;
 
     private void Awake()
@@ -79,9 +80,13 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
         Ray ray = new Ray(camPos, lookVec);
 
         target = null;
+        hitPoint = Vector3.zero;
 
         if (Physics.Raycast(ray, out hit, actionDist, 1 << LayerMask.NameToLayer("LookTarget")))
+        {
             target = hit.collider;
+            hitPoint = hit.point;
+        }
     }
     void ShowLookTarget() { }
 
@@ -100,10 +105,16 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
                 break;
             case "Chest":
                 break;
+            case "Trader":
+                Debug.Log("°Å·¡");
+                break;
         }
     }
     public override void AttackAction()
     {
+        if (target != null && target.tag == "Enemy")
+            MakeEffect(hitPoint);
+
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             if (target != null && target.tag == "Enemy")
@@ -125,6 +136,7 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
         if (isDead) return;
 
         curHP -= dmg;
+        FindObjectOfType<GameUI>().hpBar.fillAmount = curHP / stat.HP;
 
         if (curHP <= 0)
         {
@@ -158,6 +170,11 @@ public class PlayerAction : UnitAction, IPhotonPoolObject
         yield return new WaitForSeconds(1);
 
         SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
+    }
+
+    void MakeEffect(Vector3 pos)
+    {
+        Instantiate(hitEffect, pos, Quaternion.identity);
     }
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

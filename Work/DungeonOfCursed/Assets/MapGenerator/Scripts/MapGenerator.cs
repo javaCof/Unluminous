@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    [Tooltip("생성되는 몬스터 (10000~10006)")]
-    public int mon_id = 10000;
-
     public Camera mainCam;                          //카메라
     public Transform mapPos;                        //맵 위치
     public Texture2D mapTexture;                    //맵 텍스쳐
@@ -154,6 +151,9 @@ public class MapGenerator : MonoBehaviour
         CreateObjectPool("object/WolfBoss_Green", 10005, 100);
         CreateObjectPool("object/WolfBoss_Red", 10006, 100);
         CreateObjectPool("object/Potal", 20000, 1);
+        CreateObjectPool("object/Trader", 20001, 10);
+
+        
         /*--------------------------------------------------------------------------------------------*/
 
         StartCoroutine(LoadLevel());
@@ -379,7 +379,7 @@ public class MapGenerator : MonoBehaviour
             else if (i == 0)
                 type = RoomType.POTAL;
             else
-                type = RoomType.BATTLE;
+                type = (RoomType)Random.Range((int)RoomType.BATTLE, (int)RoomType.POTAL);
 
             roomInfos.Add(new RoomInfo(type, rooms[i]));
         }
@@ -407,7 +407,7 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.BATTLE:
                     {
-                        AddObjectRandom(mon_id, 5, i, objRect);
+                        AddObjectRandom(10003, 5, i, objRect);
                     }
                     break;
                 case RoomType.TREASURE:
@@ -417,6 +417,9 @@ public class MapGenerator : MonoBehaviour
                 case RoomType.ELITE:
                     break;
                 case RoomType.TRADER:
+                    {
+                        AddObjectCenter(20001, i, objRect);
+                    }
                     break;
                 case RoomType.POTAL:
                     {

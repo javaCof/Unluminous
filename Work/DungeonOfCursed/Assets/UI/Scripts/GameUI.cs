@@ -9,6 +9,8 @@ public class GameUI : MonoBehaviour
     public GameObject rightJoyStick;
     public Button actionButton;
     public Button jumpButton;
+    public TouchPad touchPad;
+    public Image hpBar;
 
     private void Start()
     {
@@ -16,12 +18,14 @@ public class GameUI : MonoBehaviour
         rightJoyStick.SetActive(false);
         actionButton.gameObject.SetActive(false);
         jumpButton.gameObject.SetActive(false);
+        touchPad.gameObject.SetActive(false);
 
-#if !UNITY_EDITOR && UNITY_ANDROID
+#if UNITY_ANDROID
         leftJoyStick.SetActive(true);
-        rightJoyStick.SetActive(true);
+        //rightJoyStick.SetActive(true);
         actionButton.gameObject.SetActive(true);
         jumpButton.gameObject.SetActive(true);
+        touchPad.gameObject.SetActive(true);
 #endif
     }
 }

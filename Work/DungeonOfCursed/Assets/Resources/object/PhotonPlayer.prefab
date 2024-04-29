@@ -6998,7 +6998,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 2
   m_Height: 2.24
-  m_Radius: 0.35
+  m_Radius: 1
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -7041,7 +7041,8 @@ MonoBehaviour:
   id: 0
   curHP: 0
   roomNum: 0
-  actionDist: 5
+  actionDist: 2.5
+  hitEffect: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
   controllable: 1
 --- !u!114 &1395430225
 MonoBehaviour:

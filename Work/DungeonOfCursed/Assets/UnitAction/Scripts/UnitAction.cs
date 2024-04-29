@@ -8,7 +8,7 @@ public abstract class UnitAction : MonoBehaviour
     [HideInInspector] public int id;
     [HideInInspector] public UnitStatInfo stat;
     [HideInInspector] public float curHP;
-    [HideInInspector] public int roomNum;
+    public int roomNum;
 
     protected void SetStat()
     {
