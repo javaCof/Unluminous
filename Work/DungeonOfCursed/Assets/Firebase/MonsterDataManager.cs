@@ -89,9 +89,9 @@ public class MonsterDataManager : MonoBehaviour
     void Boolluogi()
     {
         //var monsterData = FirebaseManager.monsterData["11002"] as Dictionary<string, object>;
+        float a = (float)FirebaseManager.monster["10000"]["atk"];
         
-        
-        Debug.Log(FirebaseManager.armor["2100"]["name"]);
+        Debug.Log(a);
 
         // if((string)monsterData["name"] == "트리플 쉘 터틀")
         // {
@@ -103,13 +103,13 @@ public class MonsterDataManager : MonoBehaviour
     public async void RenameMonsterKey()
     {
         // 1. 데이터 가져오기
-        var monsterDataSnapshot = await FirebaseManager.databaseReference.Child("Monster").Child("전설의 투구 ").GetValueAsync();
+        var monsterDataSnapshot = await FirebaseManager.databaseReference.Child("Equip").Child("Pants").Child("2200").GetValueAsync();
 
         // 2. "???"으로 새 키에 데이터 복사
-        await FirebaseManager.databaseReference.Child("Monster").Child("전설의 투구").SetValueAsync(monsterDataSnapshot.Value);
+        await FirebaseManager.databaseReference.Child("Equip").Child("2200").SetValueAsync(monsterDataSnapshot.Value);
 
         // 3. 기존 키 삭제
-        await FirebaseManager.databaseReference.Child("Monster").Child("전설의 투구 ").RemoveValueAsync();
+        await FirebaseManager.databaseReference.Child("Equip").Child("Pants").Child("2200").RemoveValueAsync();
 
         Debug.Log("키 변경이 완료되었습니다.");
         
