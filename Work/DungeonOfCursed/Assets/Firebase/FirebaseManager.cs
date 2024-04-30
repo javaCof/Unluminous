@@ -12,77 +12,117 @@ public class FirebaseManager
     public static DataSnapshot equipDataLoad;
     public static DataSnapshot setDataLoad;
 
-    //FIrebaseManager.monster[""][""];
-    public static Dictionary<string, Dictionary<string, object>> monster = new Dictionary<string, Dictionary<string, object>>();
-    
-    //FIrebaseManager.item[""][""];
-    public static Dictionary<string, Dictionary<string, object>> item = new Dictionary<string, Dictionary<string, object>>();
+    public class Monster
+    {
+        public float hp;
+        public float atk;
+        public float def;
+        public float spd;
+        public int type;
+        public string dec;
+        public string name;
+    }
+    public class Item
+    {
+        public int price;
+        public string dec;
+        public string name;
+    }
+    public class Equip
+    {
+        public int set;
+        public float hp;
+        public float atk;
+        public float def;
+        public float speed;
+        public int price;
+        public string dec;
+        public string name;
+    }
 
-    //FIrebaseManager.equip[""][""];
-    public static Dictionary<string, Dictionary<string, object>> equip = new Dictionary<string, Dictionary<string, object>>();
-
-    //FIrebaseManager.setEquip[""][""];
-    public static Dictionary<string, Dictionary<string, object>> setEquip = new Dictionary<string, Dictionary<string, object>>();
-    
-    
+    public static Dictionary<int, Monster> monsters = new Dictionary<int, Monster>();
+    public static Dictionary<int, Item> items = new Dictionary<int, Item>();
+    public static Dictionary<int, Equip> equips = new Dictionary<int, Equip>();
 
     public static async Task MonsterLoadData()
     {
         monsterDataLoad = await databaseReference.Child("Monster").GetValueAsync();
+        var datas = monsterDataLoad.Value as Dictionary<string, object>;
 
-        var monsterData = monsterDataLoad.Value as Dictionary<string, object>;
-        foreach (var monsterKey in monsterData.Keys)
+        foreach (var data in datas)
         {
-            var monsters = monsterData[monsterKey] as Dictionary<string, object>;
-            if (monsters != null)
+            int id = int.Parse(data.Key);
+            string json = "{";
+
+            var dataValues = data.Value as Dictionary<string, object>;
+            foreach (var dataValue in dataValues)
             {
-                monster.Add(monsterKey, monsters);
+                string value = dataValue.Value.ToString();
+
+                float parse_float; bool parse_bool;
+                if (!float.TryParse(value, out parse_float) && !bool.TryParse(value, out parse_bool))
+                    value = "\"" + value + "\"";
+
+                json += "\"" + dataValue.Key + "\":" + value + ",";
             }
+            json = json.Substring(0, json.Length - 1) + "}";
+
+            Monster monster = JsonUtility.FromJson<Monster>(json);
+            monsters.Add(id, monster);
         }
-
     }
-
     public static async Task ItemLoadData()
     {
         itemDataLoad = await databaseReference.Child("Item").GetValueAsync();
+        var datas = itemDataLoad.Value as Dictionary<string, object>;
 
-        var itemData = itemDataLoad.Value as Dictionary<string, object>;
-        foreach (var itemKey in itemData.Keys)
+        foreach (var data in datas)
         {
-            var items = itemData[itemKey] as Dictionary<string, object>;
-            if (items != null)
+            int id = int.Parse(data.Key);
+            string json = "{";
+
+            var dataValues = data.Value as Dictionary<string, object>;
+            foreach (var dataValue in dataValues)
             {
-                item.Add(itemKey, items);
+                string value = dataValue.Value.ToString();
+
+                float parse_float; bool parse_bool;
+                if (!float.TryParse(value, out parse_float) && !bool.TryParse(value, out parse_bool))
+                    value = "\"" + value + "\"";
+
+                json += "\"" + dataValue.Key + "\":" + value + ",";
             }
+            json = json.Substring(0, json.Length - 1) + "}";
+
+            Item item = JsonUtility.FromJson<Item>(json);
+            items.Add(id, item);
         }
     }
-
     public static async Task EquipLoadData()
-
     {
         equipDataLoad = await databaseReference.Child("Equip").GetValueAsync();
+        var datas = equipDataLoad.Value as Dictionary<string, object>;
 
-        setDataLoad = await databaseReference.Child("Equip").Child("SetEquip").GetValueAsync();
-
-        var equipData = equipDataLoad.Value as Dictionary<string, object>;
-        var setData = setDataLoad.Value as Dictionary<string, object>;
-
-        foreach (var equipKey in equipData.Keys)
+        foreach (var data in datas)
         {
-            var equips = equipData[equipKey] as Dictionary<string, object>;
-            if (equips != null)
-            {
-                equip.Add(equipKey, equips);
-            }
-        }
+            int id = int.Parse(data.Key);
+            string json = "{";
 
-        foreach (var setEquipKey in setData.Keys)
-        {
-            var sets = setData[setEquipKey] as Dictionary<string, object>;
-            if (sets != null)
+            var dataValues = data.Value as Dictionary<string, object>;
+            foreach (var dataValue in dataValues)
             {
-                setEquip.Add(setEquipKey, sets);
+                string value = dataValue.Value.ToString();
+
+                float parse_float; bool parse_bool;
+                if (!float.TryParse(value, out parse_float) && !bool.TryParse(value, out parse_bool))
+                    value = "\"" + value + "\"";
+
+                json += "\"" + dataValue.Key + "\":" + value + ",";
             }
+            json = json.Substring(0, json.Length - 1) + "}";
+
+            Equip equip = JsonUtility.FromJson<Equip>(json);
+            equips.Add(id, equip);
         }
     }
 }

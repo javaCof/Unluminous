@@ -89,9 +89,9 @@ public class MonsterDataManager : MonoBehaviour
     void Boolluogi()
     {
         //var monsterData = FirebaseManager.monsterData["11002"] as Dictionary<string, object>;
-        float a = (float)FirebaseManager.monster["10000"]["atk"];
+        //float a = (float)FirebaseManager.monster["10000"]["atk"];
         
-        Debug.Log(a);
+        //Debug.Log(a);
 
         // if((string)monsterData["name"] == "트리플 쉘 터틀")
         // {

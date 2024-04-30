@@ -12,19 +12,16 @@ public abstract class UnitAction : MonoBehaviour
 
     protected void SetStat()
     {
-        //if (id == 200) return;
-
-        //stat = new UnitStatInfo();
-        //stat.HP = (float)FirebaseManager.monster[id.ToString()]["hp"];
-        //stat.ATK = (float)FirebaseManager.monster[id.ToString()]["atk"];
-        //stat.DEF = (float)FirebaseManager.monster[id.ToString()]["def"];
-        //stat.SPD = (float)FirebaseManager.monster[id.ToString()]["spd"];
-
         stat = new UnitStatInfo();
-        stat.HP = 100f;
-        stat.ATK = 10f;
-        stat.DEF = 10f;
-        stat.SPD = 5f;
+
+        if (id == 200) return;
+
+        id = 10000;
+
+        stat.HP = FirebaseManager.monsters[id].hp;
+        stat.ATK = FirebaseManager.monsters[id].atk;
+        stat.DEF = FirebaseManager.monsters[id].def;
+        stat.SPD = FirebaseManager.monsters[id].spd;
     }
 
     public abstract void AttackAction();
