@@ -26,21 +26,23 @@ public class GameManager : MonoBehaviour
         yield return EquipLoad();
 
         yield return ChangeScene("InitScene", nextScene);
-
         yield return EndLoading();
     }
 
     IEnumerator MonsterLoad() 
     {
-        yield return FirebaseManager.MonsterLoadData();
+        System.Threading.Tasks.Task task = FirebaseManager.MonsterLoadData();
+        yield return new WaitUntil(() => task.IsCompleted);
     }
     IEnumerator ItemLoad()
     {
-        yield return FirebaseManager.ItemLoadData();
+        System.Threading.Tasks.Task task = FirebaseManager.ItemLoadData();
+        yield return new WaitUntil(() => task.IsCompleted);
     }
     IEnumerator EquipLoad()
     {
-        yield return FirebaseManager.EquipLoadData();
+        System.Threading.Tasks.Task task = FirebaseManager.EquipLoadData();
+        yield return new WaitUntil(() => task.IsCompleted);
     }
 
     public IEnumerator MoveToScene(string scene, float delay=0)
