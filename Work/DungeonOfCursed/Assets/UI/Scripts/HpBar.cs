@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class HpBar : MonoBehaviour
 {
-    Transform mytr;
+    public Transform mytr;
 
+    public Transform healthTr;
 
+    public EnemyAction enemyact;
+
+    public float hp;
 
     private void Awake()
     {
         mytr = GetComponent<Transform>();
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-
+        healthTr = transform.GetChild(1).GetComponent<Transform>();
+        enemyact = transform.parent.GetComponent<EnemyAction>();
+        hp = enemyact.curHP;
     }
 
     // Update is called once per frame
@@ -24,5 +26,9 @@ public class HpBar : MonoBehaviour
         //hpBar.transform.position= Camera.main.WorldToScreenPoint(transform.position);
 
         mytr.LookAt(Camera.main.transform);
+
+        //юс╫ц
+        hp = enemyact.curHP;
+        healthTr.transform.localScale = new Vector3(hp/100, 1, 1);
     }
 }
