@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Potal : MonoBehaviour, IPhotonPoolObject
+public class Potal : MonoBehaviour, IPoolObject
 {
     private MapGenerator map;
     private PhotonView pv;

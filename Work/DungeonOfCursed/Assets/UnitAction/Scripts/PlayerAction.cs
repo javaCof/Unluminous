@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PlayerAction : UnitAction, IPhotonPoolObject
+public class PlayerAction : UnitAction, IPoolObject
 {
     public float actionDist = 2f;
     public GameObject hitEffect;

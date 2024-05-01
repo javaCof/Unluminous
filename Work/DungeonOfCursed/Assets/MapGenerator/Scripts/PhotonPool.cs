@@ -6,7 +6,7 @@ public class PhotonPool : ObjectPool
 {
     public enum PhotonInstantiateOption { STANDARD, SCENE_OBJECT };
 
-    public PhotonPool(string name, int n, PhotonInstantiateOption option = PhotonInstantiateOption.SCENE_OBJECT) : base(n)
+    public PhotonPool(string name, int id, int n, PhotonInstantiateOption option = PhotonInstantiateOption.SCENE_OBJECT) : base(n)
     {
         for (int i = 0; i < n; i++)
         {
@@ -15,7 +15,7 @@ public class PhotonPool : ObjectPool
                 PhotonNetwork.Instantiate(name, Vector3.zero, Quaternion.identity, 0, null);
 
             objects.Add(go);
-            go.GetComponent<IPhotonPoolObject>().OnPoolCreate();
+            go.GetComponent<IPoolObject>().OnPoolCreate(id);
         }
     }
 
@@ -23,8 +23,7 @@ public class PhotonPool : ObjectPool
     {
         if (idx < objects.Count)
         {
-            objects[idx].GetComponent<IPhotonPoolObject>().OnPoolEnable(pos, rot);
-
+            objects[idx].GetComponent<IPoolObject>().OnPoolEnable(pos, rot);
             return objects[idx++];
         }
         else return null;
@@ -32,7 +31,7 @@ public class PhotonPool : ObjectPool
 
     public override void DisableObject(GameObject go)
     {
-        go.GetComponent<IPhotonPoolObject>().OnPoolDisable();
+        go.GetComponent<IPoolObject>().OnPoolDisable();
     }
 
     public override void Reset()

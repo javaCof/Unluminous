@@ -6,7 +6,7 @@ public class ResourcePool : ObjectPool
 {
     Transform pos;
 
-    public ResourcePool(string name, int n, Transform pos) : base(n)
+    public ResourcePool(string name, int id, int n, Transform pos) : base(n)
     {
         this.pos = pos;
 
@@ -14,8 +14,8 @@ public class ResourcePool : ObjectPool
         {
             GameObject go = GameObject.Instantiate(Resources.Load<GameObject>(name), Vector3.zero, Quaternion.identity);
             go.transform.parent = pos;
-            go.SetActive(false);
             objects.Add(go);
+            go.GetComponent<IPoolObject>().OnPoolCreate(id);
         }
     }
 
@@ -24,9 +24,7 @@ public class ResourcePool : ObjectPool
         if (idx < objects.Count)
         {
             objects[idx].transform.parent = parent;
-            objects[idx].transform.localPosition = pos;
-            objects[idx].transform.localRotation = rot;
-            objects[idx].SetActive(true);
+            objects[idx].GetComponent<IPoolObject>().OnPoolEnable(pos, rot);
             return objects[idx++];
         }
         else return null;
@@ -35,7 +33,7 @@ public class ResourcePool : ObjectPool
     public override void DisableObject(GameObject go)
     {
         go.transform.parent = pos;
-        go.SetActive(false);
+        go.GetComponent<IPoolObject>().OnPoolDisable();
     }
 
     public override void Reset()

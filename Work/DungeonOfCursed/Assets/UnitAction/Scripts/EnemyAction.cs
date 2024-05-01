@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEditor;
 
-public class EnemyAction : UnitAction, IPhotonPoolObject
+public class EnemyAction : UnitAction, IPoolObject
 {
     public enum EnemyState { Search, Trace, Attack, Repos, Dead }
 
@@ -365,11 +365,12 @@ public class EnemyAction : UnitAction, IPhotonPoolObject
         }
     }
 
-    [PunRPC] public void OnPoolCreate()
+    [PunRPC] public void OnPoolCreate(int id)
     {
         if (PhotonNetwork.isMasterClient)
-            pv.RPC("OnPoolCreate", PhotonTargets.Others);
+            pv.RPC("OnPoolCreate", PhotonTarets.Others, id);
 
+        this.id = id;
         transform.parent = map.poolPos;
         gameObject.SetActive(false);
     }
