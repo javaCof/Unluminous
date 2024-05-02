@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     {
         yield return StartLoading();
 
-        yield return MonsterLoad();
+        yield return UnitLoad();
         yield return ItemLoad();
         yield return EquipLoad();
 
@@ -29,9 +29,9 @@ public class GameManager : MonoBehaviour
         yield return EndLoading();
     }
 
-    IEnumerator MonsterLoad() 
+    IEnumerator UnitLoad() 
     {
-        System.Threading.Tasks.Task task = FirebaseManager.MonsterLoadData();
+        System.Threading.Tasks.Task task = FirebaseManager.UnitLoadData();
         yield return new WaitUntil(() => task.IsCompleted);
     }
     IEnumerator ItemLoad()

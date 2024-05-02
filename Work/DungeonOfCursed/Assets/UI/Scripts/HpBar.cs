@@ -8,7 +8,7 @@ public class HpBar : MonoBehaviour
 
     public Transform healthTr;
 
-    public EnemyAction enemyact;
+    public Enemy enemyact;
 
     public float hp;
 
@@ -16,7 +16,7 @@ public class HpBar : MonoBehaviour
     {
         mytr = GetComponent<Transform>();
         healthTr = transform.GetChild(1).GetComponent<Transform>();
-        enemyact = transform.parent.GetComponent<EnemyAction>();
+        enemyact = transform.parent.GetComponent<Enemy>();
         hp = enemyact.curHP;
     }
 

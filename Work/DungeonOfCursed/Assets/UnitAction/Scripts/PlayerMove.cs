@@ -16,7 +16,7 @@ public class PlayerMove : MonoBehaviour
 
     public Vector3 camOffset;
 
-    private PlayerAction action;
+    private Player player;
     
     private Animator anim;
     private CharacterController ctl;
@@ -36,7 +36,7 @@ public class PlayerMove : MonoBehaviour
 
     private void Awake()
     {
-        action = GetComponent<PlayerAction>();
+        player = GetComponent<Player>();
         pv = GetComponent<PhotonView>();
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
@@ -60,7 +60,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            if (action.controllable)
+            if (player.controllable)
             {
                 Move();
                 Look();
@@ -76,7 +76,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            if (!action.isDead)
+            if (!player.isDead)
             {
                 ctl.Move(moveVec * Time.deltaTime);
                 inpJump = false;
@@ -87,7 +87,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            if (!action.isDead)
+            if (!player.isDead)
                 CameraUpdate();
         }
     }
@@ -101,7 +101,9 @@ public class PlayerMove : MonoBehaviour
             float inpV = Input.GetAxisRaw("Vertical");
 
             float mSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : speed;
+
             inpJump = Input.GetKey(KeyCode.Space);
+
 #elif UNITY_ANDROID
             float inpH = UltimateJoystick.GetHorizontalAxis("leftJoyStick");
             float inpV = UltimateJoystick.GetVerticalAxis("leftJoyStick");
@@ -145,8 +147,6 @@ public class PlayerMove : MonoBehaviour
 
         float dMouseX = ui.touchPad.dTouchPoint.x / 10;
         float dMouseY = ui.touchPad.dTouchPoint.y / 10;
-
-        //Debug.Log("" + dMouseX + " " + dMouseY);
 #endif
 
         camRotateY = dMouseX * 100f * mouseSensitivityX * Time.deltaTime;

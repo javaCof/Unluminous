@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemObject : MonoBehaviour, IPoolObject
+public class Trader : MonoBehaviour, IPoolObject
 {
-    public int id;
-    public int amount;
-
     private MapGenerator map;
     private PhotonView pv;
 
@@ -16,28 +13,13 @@ public class ItemObject : MonoBehaviour, IPoolObject
         pv = GetComponent<PhotonView>();
     }
 
-    private void OnTriggerEnter(Collider oth)
+    public void Trade()
     {
-        if (oth.tag == "Player")
-        {
-            if (!PhotonNetwork.inRoom || oth.GetComponent<PhotonView>().isMine)
-            {
-                //Inventory inven = oth.GetComponent<Inventory>().AddItem(id, amount);
-
-                pv.RPC("RemoveObject", PhotonTargets.MasterClient);
-            }
-        }
-    }
-
-    [PunRPC] void RemoveObject()
-    {
-        map.RemoveObject(gameObject, id);
+        Debug.Log("°Å·¡");
     }
 
     [PunRPC] public void OnPoolCreate(int id)
     {
-        this.id = id;
-
         if (PhotonNetwork.inRoom)
         {
             if (PhotonNetwork.isMasterClient) pv.RPC("OnPoolCreate", PhotonTargets.Others, id);

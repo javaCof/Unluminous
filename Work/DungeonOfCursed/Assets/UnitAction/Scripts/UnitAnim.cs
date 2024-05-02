@@ -6,6 +6,6 @@ public class UnitAnim : MonoBehaviour
 {
     public void Attack()
     {
-        GetComponentInParent<UnitAction>().AttackAction();
+        GetComponentInParent<UnitObject>().AttackAction();
     }
 }

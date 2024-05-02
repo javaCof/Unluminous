@@ -1600,6 +1600,17 @@ MonoBehaviour:
   maxDivideDepth: 4
   minDividePer: 0.4
   maxDividePer: 0.6
+  normalMonsterCount: 5
+  chestCount: 5
+  floorPrefab: {fileID: 1316661190979104, guid: 43f8e35d51f9d774eb87f290b86a9649, type: 3}
+  wallPrefab: {fileID: 1655673125402110, guid: 718a8c0341a6b744581a10dfd1105f88, type: 3}
+  cornerPrefab: {fileID: 1840828261763088, guid: 12115f3e2bc7884449890b084af37f7a, type: 3}
+  pillarPrefab: {fileID: 1332032387223852, guid: 7f951c1ab0c98544dbb2241f27da4db5, type: 3}
+  chestResName: map/Chest
+  traderResName: map/Trader
+  potalPrefab: {fileID: 2962259759324073563, guid: 3a896886422f5bb4aa4a3b4e25448553, type: 3}
+  decoPrefabs:
+  - {fileID: 982405661710999693, guid: 46d3f935e246d3d43a8cbaa119843a6c, type: 3}
   tileColors:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}

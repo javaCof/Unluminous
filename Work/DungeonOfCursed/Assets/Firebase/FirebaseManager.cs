@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 public class FirebaseManager
 {
     public static DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
-    public static DataSnapshot monsterDataLoad;
+    public static DataSnapshot unitDataLoad;
     public static DataSnapshot itemDataLoad;
     public static DataSnapshot equipDataLoad;
     public static DataSnapshot setDataLoad;
 
-    public class Monster
+    public class Unit
     {
         public float hp;
         public float atk;
@@ -21,6 +21,7 @@ public class FirebaseManager
         public int type;
         public string dec;
         public string name;
+        public string res;
     }
     public class Item
     {
@@ -40,14 +41,14 @@ public class FirebaseManager
         public string name;
     }
 
-    public static Dictionary<int, Monster> monsters = new Dictionary<int, Monster>();
+    public static Dictionary<int, Unit> units = new Dictionary<int, Unit>();
     public static Dictionary<int, Item> items = new Dictionary<int, Item>();
     public static Dictionary<int, Equip> equips = new Dictionary<int, Equip>();
 
-    public static async Task MonsterLoadData()
+    public static async Task UnitLoadData()
     {
-        monsterDataLoad = await databaseReference.Child("Monster").GetValueAsync();
-        var datas = monsterDataLoad.Value as Dictionary<string, object>;
+        unitDataLoad = await databaseReference.Child("Unit").GetValueAsync();
+        var datas = unitDataLoad.Value as Dictionary<string, object>;
 
         foreach (var data in datas)
         {
@@ -67,8 +68,8 @@ public class FirebaseManager
             }
             json = json.Substring(0, json.Length - 1) + "}";
 
-            Monster monster = JsonUtility.FromJson<Monster>(json);
-            monsters.Add(id, monster);
+            Unit unit = JsonUtility.FromJson<Unit>(json);
+            units.Add(id, unit);
         }
     }
     public static async Task ItemLoadData()
