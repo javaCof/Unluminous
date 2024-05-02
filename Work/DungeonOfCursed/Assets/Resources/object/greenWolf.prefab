@@ -2334,7 +2334,7 @@ GameObject:
   - component: {fileID: 8081547646108037119}
   - component: {fileID: 6623787667841266153}
   m_Layer: 7
-  m_Name: WolfBoss_Green
+  m_Name: greenWolf
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

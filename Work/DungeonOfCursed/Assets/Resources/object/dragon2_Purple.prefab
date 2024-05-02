@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 3963338185035056735}
   - component: {fileID: -7679390295509109960}
   m_Layer: 7
-  m_Name: Spider_black
+  m_Name: dragon2_Purple
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

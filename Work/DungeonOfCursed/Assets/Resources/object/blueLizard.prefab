@@ -698,7 +698,7 @@ GameObject:
   - component: {fileID: -1626639305325181224}
   - component: {fileID: -4559036151714817830}
   m_Layer: 7
-  m_Name: Lizard_Blue
+  m_Name: blueLizard
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -822,7 +822,7 @@ GameObject:
   - component: {fileID: 4048416453354211595}
   - component: {fileID: -6866774628261548489}
   m_Layer: 7
-  m_Name: Lizard_Red
+  m_Name: redLizard
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

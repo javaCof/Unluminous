@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4935707421737478884}
   - component: {fileID: 4935707421737478885}
   m_Layer: 0
-  m_Name: Cramonster
+  m_Name: spearCrab
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
