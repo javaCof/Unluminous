@@ -6,7 +6,7 @@ public class PhotonPool : ObjectPool
 {
     public enum PhotonInstantiateOption { LOCAL, STANDARD, SCENE_OBJECT };
 
-    public PhotonPool(string name, int id, int n, PhotonInstantiateOption option = PhotonInstantiateOption.SCENE_OBJECT) : base(n)
+    public PhotonPool(string name, int id, int n, PhotonInstantiateOption option = PhotonInstantiateOption.SCENE_OBJECT) : base(id, n)
     {
         for (int i = 0; i < n; i++)
         {
@@ -21,14 +21,16 @@ public class PhotonPool : ObjectPool
 
     public override GameObject GetObject(Vector3 pos, Quaternion rot, Transform parent)
     {
-        Debug.Log("get obj");
         if (idx < objects.Count)
         {
             objects[idx].GetComponent<IPoolObject>().OnPoolEnable(pos, rot);
-            Debug.Log("get obj ok");
             return objects[idx++];
         }
-        else return null;
+        else
+        {
+            Debug.LogError("OBJECT POOL IS FULL : " + id);
+            return null;
+        }
     }
 
     public override void DisableObject(GameObject go)

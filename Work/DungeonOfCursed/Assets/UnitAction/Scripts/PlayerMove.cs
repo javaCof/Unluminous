@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
+    [Header("PLAYER SETTING")]
     public float speed = 7f;
     public float sprintSpeed = 10f;
     public bool jumpable = true;
@@ -14,15 +15,24 @@ public class PlayerMove : MonoBehaviour
     public float mouseSensitivityY = 10f;
     public float maxCamRotateAngle = 45f;
 
+    [Header("MODEL")]
+    public Transform model;
+    public Transform weapon;
+    public Vector3 modelOffset;
+    public Vector3 modelRotate;
+
+    [Header("CAMERA")]
     public Vector3 camOffset;
 
     private Player player;
-    
     private Animator anim;
     private CharacterController ctl;
     private Transform cam;
     private PhotonView pv;
     private GameUI ui;
+
+    private Renderer[] renderers;
+    private Renderer[] weapon_renderers;
 
     private bool inpJump;
     private Vector3 moveVec;
@@ -43,6 +53,9 @@ public class PlayerMove : MonoBehaviour
         cam = FindObjectOfType<MapGenerator>().mainCam.transform;
         ui = FindObjectOfType<GameUI>();
 
+        renderers = GetComponentsInChildren<Renderer>();
+        weapon_renderers = weapon.GetComponentsInChildren<Renderer>();
+
         ui.jumpButton.onClick.AddListener(() => inpJump = true);
     }
     private void Start()
@@ -54,6 +67,15 @@ public class PlayerMove : MonoBehaviour
 #endif
             cam.parent = transform;
             cam.localPosition = camOffset;
+
+            foreach (var rend in renderers)
+                rend.enabled = false;
+            foreach (var w_rend in weapon_renderers)
+                w_rend.enabled = true;
+
+            model.parent = cam;
+            model.localPosition = modelOffset;
+            model.localEulerAngles = modelRotate;
         }
     }
     private void Update()
@@ -174,6 +196,7 @@ public class PlayerMove : MonoBehaviour
     {
         animMove = isMove;
         anim.SetBool("move", animMove);
+        weapon.gameObject.SetActive(!isMove);
     }
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

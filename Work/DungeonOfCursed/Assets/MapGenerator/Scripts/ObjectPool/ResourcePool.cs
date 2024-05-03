@@ -6,7 +6,7 @@ public class ResourcePool : ObjectPool
 {
     Transform pos;
 
-    public ResourcePool(string name, int id, int n, Transform pos) : base(n)
+    public ResourcePool(string name, int id, int n, Transform pos) : base(id, n)
     {
         this.pos = pos;
 
@@ -19,8 +19,7 @@ public class ResourcePool : ObjectPool
             go.GetComponent<IPoolObject>().OnPoolCreate(id);
         }
     }
-
-    public ResourcePool(GameObject obj, int id, int n, Transform pos) : base(n)
+    public ResourcePool(GameObject obj, int id, int n, Transform pos) : base(id, n)
     {
         this.pos = pos;
 
@@ -36,7 +35,6 @@ public class ResourcePool : ObjectPool
 
     public override GameObject GetObject(Vector3 pos, Quaternion rot, Transform parent)
     {
-        Debug.Log("get res");
         if (idx < objects.Count)
         {
             objects[idx].transform.parent = parent;
@@ -46,7 +44,11 @@ public class ResourcePool : ObjectPool
             objects[idx].GetComponent<IPoolObject>().OnPoolEnable(pos, rot);
             return objects[idx++];
         }
-        else return null;
+        else
+        {
+            Debug.LogError("OBJECT POOL IS FULL : " + id);
+            return null;
+        }
     }
 
     public override void DisableObject(GameObject go)

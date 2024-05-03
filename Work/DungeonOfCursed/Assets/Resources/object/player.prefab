@@ -7024,6 +7024,10 @@ MonoBehaviour:
   mouseSensitivityX: 2.5
   mouseSensitivityY: 2.5
   maxCamRotateAngle: 45
+  model: {fileID: 7931707577465242781}
+  weapon: {fileID: 7931707579328238545}
+  modelOffset: {x: 0, y: -2, z: 1}
+  modelRotate: {x: -45, y: 0, z: 0}
   camOffset: {x: 0, y: 1.7, z: 0.57}
 --- !u!114 &1395430224
 MonoBehaviour:

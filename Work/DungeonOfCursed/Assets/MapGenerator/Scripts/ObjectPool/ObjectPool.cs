@@ -4,11 +4,13 @@ using UnityEngine;
 
 public abstract class ObjectPool
 {
+    protected int id;
     protected List<GameObject> objects;
     protected int idx;
 
-    protected ObjectPool(int n)
+    protected ObjectPool(int id, int n)
     {
+        this.id = id;
         objects = new List<GameObject>(n);
     }
 
