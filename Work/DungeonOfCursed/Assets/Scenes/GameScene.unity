@@ -1606,6 +1606,7 @@ MonoBehaviour:
   wallPrefab: {fileID: 1655673125402110, guid: 718a8c0341a6b744581a10dfd1105f88, type: 3}
   cornerPrefab: {fileID: 1840828261763088, guid: 12115f3e2bc7884449890b084af37f7a, type: 3}
   pillarPrefab: {fileID: 1332032387223852, guid: 7f951c1ab0c98544dbb2241f27da4db5, type: 3}
+  itemPrefabName: item/Item1
   chestResName: map/Chest
   traderResName: map/Trader
   potalPrefab: {fileID: 2962259759324073563, guid: 3a896886422f5bb4aa4a3b4e25448553, type: 3}

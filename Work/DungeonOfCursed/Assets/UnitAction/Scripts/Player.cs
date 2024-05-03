@@ -106,42 +106,47 @@ public class Player : UnitObject
             case "Trader":
                 Trade();
                 break;
+            case "Item":
+                PickupItem();
+                break;
         }
     }
     public override void AttackAction()
     {
         if (target != null && target.tag == "Enemy")
-            MakeEffect(hitPoint);
-
-        if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            if (target != null && target.tag == "Enemy")
-            {
-                if (PhotonNetwork.inRoom)
-                {
-                    target.GetComponent<PhotonView>().RPC("Hit_Master", PhotonNetwork.masterClient, stat.ATK);
-                }
-                else
-                {
-                    target.GetComponent<Enemy>().Hit_Master(stat.ATK);
-                }
-            }
+            Enemy enemy = target.GetComponent<Enemy>();
+
+            if (!enemy.isDead) MakeEffect(hitPoint);
+
+            if (!PhotonNetwork.inRoom)
+                target.GetComponent<Enemy>().Hit_Master(stat.ATK);
+            else if (pv.isMine)
+                target.GetComponent<PhotonView>().RPC("Hit_Master", PhotonNetwork.masterClient, stat.ATK);
         }
     }
-    public void Trade()
+    void Trade()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            if (target != null && target.tag == "Trader")
+            if (target != null && target.tag == "Trade")
                 target.GetComponent<Trader>().Trade();
         }
     }
-    public void OpenChest()
+    void OpenChest()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             if (target != null && target.tag == "Chest")
                 target.GetComponent<Chest>().Open();
+        }
+    }
+    void PickupItem()
+    {
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            if (target != null && target.tag == "Item")
+                target.GetComponent<Item>().Pickup();
         }
     }
 

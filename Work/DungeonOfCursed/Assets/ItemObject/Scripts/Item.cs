@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemObject : MonoBehaviour, IPoolObject
+public class Item : MonoBehaviour, IPoolObject
 {
     public int id;
     public int amount;
@@ -16,19 +16,14 @@ public class ItemObject : MonoBehaviour, IPoolObject
         pv = GetComponent<PhotonView>();
     }
 
-    private void OnTriggerEnter(Collider oth)
+    public void Pickup()
     {
-        if (oth.tag == "Player")
-        {
-            if (!PhotonNetwork.inRoom || oth.GetComponent<PhotonView>().isMine)
-            {
-                //Inventory inven = oth.GetComponent<Inventory>().AddItem(id, amount);
+        //inventory item add
+        Debug.Log("item get");
 
-                pv.RPC("RemoveObject", PhotonTargets.MasterClient);
-            }
-        }
+        if (PhotonNetwork.inRoom) pv.RPC("RemoveObject", PhotonTargets.MasterClient);
+        else RemoveObject();
     }
-
     [PunRPC] void RemoveObject()
     {
         map.RemoveObject(gameObject, id);

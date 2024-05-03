@@ -24,6 +24,8 @@ public class MapGenerator : MonoBehaviour
     public GameObject cornerPrefab;
     public GameObject pillarPrefab;
 
+    public string itemPrefabName;       //TEST_________________
+
     [Header("MAP OBJECTS")]
     public string chestResName;
     public string traderResName;
@@ -180,6 +182,8 @@ public class MapGenerator : MonoBehaviour
         CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(potalPrefab, (int)MapObjectID.POTAL, 30);
+
+        CreateObjectPool(itemPrefabName, 1000, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
         StartCoroutine(LoadLevel());
     }
@@ -443,6 +447,9 @@ public class MapGenerator : MonoBehaviour
                             int id = Random.Range((int)DB_INFO.NORMAL_MONSTER_BEGIN, (int)DB_INFO.NORMAL_MONSTER_NEXT);
                             AddObjectRandom(id, i, combine);
                         }
+
+                        for (int jj = 0; jj < 3; jj++)
+                            AddObjectRandom(1000, i, combine);
                     }
                     break;
                 case RoomType.TREASURE:

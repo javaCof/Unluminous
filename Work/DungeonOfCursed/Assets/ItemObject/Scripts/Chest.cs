@@ -7,11 +7,13 @@ using UnityEngine.Events;
 public class Chest : MonoBehaviour, IPoolObject
 {
     public bool isLocked = false;
-    public List<ItemObject> items;
+    public List<Item> items;
 
     private Animator anim;
     private MapGenerator map;
     private PhotonView pv;
+
+    private bool isOpened = false;
 
     private void Awake()
     {
@@ -22,8 +24,17 @@ public class Chest : MonoBehaviour, IPoolObject
 
     public void Open()
     {
-        anim.SetTrigger("Open");
+        if (isOpened) return;
+
+        if (PhotonNetwork.inRoom) pv.RPC("Open_All", PhotonTargets.All);
+        else Open_All();
+
         Debug.Log("»óÀÚ");
+    }
+    [PunRPC] void Open_All()
+    {
+        isOpened = true;
+        anim.SetTrigger("Open");
     }
 
     [PunRPC] public void OnPoolCreate(int id)

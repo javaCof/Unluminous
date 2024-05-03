@@ -8,6 +8,7 @@ TagManager:
   - RoomItem
   - Trader
   - Chest
+  - Item
   layers:
   - Default
   - TransparentFX

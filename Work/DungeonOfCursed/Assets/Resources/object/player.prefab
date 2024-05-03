@@ -7023,7 +7023,7 @@ MonoBehaviour:
   gravity: 20
   mouseSensitivityX: 2.5
   mouseSensitivityY: 2.5
-  maxCamRotateAngle: 5
+  maxCamRotateAngle: 45
   camOffset: {x: 0, y: 1.7, z: 0.57}
 --- !u!114 &1395430224
 MonoBehaviour:
