@@ -23,7 +23,7 @@ public class VrSword : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //vr플레이어에 있는 vr 어택 함수 호출
-        vrPlayer.VrAttack(collision);
+        vrPlayer.VrAttackAction(collision);
     }
 
 
