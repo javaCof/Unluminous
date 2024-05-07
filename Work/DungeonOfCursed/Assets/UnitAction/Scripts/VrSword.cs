@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class VrSword : MonoBehaviour
 {
-    Collider target;
+    VrPlayer vrPlayer;
+
+    private void Awake()
+    {
+        vrPlayer = GameObject.Find("VrPlayer").GetComponent<VrPlayer>();
+    }
+
+
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    //vr플레이어에 있는 vr 어택 함수 호출
+    //    vrPlayer.VrAttack(other);
+        
+    //}
+
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag=="Enemy")
-        {
-            //그 적한테 데미지를 주는 함수
-            target = collision.collider;
-
-        }
+        //vr플레이어에 있는 vr 어택 함수 호출
+        vrPlayer.VrAttack(collision);
     }
 
 

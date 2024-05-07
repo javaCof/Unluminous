@@ -7,16 +7,16 @@ using UnityEngine.SceneManagement;
 public class Player : UnitObject
 {
     public float actionDist = 2f;
-    public GameObject attackEffect;
+    protected GameObject attackEffect;
 
     [HideInInspector] public bool controllable = true;
 
     private Animator anim;
     private MapGenerator map;
-    private PhotonView pv;
+    protected PhotonView pv;
 
     private Collider target;
-    private Vector3 hitPoint;
+    protected Vector3 hitPoint;
     private bool inpAction;
 
     private void Awake()
@@ -191,7 +191,7 @@ public class Player : UnitObject
         SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
     }
 
-    void MakeEffect(Vector3 pos)
+    protected void MakeEffect(Vector3 pos)
     {
         Instantiate(attackEffect, pos, Quaternion.identity);
     }

@@ -3433,7 +3433,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9188803831800254036}
   - component: {fileID: 7878628284854562006}
-  - component: {fileID: 3040146417040578520}
+  - component: {fileID: 6223648445936869495}
   m_Layer: 0
   m_Name: swordColider
   m_TagString: Untagged
@@ -3468,7 +3468,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.12, y: 0.09, z: 1.5}
   m_Center: {x: 0.03, y: 0.09, z: 0}
---- !u!114 &3040146417040578520
+--- !u!114 &6223648445936869495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6959,6 +6959,7 @@ GameObject:
   - component: {fileID: 6732228779099678666}
   - component: {fileID: 5952789258427445615}
   - component: {fileID: 1783037443318547189}
+  - component: {fileID: 5719497649718783822}
   - component: {fileID: 8034732114488612525}
   m_Layer: 0
   m_Name: VrPlayer
@@ -7019,6 +7020,8 @@ MonoBehaviour:
   actionDist: 2
   attackEffect: {fileID: 0}
   controllable: 1
+  enemy: {fileID: 0}
+  sword: {fileID: 0}
 --- !u!114 &1783037443318547189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7039,7 +7042,27 @@ MonoBehaviour:
   m_GravityApplicationMode: 0
   m_ForwardSource: {fileID: 0}
   m_InputBinding: 0
-  m_Controllers: []
+  m_Controllers:
+  - {fileID: 6732228778128054799}
+  m_DeadzoneMin: 0.125
+  m_DeadzoneMax: 0.925
+--- !u!114 &5719497649718783822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732228779099678667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ac6916bc3db4214dbe74106e4ad724b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_System: {fileID: 0}
+  m_TurnSpeed: 60
+  m_InputBinding: 0
+  m_Controllers:
+  - {fileID: 6732228777594704474}
   m_DeadzoneMin: 0.125
   m_DeadzoneMax: 0.925
 --- !u!114 &8034732114488612525
