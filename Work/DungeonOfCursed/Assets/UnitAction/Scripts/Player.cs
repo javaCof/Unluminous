@@ -7,12 +7,12 @@ using UnityEngine.SceneManagement;
 public class Player : UnitObject
 {
     public float actionDist = 2f;
-    protected GameObject attackEffect;
+    public GameObject attackEffect;
 
     [HideInInspector] public bool controllable = true;
 
-    private Animator anim;
-    private MapGenerator map;
+    protected Animator anim;
+    protected MapGenerator map;
     protected PhotonView pv;
 
     private Collider target;
@@ -133,6 +133,7 @@ public class Player : UnitObject
                 target.GetComponent<Trader>().Trade();
         }
     }
+    
     void OpenChest()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
