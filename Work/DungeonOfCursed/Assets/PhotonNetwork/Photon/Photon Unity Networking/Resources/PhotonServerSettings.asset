@@ -46,20 +46,19 @@ MonoBehaviour:
   - OnPoolCreate
   - OnPoolDisable
   - OnPoolEnable
+  - Open_All
   - PhotonAllReady
   - PickupItemInit
   - PunPickup
   - PunPickupSimple
   - PunRespawn
   - ReadyCancel
+  - RemoveObject
   - RemovePhotonReady
   - RequestForPickupItems
   - RequestForPickupTimes
+  - ResetItems
   - ResetLevel
   - ResetMap
-  - RemoveObject
-  - Open_All
-  - ResetItems
   - Trade_Master
-  - VrHit_Owner
   DisableAutoOpenWizard: 1
