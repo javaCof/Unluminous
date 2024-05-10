@@ -29,7 +29,7 @@ public class MapGenerator : MonoBehaviour
     [Header("MAP OBJECTS")]
     public string chestResName;
     public string traderResName;
-    public GameObject potalPrefab;
+    public string potalResName;
 
     [Header("DECO OBJECTS")]
     public List<GameObject> decoPrefabs;
@@ -181,7 +181,7 @@ public class MapGenerator : MonoBehaviour
 
         CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
-        CreateObjectPool(potalPrefab, (int)MapObjectID.POTAL, 30);
+        CreateObjectPool(potalResName, (int)MapObjectID.POTAL, 1, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
         CreateObjectPool(itemPrefabName, 1000, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
@@ -754,6 +754,10 @@ public class MapGenerator : MonoBehaviour
     {
         List<ObjInfo> objs = JsonUtility.FromJson<ObjInfoList>(json).objs;
         playerSpawnPoint = PhotonNetwork.inRoom ? objs[PhotonNetwork.player.ID - 1].pos : objs[0].pos;
+
+        foreach (var o in objs)
+            if (o.objID == (int)MapObjectID.POTAL)
+                Debug.Log("dadaddaaaaaafdfdfdfdfdfdfdf");
 
         foreach (ObjInfo obj in objs)
         {
