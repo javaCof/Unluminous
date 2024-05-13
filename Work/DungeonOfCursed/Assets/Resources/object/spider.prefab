@@ -1504,7 +1504,7 @@ GameObject:
   - component: {fileID: 4666717500137732560}
   - component: {fileID: 2161267440577159668}
   m_Layer: 0
-  m_Name: spider_brown
+  m_Name: model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2407,8 +2407,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDead: 0
+  id: 0
   curHP: 0
   roomNum: -1
+  isBoss: 0
   enableState: 1
   minAttackRange: 4.3
   maxAttackRange: 4.8
@@ -2416,8 +2418,8 @@ MonoBehaviour:
   attackDelay: 1
   instantAttack: 1
   removeDelay: 1.8
-  id: 0
   originPos: {x: 0, y: 0, z: 0}
+  debugon: 0
 --- !u!114 &-6003563929388903100
 MonoBehaviour:
   m_ObjectHideFlags: 0

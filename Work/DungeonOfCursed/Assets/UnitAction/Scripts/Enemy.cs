@@ -7,6 +7,7 @@ public class Enemy : UnitObject
 {
     public enum EnemyState { Search, Trace, Attack, Repos, Dead }
 
+    public bool isBoss;
     public bool enableState = true;
     public float minAttackRange = 1.5f;
     public float maxAttackRange = 2f;
@@ -192,7 +193,7 @@ public class Enemy : UnitObject
         state = _state;
         BeginState(state);
     }
-
+    public bool debugon;
     void SetTraceTarget()
     {
         traceTarget = null;
@@ -201,6 +202,12 @@ public class Enemy : UnitObject
         foreach (var obj in GameObject.FindGameObjectsWithTag("Player"))
         {
             Player player = obj.GetComponent<Player>();
+
+
+            if (debugon)
+            {
+                Debug.Log(player.isDead + " " + player.roomNum);
+            }
 
             if (!player.isDead && player.roomNum == this.roomNum)
             {
