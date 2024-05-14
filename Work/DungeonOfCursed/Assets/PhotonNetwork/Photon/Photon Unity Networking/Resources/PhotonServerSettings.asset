@@ -38,11 +38,10 @@ MonoBehaviour:
   - GenerateMapTile
   - GeneratePlayer
   - Hit_All
-  - Hit_Master
-  - Hit_Owner
   - InstantiateRpc
   - LoadStage
   - MapReadyOK
+  - OnHit
   - OnPoolCreate
   - OnPoolDisable
   - OnPoolEnable

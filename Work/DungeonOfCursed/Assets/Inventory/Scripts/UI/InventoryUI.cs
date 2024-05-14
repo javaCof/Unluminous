@@ -507,7 +507,7 @@ public class InventoryUI : MonoBehaviour
     [System.Diagnostics.Conditional("UNITY_EDITOR")]
     private void EditorLog(object message)
     {
-        if (!_showDebug) return;
+        //if (!_showDebug) return;                                      //>>>ERROR
         UnityEngine.Debug.Log($"[InventoryUI] {message}");
     }
 
