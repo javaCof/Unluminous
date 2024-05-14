@@ -7,6 +7,7 @@ public class Enemy : UnitObject
 {
     public enum EnemyState { Search, Trace, Attack, Repos, Dead }
 
+    public bool isBoss;
     public bool enableState = true;
     public float minAttackRange = 1.5f;
     public float maxAttackRange = 2f;
@@ -244,7 +245,7 @@ public class Enemy : UnitObject
     {
         anim.SetTrigger("attack");
     }
-    public override void AttackAction()
+    public override void Attack()
     {
         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
         {
@@ -255,15 +256,56 @@ public class Enemy : UnitObject
                 if (PhotonNetwork.inRoom)
                 {
                     PhotonView othPv = attackTarget.GetComponent<PhotonView>();
-                    othPv.RPC("Hit_Owner", othPv.owner, stat.ATK);
+                    othPv.RPC("OnHit", othPv.owner, stat.ATK);
                 }
                 else
                 {
-                    attackTarget.GetComponent<Player>().Hit_Owner(stat.ATK);
+                    attackTarget.GetComponent<Player>().OnHit(stat.ATK);
                 }
             }
         }
     }
+    [PunRPC] public override void OnHit(float dmg)
+    {
+        if (isDead) return;
+
+        curHP -= dmg;
+        attackDtime = Time.time;
+
+        if (curHP <= 0)
+        {
+            if (PhotonNetwork.inRoom)
+                pv.RPC("Dead_All", PhotonTargets.All);
+            else Dead_All();
+
+            isDead = true;
+            enableState = false;
+
+            StartCoroutine(Dead(removeDelay));
+        }
+        else
+        {
+            if (PhotonNetwork.inRoom)
+                pv.RPC("Hit_All", PhotonTargets.All);
+            else Hit_All();
+        }
+    }
+    [PunRPC] void Hit_All()
+    {
+        anim.SetTrigger("hit");
+    }
+    [PunRPC] void Dead_All()
+    {
+        anim.applyRootMotion = true;
+        anim.SetTrigger("dead");
+    }
+    protected override IEnumerator Dead(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        map.RemoveObject(gameObject, id);
+    }
+
     void CheckAttackTarget()
     {
         attackTarget = null;
@@ -286,47 +328,6 @@ public class Enemy : UnitObject
 
         if (attackTarget != null && Vector3.Distance(attackTarget.position, transform.position) > maxAttackRange)
             attackTarget = null;
-    }
-
-    [PunRPC] public void Hit_Master(float dmg)
-    {
-        if (isDead) return;
-
-        curHP -= dmg;
-        attackDtime = Time.time;
-
-        if (curHP <= 0)
-        {
-            if (PhotonNetwork.inRoom)
-                pv.RPC("Dead_All", PhotonTargets.All);
-            else Dead_All();
-
-            isDead = true;
-            enableState = false;
-
-            StartCoroutine(RemoveObject(removeDelay));
-        }
-        else
-        {
-            if (PhotonNetwork.inRoom)
-                pv.RPC("Hit_All", PhotonTargets.All);
-            else Hit_All();
-        }
-    }
-    [PunRPC] void Hit_All()
-    {
-        anim.SetTrigger("hit");
-    }
-    [PunRPC] void Dead_All()
-    {
-        anim.applyRootMotion = true;
-        anim.SetTrigger("dead");
-    }
-    IEnumerator RemoveObject(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        map.RemoveObject(gameObject, id);
     }
 
     void UpdatePos()

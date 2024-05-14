@@ -10,7 +10,7 @@ public class VrSword : MonoBehaviour
 
     private void Awake()
     {
-        vrPlayer = GameObject.Find("VrPlayer").GetComponent<VrPlayer>();
+        vrPlayer = GetComponentInParent<VrPlayer>();
     }
 
 

@@ -2892,7 +2892,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: ec4f2e8c9fd62754d88e1b121b9daa6f, type: 3}
   m_Controller: {fileID: 9100000, guid: 3d9e1cfdd4928c24fbc49b8441d86ffc, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -7029,6 +7029,7 @@ MonoBehaviour:
   modelOffset: {x: 0, y: -2, z: 1}
   modelRotate: {x: -45, y: 0, z: 0}
   camOffset: {x: 0, y: 1.7, z: 0.57}
+  animMove: 0
 --- !u!114 &1395430224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7045,7 +7046,7 @@ MonoBehaviour:
   id: 0
   curHP: 0
   roomNum: 0
-  actionDist: 2.5
+  actionDist: 3
   attackEffect: {fileID: 7226583673155636401, guid: a2ab56839e1c9504ea9d141e95d0b16b, type: 3}
   controllable: 1
 --- !u!114 &1395430225

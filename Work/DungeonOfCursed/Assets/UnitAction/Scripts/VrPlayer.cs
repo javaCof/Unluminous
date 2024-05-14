@@ -5,64 +5,57 @@ using UnityEngine;
 
 public class VrPlayer : Player
 {
-    //몬스터가 맞는 위치
+    public Transform actor;
+    public Transform avatar;
 
-    Rigidbody rigidbody;
+    public GameObject sword;                //검 GameObject
+    public float attackCooldown = 0.3f;     //공격 쿨타임
+
+    private Rigidbody rig;
 
     private Enemy enemy;
-    public GameObject sword;
+    private Vector3 vrhitPoint;               //피격 위치
+    private float lastAttackTime;
 
-    float lastAttackTime;
-
-    //공격 쿨타임
-    public float attackCooldown = 0.3f;
-
-
+    private bool animMove;
+    private Vector3 curPos;
+    private Quaternion curRot;
 
     private void Awake()
     {
-        anim= anim = GetComponentInChildren<Animator>();
-        sword = GameObject.Find("swordColider");
-        hitPoint = Vector3.zero;
+        anim = actor.GetComponentInChildren<Animator>();
+        rig = actor.GetComponent<Rigidbody>();
+        map = FindObjectOfType<MapGenerator>();
+        pv = GetComponent<PhotonView>();
     }
-
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
+            actor.gameObject.SetActive(true);
+            avatar.gameObject.SetActive(false);
+
             roomNum = -1;
+            map.mainCam.gameObject.SetActive(false);
+        }
+        else
+        {
+            anim = avatar.GetComponentInChildren<Animator>();
+
+            actor.gameObject.SetActive(false);
+            avatar.gameObject.SetActive(true);
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
-        AnimMove(Mathf.Abs(rigidbody.velocity.x + rigidbody.velocity.z) > 0.1);
-        
+        UpdateRoomNum();
 
-    }
-
-    //움직이는 애니메이션 동기화
-   void AnimMove(bool isMove)
-    {
-        anim.SetBool("move", isMove);
-
-    }
-
-    void Reset()
-    {
-        curHP = stat.HP;
-        isDead = false;
-    }
-
-     void UpdateRoomNum()
-    {
-        roomNum = map.FindRoom(transform.position);
+        if (!PhotonNetwork.inRoom || pv.isMine) { }
+        else
+        {
+            UpdatePos();
+            UpdateAnimMove(animMove);
+        }
     }
 
     //상인거래
@@ -87,18 +80,18 @@ public class VrPlayer : Player
                 enemy = target.gameObject.GetComponent<Enemy>();
 
                 //몬스터가 칼이랑 부딪힌 위치
-                hitPoint = target.transform.position;
+                vrhitPoint = target.transform.position;
 
                 //에너미가 살아있을때만 이펙트 생성
                 if (!enemy.isDead)
                 {
-                    MakeEffect(hitPoint);
+                    MakeEffect(vrhitPoint);
                 }
 
                 //싱글일때
                 if (!PhotonNetwork.inRoom)
                 {
-                    enemy.Hit_Master(stat.ATK);
+                    enemy.OnHit(stat.ATK);
                 }
 
                 //멀티 일때
@@ -133,93 +126,115 @@ public class VrPlayer : Player
         }
     }
 
-    [PunRPC] public void Hit_Owner(float dmg)
+
+    public override void Attack() { } //call by anim
+    [PunRPC] public override void OnHit(float dmg)
     {
-        //죽었다면 리턴
         if (isDead) return;
 
-        //데미지 만큼 체력 깎음
         curHP -= dmg;
-
-        //체력바 찾아서 퍼센트 비율로 체력 깍이는거 반영
         FindObjectOfType<GameUI>().hpBar.fillAmount = curHP / stat.HP;
 
-        //체력이 0이하 되면
         if (curHP <= 0)
         {
-            //멀티일때
             if (PhotonNetwork.inRoom)
-            {   
-                //멀티상대에게 죽는모션 보여줌
                 pv.RPC("Dead_All", PhotonTargets.All);
-            }
-            //싱글일때
             else Dead_All();
-            
 
             isDead = true;
+            controllable = false;
 
-            StartCoroutine(DeadPlayer());
+            StartCoroutine(Dead(1));
         }
-        //맞았지만 체력이 1이상일때
         else
         {
             if (PhotonNetwork.inRoom)
                 pv.RPC("Hit_All", PhotonTargets.All);
-
             else Hit_All();
         }
     }
-
-    //맞았을때
-    [PunRPC]public void Hit_All()
+    [PunRPC] void Hit_All()
     {
         anim.SetTrigger("hit");
     }
-
-
-    //죽었을때
-    [PunRPC]void Dead_All()
+    [PunRPC] void Dead_All()
     {
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
     }
-
-    
-    IEnumerator DeadPlayer()
+    protected override IEnumerator Dead(float delay)
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(delay);
 
         SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
     }
 
-  
-
-    public override void AttackAction()
+    void UpdatePos()
     {
-
+        transform.position = Vector3.Lerp(transform.position, curPos, 3.0f * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, curRot, 3.0f * Time.deltaTime);
     }
-
-    //네트워크 상에서 오브젝트의 상태를 동기화하는 함수
+    void UpdateAnimMove(bool isMove)
+    {
+        animMove = isMove;
+        anim.SetBool("move", animMove);
+    }
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.isWriting)
         {
-            stream.SendNext(isDead);
-            stream.SendNext(roomNum);
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+            stream.SendNext(animMove);
+
+            stream.SendNext(isDead);
+            stream.SendNext(roomNum);
         }
         else
         {
-            //curPos = (Vector3)stream.ReceiveNext();
-            //curRot = (Quaternion)stream.ReceiveNext();
-            //animMove = (bool)stream.ReceiveNext();
+            curPos = (Vector3)stream.ReceiveNext();
+            curRot = (Quaternion)stream.ReceiveNext();
+            animMove = (bool)stream.ReceiveNext();
 
             isDead = (bool)stream.ReceiveNext();
             roomNum = (int)stream.ReceiveNext();
         }
     }
 
+    [PunRPC] public override void OnPoolCreate(int id)
+    {
+        this.id = id;
+        SetStat();
 
+        if (PhotonNetwork.inRoom)
+        {
+            if (pv.isMine) pv.RPC("OnPoolCreate", PhotonTargets.Others, id);
+            transform.parent = map.poolPos;
+            gameObject.SetActive(false);
+        }
+    }
+    [PunRPC] public override void OnPoolEnable(Vector3 pos, Quaternion rot)
+    {
+        if (PhotonNetwork.inRoom)
+        {
+            if (pv.isMine) pv.RPC("OnPoolEnable", PhotonTargets.Others, pos, rot);
+            transform.parent = map.objectPos;
+            transform.position = pos;
+            transform.rotation = rot;
+            gameObject.SetActive(true);
+        }
+
+        Reset();
+    }
+    [PunRPC] public override void OnPoolDisable()
+    {
+        if (PhotonNetwork.inRoom)
+        {
+            if (pv.isMine) pv.RPC("OnPoolDisable", PhotonTargets.Others);
+            transform.parent = map.poolPos;
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void OnDrawGizmosSelected() { }
 }

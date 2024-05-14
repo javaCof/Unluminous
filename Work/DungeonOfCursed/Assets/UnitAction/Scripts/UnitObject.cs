@@ -19,7 +19,9 @@ public abstract class UnitObject : MonoBehaviour, IPoolObject
         stat.SPD = FirebaseManager.units[id].spd;
     }
 
-    public abstract void AttackAction();
+    public abstract void Attack();
+    public abstract void OnHit(float dmg);
+    protected abstract IEnumerator Dead(float delay);
 
     public abstract void OnPoolCreate(int id);
     public abstract void OnPoolEnable(Vector3 pos, Quaternion rot);

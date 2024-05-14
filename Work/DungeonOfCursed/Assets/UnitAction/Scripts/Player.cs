@@ -16,7 +16,7 @@ public class Player : UnitObject
     protected PhotonView pv;
 
     private Collider target;
-    protected Vector3 hitPoint;
+    private Vector3 hitPoint;
     private bool inpAction;
 
     private void Awake()
@@ -36,9 +36,10 @@ public class Player : UnitObject
     }
     private void Update()
     {
+        UpdateRoomNum();
+
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            UpdateRoomNum();
             SetLookTarget();
             ShowLookTarget();
 
@@ -62,10 +63,6 @@ public class Player : UnitObject
         anim.applyRootMotion = false;
     }
 
-    void UpdateRoomNum()
-    {
-        roomNum = map.FindRoom(transform.position);
-    }
     void SetLookTarget()
     {
         Vector3 camPos = Camera.main.transform.position;
@@ -111,20 +108,7 @@ public class Player : UnitObject
                 break;
         }
     }
-    public override void AttackAction()
-    {
-        if (target != null && target.tag == "Enemy")
-        {
-            Enemy enemy = target.GetComponent<Enemy>();
 
-            if (!enemy.isDead) MakeEffect(hitPoint);
-
-            if (!PhotonNetwork.inRoom)
-                target.GetComponent<Enemy>().Hit_Master(stat.ATK);
-            else if (pv.isMine)
-                target.GetComponent<PhotonView>().RPC("Hit_Master", PhotonNetwork.masterClient, stat.ATK);
-        }
-    }
     void Trade()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
@@ -133,7 +117,6 @@ public class Player : UnitObject
                 target.GetComponent<Trader>().Trade();
         }
     }
-    
     void OpenChest()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
@@ -151,7 +134,21 @@ public class Player : UnitObject
         }
     }
 
-    [PunRPC] public void Hit_Owner(float dmg)
+    public override void Attack()
+    {
+        if (target != null && target.tag == "Enemy")
+        {
+            Enemy enemy = target.GetComponent<Enemy>();
+
+            if (!enemy.isDead) MakeEffect(hitPoint);
+
+            if (!PhotonNetwork.inRoom)
+                target.GetComponent<Enemy>().OnHit(stat.ATK);
+            else if (pv.isMine)
+                target.GetComponent<PhotonView>().RPC("OnHit", PhotonNetwork.masterClient, stat.ATK);
+        }
+    }
+    [PunRPC] public override void OnHit(float dmg)
     {
         if (isDead) return;
 
@@ -167,7 +164,7 @@ public class Player : UnitObject
             isDead = true;
             controllable = false;
 
-            StartCoroutine(DeadPlayer());
+            StartCoroutine(Dead(1));
         }
         else
         {
@@ -176,7 +173,7 @@ public class Player : UnitObject
             else Hit_All();
         }
     }
-    [PunRPC] public void Hit_All()
+    [PunRPC] void Hit_All()
     {
         anim.SetTrigger("hit");
     }
@@ -185,13 +182,17 @@ public class Player : UnitObject
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
     }
-    IEnumerator DeadPlayer()
+    protected override IEnumerator Dead(float delay)
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(delay);
 
         SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
     }
 
+    protected void UpdateRoomNum()
+    {
+        roomNum = map.FindRoom(transform.position);
+    }
     protected void MakeEffect(Vector3 pos)
     {
         Instantiate(attackEffect, pos, Quaternion.identity);
