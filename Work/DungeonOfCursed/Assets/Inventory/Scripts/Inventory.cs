@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
@@ -18,6 +19,13 @@ public class Inventory : MonoBehaviour
 
     [SerializeField]
     private Item2[] _items;
+
+    [SerializeField] private Button _openInvenButton;
+    [SerializeField] private Button _closeInvenButton;
+    [SerializeField] private GameObject _inventory;
+
+
+    private bool isOpen = false;
 
     private readonly HashSet<int> _indexSetForUpdate = new HashSet<int>();
 
@@ -51,6 +59,8 @@ public class Inventory : MonoBehaviour
         _items = new Item2[_maxCapacity];
         Capacity = _initalCapacity;
         _inventoryUI.SetInventoryReference(this);
+        HidePanel();
+        InvenEvent();
     }
 
     private void Start()
@@ -413,4 +423,33 @@ public class Inventory : MonoBehaviour
         UpdateAllSlot();
         _inventoryUI.UpdateAllSlotFilters();
     }
+
+    private void HidePanel() => _inventory.SetActive(false);
+    private void ShowPanel() => _inventory.SetActive(true);
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if(!isOpen)
+            {
+                Debug.Log("족발");
+                ShowPanel();
+                isOpen = true;
+            }
+            else if(isOpen)
+            {
+                Debug.Log("베이비야");
+                HidePanel();
+                isOpen = false;
+            }
+        }
+    }
+
+    private void InvenEvent()
+    {
+        _openInvenButton.onClick.AddListener(ShowPanel);
+        _closeInvenButton.onClick.AddListener(HidePanel);
+    }
+
 }

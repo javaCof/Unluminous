@@ -31,8 +31,6 @@ public class InventoryUI : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] private Button _trimButton;
     [SerializeField] private Button _sortButton;
-    [SerializeField] private Button _openInvenButton;
-    [SerializeField] private Button _closeInvenButton;
 
     [Header("Filter Toggles")]
     [SerializeField] private Toggle _toggleFilterAll;
@@ -55,6 +53,7 @@ public class InventoryUI : MonoBehaviour
 
     private int _leftClick = 0;
     private int _rightClick = 1;
+    private bool isOpen = false;
 
     private Vector3 _beginDragIconPoint;   // 드래그 시작 시 슬롯의 위치
     private Vector3 _beginDragCursorPoint; // 드래그 시작 시 커서의 위치
@@ -72,8 +71,6 @@ public class InventoryUI : MonoBehaviour
         InitSlots();
         InitButtonEvents();
         InitToggleEvents();
-        HidePanel();
-        InvenEvent();
     }
 
     private void Update()
@@ -699,14 +696,4 @@ public class InventoryUI : MonoBehaviour
         public static void Destroy(GameObject go) => targetQueue.Enqueue(go);
     }
 #endif
-
-    private void HidePanel() => gameObject.SetActive(false);
-    private void ShowPanel() => gameObject.SetActive(true);
-
-    private void InvenEvent()
-    {
-        _openInvenButton.onClick.AddListener(ShowPanel);
-
-        _closeInvenButton.onClick.AddListener(HidePanel);
-    }
 }
