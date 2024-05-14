@@ -25,7 +25,7 @@ public class HpBar : MonoBehaviour
     {
         //hpBar.transform.position= Camera.main.WorldToScreenPoint(transform.position);
 
-        //mytr.LookAt(Camera.main.transform);
+        mytr.LookAt(Camera.main.transform);
 
         //юс╫ц
         hp = enemyact.curHP;

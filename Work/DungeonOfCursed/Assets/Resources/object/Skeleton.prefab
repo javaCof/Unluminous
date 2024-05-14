@@ -289,7 +289,7 @@ GameObject:
   - component: {fileID: 1298083462424845741}
   - component: {fileID: 1643556957021021667}
   m_Layer: 0
-  m_Name: model
+  m_Name: skeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1219,10 +1219,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDead: 0
-  id: 0
   curHP: 0
   roomNum: -1
-  isBoss: 0
   enableState: 1
   minAttackRange: 4
   maxAttackRange: 4.5
@@ -1230,8 +1228,8 @@ MonoBehaviour:
   attackDelay: 1
   instantAttack: 1
   removeDelay: 2
+  id: 0
   originPos: {x: 0, y: 0, z: 0}
-  debugon: 0
 --- !u!114 &420490702479302458
 MonoBehaviour:
   m_ObjectHideFlags: 0

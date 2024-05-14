@@ -6964,7 +6964,7 @@ GameObject:
   - component: {fileID: 8937116822125763670}
   - component: {fileID: 7139112829881707634}
   m_Layer: 0
-  m_Name: vrPlayer
+  m_Name: VrPlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

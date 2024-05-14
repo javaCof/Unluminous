@@ -321,7 +321,7 @@ GameObject:
   - component: {fileID: 466193925721751569}
   - component: {fileID: 2996496557737502355}
   m_Layer: 0
-  m_Name: model
+  m_Name: lizard_Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -892,10 +892,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDead: 0
-  id: 0
   curHP: 0
   roomNum: -1
-  isBoss: 0
   enableState: 1
   minAttackRange: 5.5
   maxAttackRange: 6
@@ -903,8 +901,8 @@ MonoBehaviour:
   attackDelay: 1
   instantAttack: 1
   removeDelay: 3.5
+  id: 0
   originPos: {x: 0, y: 0, z: 0}
-  debugon: 0
 --- !u!114 &-6866774628261548489
 MonoBehaviour:
   m_ObjectHideFlags: 0

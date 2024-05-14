@@ -36,10 +36,9 @@ public class Player : UnitObject
     }
     private void Update()
     {
-        UpdateRoomNum();
-
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
+            UpdateRoomNum();
             SetLookTarget();
             ShowLookTarget();
 

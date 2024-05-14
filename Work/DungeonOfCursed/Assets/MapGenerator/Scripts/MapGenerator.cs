@@ -29,17 +29,15 @@ public class MapGenerator : MonoBehaviour
     [Header("MAP OBJECTS")]
     public string chestResName;
     public string traderResName;
-    public string potalResName;
+    public GameObject potalPrefab;
 
     [Header("DECO OBJECTS")]
-    public List<string> decoResNames;
+    public List<GameObject> decoPrefabs;
 
     public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
     public enum TileID { FLOOR = 100, WALL, CORNER, PILLAR }                                //타일 ID
     public enum MapObjectID { CHEST=300, TRADER, POTAL }
-
-    public const int MapDecoID = 400;
 
     [SerializeField] private Color[] tileColors = { Color.white, Color.white, Color.black, Color.black, Color.black, Color.black };
     [SerializeField] private Color myPlayerColor = Color.red;
@@ -183,12 +181,9 @@ public class MapGenerator : MonoBehaviour
 
         CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
-        CreateObjectPool(potalResName, (int)MapObjectID.POTAL, 1, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+        CreateObjectPool(potalPrefab, (int)MapObjectID.POTAL, 30);
 
-        CreateObjectPool(itemPrefabName, 1000, 50, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
-
-        for (int i = 0; i < decoResNames.Count; i++)
-            CreateObjectPool(decoResNames[i], MapDecoID + i, 30, PhotonPool.PhotonInstantiateOption.LOCAL);
+        CreateObjectPool(itemPrefabName, 1000, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
         StartCoroutine(LoadLevel());
     }
@@ -417,9 +412,7 @@ public class MapGenerator : MonoBehaviour
             else if (i == 0)
                 type = RoomType.POTAL;
             else
-                type = RoomType.BATTLE;
-                //type = (RoomType)Random.Range((int)RoomType.BATTLE, (int)RoomType.POTAL);
-            
+                type = (RoomType)Random.Range((int)RoomType.BATTLE, (int)RoomType.POTAL);
 
             roomInfos.Add(new RoomInfo(type, rooms[i]));
         }
@@ -455,15 +448,8 @@ public class MapGenerator : MonoBehaviour
                             AddObjectRandom(id, i, combine);
                         }
 
-                        //for (int jj = 0; jj < 3; jj++)
-                        //    AddObjectRandom(1000, i, combine);
-
-                        for (int j = 0; j < 5; j++)
-                        {
-                            int id = Random.Range(MapDecoID, MapDecoID + decoResNames.Count);
-                            AddObjectRandom(id, i, combine);
-                        }
-                            
+                        for (int jj = 0; jj < 3; jj++)
+                            AddObjectRandom(1000, i, combine);
                     }
                     break;
                 case RoomType.TREASURE:
@@ -792,7 +778,6 @@ public class MapGenerator : MonoBehaviour
     }
     GameObject GenerateObject(ObjInfo info)
     {
-        if (!objectsPool.ContainsKey(info.objID)) Debug.Log("object pool key not found : " + info.objID);
         return objectsPool[info.objID].GetObject(info.pos, Quaternion.identity, objectPos);
     }
     [PunRPC] void GeneratePlayer()
