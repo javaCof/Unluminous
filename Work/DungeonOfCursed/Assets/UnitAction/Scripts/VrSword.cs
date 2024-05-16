@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VrSword : MonoBehaviour
 {
-    VrPlayer vrPlayer;
+    public VrPlayer vrPlayer;
 
 
 
@@ -14,16 +14,17 @@ public class VrSword : MonoBehaviour
     }
 
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    //vr플레이어에 있는 vr 어택 함수 호출
-    //    vrPlayer.VrAttack(other);
-
-    //}
-
-
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("트리거 뭔가 부딫힘!");
+
+    }
+
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("뭔가 부딫힘!");
+
         switch (collision.gameObject.tag)
         {
             case "Enemy":
@@ -39,11 +40,6 @@ public class VrSword : MonoBehaviour
                 vrPlayer.VrPickupItem(collision);
                 break;
         }
-
-
-
-
-
     }
 
 

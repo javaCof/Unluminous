@@ -46,6 +46,8 @@ public class VrPlayer : Player
             avatar.gameObject.SetActive(true);
         }
     }
+
+
     private void Update()
     {
         UpdateRoomNum();
@@ -56,6 +58,7 @@ public class VrPlayer : Player
             UpdatePos();
             UpdateAnimMove(animMove);
         }
+
     }
 
     //상인거래
@@ -162,6 +165,12 @@ public class VrPlayer : Player
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
     }
+
+   void UpdateRoomNum()
+    {
+        roomNum = map.FindRoom(actor.position);
+    }
+
     protected override IEnumerator Dead(float delay)
     {
         yield return new WaitForSeconds(delay);

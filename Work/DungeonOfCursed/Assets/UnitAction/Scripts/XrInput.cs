@@ -28,7 +28,6 @@ public class XrInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         IsWalk();
     }
 
@@ -45,7 +44,7 @@ public class XrInput : MonoBehaviour
             {
                 //걷는 모션
                 anim.SetBool("move", true);
-                Debug.Log("걷는 모션!");
+                
                 
             }
             //0.1보다 작을때
@@ -54,9 +53,11 @@ public class XrInput : MonoBehaviour
 
                 //가만히 모션
                 anim.SetBool("move", false);
-                Debug.Log("멈춤!");
+                
             }
         }
-        
+//#if ENABLE_VR
+
+//#endif
     }
 }
