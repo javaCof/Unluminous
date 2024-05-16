@@ -1797,14 +1797,13 @@ MonoBehaviour:
   wallPrefab: {fileID: 1655673125402110, guid: 718a8c0341a6b744581a10dfd1105f88, type: 3}
   cornerPrefab: {fileID: 1840828261763088, guid: 12115f3e2bc7884449890b084af37f7a, type: 3}
   pillarPrefab: {fileID: 1332032387223852, guid: 7f951c1ab0c98544dbb2241f27da4db5, type: 3}
+  decoPrefabs:
+  - {fileID: 2187373232961256504, guid: 6f6c71b08a30d1a4fb40396b3d371b5a, type: 3}
+  - {fileID: 5448129637305107214, guid: 3ba3dade896aaa14c98fcd8f69a5fe73, type: 3}
   itemPrefabName: item/Item1
   chestResName: map/Chest
   traderResName: map/Trader
   potalResName: map/Potal
-  decoResNames:
-  - deco/deco0
-  - deco/deco1
-  - deco/deco2
   tileColors:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
