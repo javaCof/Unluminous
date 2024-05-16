@@ -14,4 +14,6 @@ public class ArmorItemData : EquipmentItemData
     {
         return new ArmorItem(this);
     }
+
+    public ArmorItemData(int id) : base(id) { }
 }

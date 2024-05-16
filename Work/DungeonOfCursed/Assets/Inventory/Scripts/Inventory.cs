@@ -108,7 +108,7 @@ public class Inventory : MonoBehaviour
         if (item != null)
         {
 
-            _inventoryUI.SetItemIcon(index, item.Data.IconSprite);
+            //_inventoryUI.SetItemIcon(index, item.Data.IconSprite);
 
             if (item is CountableItem ci)
             {

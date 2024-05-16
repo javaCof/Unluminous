@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public abstract class EquipmentItemData : ItemData
+public class EquipmentItemData : ItemData
 {
     public int MaxDurability => _maxDurability;
 
     [SerializeField] private int _maxDurability = 100;
+
+    public EquipmentItemData(int id) : base(id) { }
 }

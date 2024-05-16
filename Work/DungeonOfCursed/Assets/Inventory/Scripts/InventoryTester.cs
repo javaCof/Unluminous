@@ -26,34 +26,38 @@ public class InventoryTester : MonoBehaviour
 
     private void Start()
     {
-        if (_itemDataArray?.Length > 0)
-        {
-            for (int i = 0; i < _itemDataArray.Length; i++)
-            {
-                _inventory.Add(_itemDataArray[i], 3);
+        //if (_itemDataArray?.Length > 0)
+        //{
+        //    for (int i = 0; i < _itemDataArray.Length; i++)
+        //    {
+        //        _inventory.Add(_itemDataArray[i], 3);
 
-                if (_itemDataArray[i] is CountableItemData)
-                    _inventory.Add(_itemDataArray[i], 255);
-            }
-        }
+        //        if (_itemDataArray[i] is CountableItemData)
+        //            _inventory.Add(_itemDataArray[i], 255);
+        //    }
+        //}
 
-        _removeAllButton.onClick.AddListener(() =>
-        {
-            int capacity = _inventory.Capacity;
-            for (int i = 0; i < capacity; i++)
-                _inventory.Remove(i);
-        });
+        //_removeAllButton.onClick.AddListener(() =>
+        //{
+        //    int capacity = _inventory.Capacity;
+        //    for (int i = 0; i < capacity; i++)
+        //        _inventory.Remove(i);
+        //});
 
-        _AddArmorA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[0]));
-        _AddArmorB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[1]));
+        _AddArmorA1.onClick.AddListener(() => _inventory.Add(new ItemData(1002), 10));
 
-        _AddSwordA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[2]));
-        _AddSwordB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[3]));
+        _inventory.Add(new ItemData(1002), 10);
 
-        _AddPortionA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[4]));
-        _AddPortionA50.onClick.AddListener(() => _inventory.Add(_itemDataArray[4], 50));
-        _AddPortionB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[5]));
-        _AddPortionB50.onClick.AddListener(() => _inventory.Add(_itemDataArray[5], 50));
+
+        //_AddArmorB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[1]));
+
+        //_AddSwordA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[2]));
+        //_AddSwordB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[3]));
+
+        //_AddPortionA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[4]));
+        //_AddPortionA50.onClick.AddListener(() => _inventory.Add(_itemDataArray[4], 50));
+        //_AddPortionB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[5]));
+        //_AddPortionB50.onClick.AddListener(() => _inventory.Add(_itemDataArray[5], 50));
     }
 
 }
