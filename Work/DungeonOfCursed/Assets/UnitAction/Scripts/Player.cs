@@ -236,6 +236,7 @@ public class Player : UnitObject
         }
 
         Reset();
+
     }
     [PunRPC] public override void OnPoolDisable()
     {

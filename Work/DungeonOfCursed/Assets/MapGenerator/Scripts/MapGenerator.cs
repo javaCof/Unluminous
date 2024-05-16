@@ -18,6 +18,10 @@ public class MapGenerator : MonoBehaviour
     public int normalMonsterCount = 5;
     public int chestCount = 5;
 
+    [Header("MAP MATERAILS")]
+    public List<Material> mapFloorMats;
+    public List<Material> mapWallMats;
+
     [Header("MAP TILES")]
     public GameObject floorPrefab;
     public GameObject wallPrefab;
@@ -27,14 +31,12 @@ public class MapGenerator : MonoBehaviour
     [Header("MAP DECOS")]
     public List<GameObject> decoPrefabs;
 
-
-
-    public string itemPrefabName;       //TEST_________________
-
     [Header("MAP OBJECTS")]
     public string chestResName;
     public string traderResName;
     public string potalResName;
+
+    public string itemPrefabName;               //TEST
 
     public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
@@ -131,6 +133,8 @@ public class MapGenerator : MonoBehaviour
     TileType[] mapTiles;                //맵 타일
     Texture2D tileTexture;              //타일 텍스쳐
 
+    int mapMatIdx = -1;
+
     Vector3 playerSpawnPoint;
     Dictionary<int, ObjectPool> objectsPool;
 
@@ -143,6 +147,10 @@ public class MapGenerator : MonoBehaviour
     void Start()
     {
         if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
+
+        game.loadingText = "시작";
+        Debug.Log("strt");
+
 
         rooms = new List<RectInt>();
         paths = new List<PathInfo>();
@@ -192,6 +200,8 @@ public class MapGenerator : MonoBehaviour
         for (int i = 0; i < decoPrefabs.Count; i++)
             CreateObjectPool(decoPrefabs[i], MapDecoID + i, 50);
 
+        Debug.Log("end");
+
         StartCoroutine(LoadLevel());
     }
     private void Update()
@@ -208,6 +218,11 @@ public class MapGenerator : MonoBehaviour
     {
         yield return game.StartLoading();
 
+        ChangeTileMat();
+        game.loadingText = "맵 생성 시작";
+
+        yield return null;
+
         if (PhotonNetwork.inRoom)
         {
             //멀티용 맵 생성
@@ -222,6 +237,15 @@ public class MapGenerator : MonoBehaviour
         //로딩화면 제거
         yield return game.EndLoading();
     }
+
+    void ChangeTileMat()
+    {
+        int matIdx;
+        do matIdx = Random.Range(0, mapFloorMats.Count);
+        while (matIdx == mapMatIdx);
+        mapMatIdx = matIdx;
+    }
+
     void CreateObjectPool(string name, int id, int n, PhotonPool.PhotonInstantiateOption option)
     {
         if (option == PhotonPool.PhotonInstantiateOption.LOCAL || !PhotonNetwork.inRoom)
@@ -237,15 +261,21 @@ public class MapGenerator : MonoBehaviour
 
     IEnumerator GenerateRandomMapLocal()
     {
+        game.loadingText = "맵 초기화 중";
         ResetMap();
 
+        yield return null;
+
+        game.loadingText = "맵 데이터 생성 중";
         GenerateMapData();
         PaintMapTile();
-
+        yield return null;
+        game.loadingText = "맵 오브젝트 생성중";
         GenerateMapTile(mapTiles);
         GenerateMapObject(JsonUtility.ToJson(new ObjInfoList(objects)));
         GeneratePlayer();
-
+        yield return null;
+        game.loadingText = "완료";
         yield return null;
     }
     IEnumerator GenerateRandomMapMulti()
@@ -679,24 +709,28 @@ public class MapGenerator : MonoBehaviour
                 {   //Floor
                     GameObject inst = objectsPool[(int)TileID.FLOOR].GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
+                    inst.GetComponent<TileObject>().ChangeMat(mapFloorMats[mapMatIdx], mapWallMats[mapMatIdx]);
                 }
                 else if (type == TileType.WALL || type == TileType.PATH)
                 {   //Wall
                     GameObject inst = objectsPool[(int)TileID.WALL].GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                     inst.transform.Rotate(new Vector3(0, FindRotationW(tiles, i, j), 0), Space.Self);
+                    inst.GetComponent<TileObject>().ChangeMat(mapFloorMats[mapMatIdx], mapWallMats[mapMatIdx]);
                 }
                 else if (type == TileType.CORNER)
                 {   //Corner
                     GameObject inst = objectsPool[(int)TileID.CORNER].GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                     inst.transform.Rotate(new Vector3(0, FindRotationL(tiles, i, j), 0), Space.Self);
+                    inst.GetComponent<TileObject>().ChangeMat(mapFloorMats[mapMatIdx], mapWallMats[mapMatIdx]);
                 }
                 else if (type == TileType.PILLAR)
                 {   //Pillar
                     GameObject inst = objectsPool[(int)TileID.PILLAR].GetObject(Vector3.zero, Quaternion.identity, tilePos);
                     inst.transform.position = new Vector3(j * multiplierFactor, 0, i * multiplierFactor);
                     inst.transform.Rotate(new Vector3(0, FindRotationC(tiles, i, j), 0), Space.Self);
+                    inst.GetComponent<TileObject>().ChangeMat(mapFloorMats[mapMatIdx], mapWallMats[mapMatIdx]);
                 }
             }
         }

@@ -11,8 +11,6 @@ public class PlayerMove : MonoBehaviour
     public bool jumpable = true;
     public float jumpForce = 8f;
     public float gravity = 20f;
-    public float mouseSensitivityX = 10f;
-    public float mouseSensitivityY = 10f;
     public float maxCamRotateAngle = 45f;
 
     [Header("MODEL")]
@@ -30,6 +28,7 @@ public class PlayerMove : MonoBehaviour
     private Transform cam;
     private PhotonView pv;
     private GameUI ui;
+    private GameManager game;
 
     private Renderer[] renderers;
     private Renderer[] weapon_renderers;
@@ -52,6 +51,7 @@ public class PlayerMove : MonoBehaviour
         ctl = GetComponent<CharacterController>();
         cam = FindObjectOfType<MapGenerator>().mainCam.transform;
         ui = FindObjectOfType<GameUI>();
+        game = FindObjectOfType<GameManager>();
 
         renderers = GetComponentsInChildren<Renderer>();
         weapon_renderers = weapon.GetComponentsInChildren<Renderer>();
@@ -171,8 +171,8 @@ public class PlayerMove : MonoBehaviour
         float dMouseY = ui.touchPad.dTouchPoint.y / 10;
 #endif
 
-        camRotateY = dMouseX * 100f * mouseSensitivityX * Time.deltaTime;
-        camRotateX = -dMouseY * 100f * mouseSensitivityY * Time.deltaTime;
+        camRotateY = dMouseX * 500f * game.InputSensitivity * Time.deltaTime;
+        camRotateX = -dMouseY * 500f * game.InputSensitivity * Time.deltaTime;
     }
     void CameraUpdate()
     {

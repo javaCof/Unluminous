@@ -12,7 +12,16 @@ public class GameManager : MonoBehaviour
     public string ToDo;
 
     private bool now_loading;
-    
+    public string loadingText = "";
+
+    private float _InputSensitivity;
+    private float _BgmVolume;
+    private float _SfxVolume;
+
+    public float InputSensitivity { get { return _InputSensitivity; } set { _InputSensitivity = value; PlayerPrefs.SetFloat("INPUT_SENSITIVITY", value); } }
+    public float BgmVolume { get { return _BgmVolume; } set { _BgmVolume = value; PlayerPrefs.SetFloat("BGM_VOLUME", value); } }
+    public float SfxVolume { get { return _SfxVolume; } set { _SfxVolume = value; PlayerPrefs.SetFloat("SFX_VOLUME", value); } }
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -21,28 +30,29 @@ public class GameManager : MonoBehaviour
     {
         yield return StartLoading();
 
-        yield return UnitLoad();
-        yield return ItemLoad();
-        yield return EquipLoad();
+        InputSensitivity = PlayerPrefs.GetFloat("INPUT_SENSITIVITY", 0.5f);
+        BgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1f);
+        SfxVolume = PlayerPrefs.GetFloat("SFX_VOLUME", 1f);
+
+        /*DB Load*/
+        System.Threading.Tasks.Task task;
+        {
+            loadingText = "DB Loading (Unit)";
+
+            task = FirebaseManager.UnitLoadData();
+            yield return new WaitUntil(() => task.IsCompleted);
+
+            loadingText = "DB Loading (Item)";
+            task = FirebaseManager.ItemLoadData();
+            yield return new WaitUntil(() => task.IsCompleted);
+
+            loadingText = "DB Loading (Equip)";
+            task = FirebaseManager.EquipLoadData();
+            yield return new WaitUntil(() => task.IsCompleted);
+        }
 
         yield return ChangeScene("InitScene", nextScene);
         yield return EndLoading();
-    }
-
-    IEnumerator UnitLoad() 
-    {
-        System.Threading.Tasks.Task task = FirebaseManager.UnitLoadData();
-        yield return new WaitUntil(() => task.IsCompleted);
-    }
-    IEnumerator ItemLoad()
-    {
-        System.Threading.Tasks.Task task = FirebaseManager.ItemLoadData();
-        yield return new WaitUntil(() => task.IsCompleted);
-    }
-    IEnumerator EquipLoad()
-    {
-        System.Threading.Tasks.Task task = FirebaseManager.EquipLoadData();
-        yield return new WaitUntil(() => task.IsCompleted);
     }
 
     public IEnumerator MoveToScene(string scene, float delay=0)

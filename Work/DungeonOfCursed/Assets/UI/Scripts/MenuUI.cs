@@ -19,7 +19,9 @@ public class MenuUI : MonoBehaviour
     }
     private IEnumerator SingleLoad()
     {
+        game.loadingText = "";
         yield return game.StartLoading();
+        game.loadingText = "game ·Îµå";
         yield return game.ChangeScene("MenuScene", "GameScene");
     }
 
