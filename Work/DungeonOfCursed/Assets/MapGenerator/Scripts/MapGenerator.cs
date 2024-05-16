@@ -24,15 +24,17 @@ public class MapGenerator : MonoBehaviour
     public GameObject cornerPrefab;
     public GameObject pillarPrefab;
 
+    [Header("MAP DECOS")]
+    public List<GameObject> decoPrefabs;
+
+
+
     public string itemPrefabName;       //TEST_________________
 
     [Header("MAP OBJECTS")]
     public string chestResName;
     public string traderResName;
     public string potalResName;
-
-    [Header("DECO OBJECTS")]
-    public List<string> decoResNames;
 
     public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
@@ -187,8 +189,8 @@ public class MapGenerator : MonoBehaviour
 
         CreateObjectPool(itemPrefabName, 1000, 50, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
-        for (int i = 0; i < decoResNames.Count; i++)
-            CreateObjectPool(decoResNames[i], MapDecoID + i, 30, PhotonPool.PhotonInstantiateOption.LOCAL);
+        for (int i = 0; i < decoPrefabs.Count; i++)
+            CreateObjectPool(decoPrefabs[i], MapDecoID + i, 50);
 
         StartCoroutine(LoadLevel());
     }
@@ -460,7 +462,7 @@ public class MapGenerator : MonoBehaviour
 
                         for (int j = 0; j < 5; j++)
                         {
-                            int id = Random.Range(MapDecoID, MapDecoID + decoResNames.Count);
+                            int id = Random.Range(MapDecoID, MapDecoID + decoPrefabs.Count);
                             AddObjectRandom(id, i, combine);
                         }
                             
@@ -502,7 +504,7 @@ public class MapGenerator : MonoBehaviour
     void AddObjectCenter(int objId, int roomId, CombinationRect combin, bool addHead = false)
     {
         Vector2Int combPos = combin.GetCenter();
-        Vector3 pos = new Vector3(combPos.x * tileSize, 1f, combPos.y * tileSize);
+        Vector3 pos = new Vector3(combPos.x * tileSize, 0, combPos.y * tileSize);
 
         if (addHead) objects[0] = new ObjInfo(objId, roomId, pos);
         else objects.Add(new ObjInfo(objId, roomId, pos));
@@ -510,7 +512,7 @@ public class MapGenerator : MonoBehaviour
     void AddObjectRandom(int objId, int roomId, CombinationRect combin, bool addHead = false)
     {
         Vector2Int combPos = combin.GetRandom();
-        Vector3 pos = new Vector3(combPos.x * tileSize, 1f, combPos.y * tileSize);
+        Vector3 pos = new Vector3(combPos.x * tileSize, 0, combPos.y * tileSize);
 
         if (addHead) objects[0] = new ObjInfo(objId, roomId, pos);
         else objects.Add(new ObjInfo(objId, roomId, pos));
@@ -520,7 +522,7 @@ public class MapGenerator : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             Vector2Int combPos = combin.GetRandom();
-            Vector3 pos = new Vector3(combPos.x * tileSize, 1f, combPos.y * tileSize);
+            Vector3 pos = new Vector3(combPos.x * tileSize, 0, combPos.y * tileSize);
 
             if (addHead) objects[i] = new ObjInfo(objId, roomId, pos);
             else objects.Add(new ObjInfo(objId, roomId, pos));
