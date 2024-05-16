@@ -36,27 +36,27 @@ public class XrInput : MonoBehaviour
     //조이스틱 값을 통해 걷는 모션조절 함수
     void IsWalk()
     {
-        if (pos == null)
-        {
-            anim.SetBool("move", false);
-        }
+
         //컨트롤러 조이스틱 인풋값을 pos에 넣음
-        else if (m_left.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out pos))
+        if (m_left.inputDevice.TryGetFeatureValue(CommonUsages.primary2DAxis, out pos))
         {
             //만약 조이스틱의 상하 기울기가 0.1보다 클때
             if (Mathf.Abs(pos.y) > 0.1f)
             {
                 //걷는 모션
                 anim.SetBool("move", true);
+                Debug.Log("걷는 모션!");
+                
             }
             //0.1보다 작을때
-            else if (Mathf.Abs(pos.y) > 0.1f)
+            else if (Mathf.Abs(pos.y) < 0.1f)
             {
+
                 //가만히 모션
                 anim.SetBool("move", false);
+                Debug.Log("멈춤!");
             }
-
         }
-
+        
     }
 }
