@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 1955369824}
   - component: {fileID: 1955369823}
   m_Layer: 5
-  m_Name: Loading (1)
+  m_Name: LoadingMsg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -478,7 +478,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: do something
+  m_Text: 
 --- !u!222 &1955369824
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -68,6 +68,6 @@ public class RoomManager : MonoBehaviour
         PhotonNetwork.isMessageQueueRunning = false;
 
         yield return game.StartLoading();
-        yield return game.ChangeScene("RoomScene", nextScene);
+        yield return game.ChangeScene(nextScene);
     }
 }

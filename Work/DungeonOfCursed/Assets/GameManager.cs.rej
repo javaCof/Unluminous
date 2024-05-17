@@ -1,0 +1,9 @@
+diff a/Work/DungeonOfCursed/Assets/GameManager.cs b/Work/DungeonOfCursed/Assets/GameManager.cs	(rejected hunks)
+@@ -28,6 +28,7 @@
+     }
+     IEnumerator Start()
+     {
++
+         yield return StartLoading();
+ 
+         InputSensitivity = PlayerPrefs.GetFloat("INPUT_SENSITIVITY", 0.5f);

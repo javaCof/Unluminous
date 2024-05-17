@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEditor;
 
 public class MenuUI : MonoBehaviour
 {
@@ -19,10 +17,9 @@ public class MenuUI : MonoBehaviour
     }
     private IEnumerator SingleLoad()
     {
-        game.loadingText = "";
         yield return game.StartLoading();
-        game.loadingText = "game 로드";
-        yield return game.ChangeScene("MenuScene", "GameScene");
+        yield return game.pdateLoadingText("싱글 플레이 로드");
+        yield return game.ChangeScene("GameScene");
     }
 
     public void OnMultiButtonClick()
@@ -32,7 +29,8 @@ public class MenuUI : MonoBehaviour
     private IEnumerator MultiLoad()
     {
         yield return game.StartLoading();
-        yield return game.ChangeScene("MenuScene", "LobbyScene");
+        yield return game.pdateLoadingText("멀티 플레이 로드");
+        yield return game.ChangeScene("LobbyScene");
     }
 
     public void OnExitButtonClick()

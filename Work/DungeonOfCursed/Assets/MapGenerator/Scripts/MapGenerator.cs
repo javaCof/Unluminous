@@ -36,7 +36,8 @@ public class MapGenerator : MonoBehaviour
     public string traderResName;
     public string potalResName;
 
-    public string itemPrefabName;               //TEST
+    [Header("ITEM OBJECTS")]
+    public string itemResName;               //TEST
 
     public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
@@ -143,14 +144,6 @@ public class MapGenerator : MonoBehaviour
         game = FindObjectOfType<GameManager>();
         pv = GetComponent<PhotonView>();
         pr = GetComponent<PhotonReady>();
-    }
-    void Start()
-    {
-        if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
-
-        game.loadingText = "시작";
-        Debug.Log("strt");
-
 
         rooms = new List<RectInt>();
         paths = new List<PathInfo>();
@@ -165,12 +158,20 @@ public class MapGenerator : MonoBehaviour
         (poolPos = new GameObject("pool").transform).parent = mapPos;
 
         objectsPool = new Dictionary<int, ObjectPool>();
+    }
+    IEnumerator Start()
+    {
+        if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
+
+        yield return game.pdateLoadingText("타일 Pool 생성 중...");
 
         int mapSizeInt = mapSize.x * mapSize.y;
         CreateObjectPool(floorPrefab, (int)TileID.FLOOR, mapSizeInt);
         CreateObjectPool(wallPrefab, (int)TileID.WALL, mapSizeInt / 2);
         CreateObjectPool(cornerPrefab, (int)TileID.CORNER, mapSizeInt / 2);
         CreateObjectPool(pillarPrefab, (int)TileID.PILLAR, mapSizeInt / 2);
+
+        yield return game.pdateLoadingText("몬스터 Pool 생성 중...");
 
         foreach (var unit in FirebaseManager.units)
         {
@@ -191,16 +192,20 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
+        yield return game.pdateLoadingText("맵 오브젝트 Pool 생성 중...");
+
         CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(potalResName, (int)MapObjectID.POTAL, 1, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
-        CreateObjectPool(itemPrefabName, 1000, 50, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+        yield return game.pdateLoadingText("장식 Pool 생성 중...");
 
         for (int i = 0; i < decoPrefabs.Count; i++)
             CreateObjectPool(decoPrefabs[i], MapDecoID + i, 50);
 
-        Debug.Log("end");
+        yield return game.pdateLoadingText("아이템 Pool 생성 중...");
+
+        CreateObjectPool(itemResName, 1000, 50, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
         StartCoroutine(LoadLevel());
     }
@@ -209,8 +214,7 @@ public class MapGenerator : MonoBehaviour
         UpdateMapTexture();
     }
 
-    [ContextMenu("Reset Map")]
-    [PunRPC] public void ResetLevel()
+    [ContextMenu("Reset Map")] [PunRPC] public void ResetLevel()
     {
         StartCoroutine(LoadLevel());
     }
@@ -218,10 +222,9 @@ public class MapGenerator : MonoBehaviour
     {
         yield return game.StartLoading();
 
-        ChangeTileMat();
-        game.loadingText = "맵 생성 시작";
+        yield return game.pdateLoadingText("맵 생성 중...");
 
-        yield return null;
+        ChangeTileMat();
 
         if (PhotonNetwork.inRoom)
         {
@@ -261,21 +264,15 @@ public class MapGenerator : MonoBehaviour
 
     IEnumerator GenerateRandomMapLocal()
     {
-        game.loadingText = "맵 초기화 중";
         ResetMap();
 
-        yield return null;
-
-        game.loadingText = "맵 데이터 생성 중";
         GenerateMapData();
         PaintMapTile();
-        yield return null;
-        game.loadingText = "맵 오브젝트 생성중";
+
         GenerateMapTile(mapTiles);
         GenerateMapObject(JsonUtility.ToJson(new ObjInfoList(objects)));
         GeneratePlayer();
-        yield return null;
-        game.loadingText = "완료";
+
         yield return null;
     }
     IEnumerator GenerateRandomMapMulti()
@@ -296,10 +293,7 @@ public class MapGenerator : MonoBehaviour
 
         if (PhotonNetwork.isMasterClient)
             pv.RPC("GeneratePlayer", PhotonTargets.All);
-
-        yield return null;
     }
-
     [PunRPC] void ResetMap()
     {
         rooms.Clear();

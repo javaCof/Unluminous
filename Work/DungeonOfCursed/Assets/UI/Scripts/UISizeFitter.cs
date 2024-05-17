@@ -30,5 +30,9 @@ public class UISizeFitter : MonoBehaviour
             txt.resizeTextForBestFit = false;
             if (font != null) txt.font = font;
         }
+        foreach (var img in canvas.GetComponentsInChildren<Image>(true))
+        {
+            img.pixelsPerUnitMultiplier /= heightRate;
+        }
     }
 }

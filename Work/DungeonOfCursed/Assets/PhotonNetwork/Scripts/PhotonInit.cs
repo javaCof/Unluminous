@@ -102,7 +102,7 @@ public class PhotonInit : MonoBehaviour
     void OnJoinedRoom()
     {
         Debug.Log("PHOTON : Enter Room");
-        StartCoroutine(EnterRoom());
+        game.ChangeScene(nextScene);
     }
     void OnReceivedRoomListUpdate()
     {
