@@ -10,5 +10,5 @@ public class EquipmentItemData : ItemData
 
     [SerializeField] private int _maxDurability = 100;
 
-    public EquipmentItemData(int id) : base(id) { }
+   // public EquipmentItemData(int id) : base(id) { }
 }

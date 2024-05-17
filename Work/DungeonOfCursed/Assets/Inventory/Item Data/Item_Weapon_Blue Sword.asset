@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8be323efc2a71414498d934aca6fd26a, type: 3}
   m_Name: Item_Weapon_Blue Sword
   m_EditorClassIdentifier: 
-  _id: 2
-  _name: "\uD478\uB978 \uC7A5\uAC80"
-  _tooltip: "\uD30C\uB791\uD30C\uB791 \uC7A5\uAC80\uC774\uB2E4."
   _iconSprite: {fileID: 21300000, guid: bb1bdd56c1352fb419836f9c2b0bf4bf, type: 3}
-  _dropItemPrefab: {fileID: 0}
+  _id: 5
+  _price: 0
+  _name: "\uD478\uB978\uAC80"
+  _tooltip: "\u3147\u3147"
   _maxDurability: 100
   _damage: 10

@@ -101,6 +101,7 @@ public class Inventory : MonoBehaviour
 
     private void UpdateSlot(int index)
     {
+        Debug.Log(index);
         if (!IsValidIndex(index)) return;
 
         Item2 item = _items[index];
@@ -108,7 +109,7 @@ public class Inventory : MonoBehaviour
         if (item != null)
         {
 
-            //_inventoryUI.SetItemIcon(index, item.Data.IconSprite);
+            _inventoryUI.SetItemIcon(index, item.Data.IconSprite);
 
             if (item is CountableItem ci)
             {
@@ -168,7 +169,7 @@ public class Inventory : MonoBehaviour
     public int Add(ItemData itemData, int amount = 1)
     {
         int index;
-
+        //Debug.Log(itemData.Tooltip);
         if (itemData is CountableItemData ciData)
         {
             bool findNextCountable = true;
@@ -176,6 +177,7 @@ public class Inventory : MonoBehaviour
 
             while (amount > 0)
             {
+               // Debug.Log(itemData.Name);
 
                 if (findNextCountable)
                 {
