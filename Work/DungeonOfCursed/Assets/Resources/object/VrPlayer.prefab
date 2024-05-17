@@ -8416,7 +8416,7 @@ GameObject:
   - component: {fileID: 1957492604906264350}
   - component: {fileID: 1957492604906264344}
   m_Layer: 0
-  m_Name: VrPlayer
+  m_Name: Vrplayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8460,8 +8460,7 @@ MonoBehaviour:
   controllable: 1
   actor: {fileID: 8256094662509976605}
   avatar: {fileID: 1957492605645803474}
-  sword: {fileID: 0}
-  attackCooldown: 0.5
+  attackCooldown: 0.7
 --- !u!114 &1957492604906264344
 MonoBehaviour:
   m_ObjectHideFlags: 0

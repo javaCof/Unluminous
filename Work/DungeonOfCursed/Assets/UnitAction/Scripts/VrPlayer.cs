@@ -8,7 +8,6 @@ public class VrPlayer : Player
     public Transform actor;
     public Transform avatar;
 
-    public GameObject sword;                //검 GameObject
     public float attackCooldown = 0.3f;     //공격 쿨타임
 
     private Rigidbody rig;
@@ -72,7 +71,7 @@ public class VrPlayer : Player
     }
 
     //에너미 공격
-    public void VrAttackAction(Collision target)
+    public void VrAttackAction(Collision target,Vector3 hitPos)
     {
         if (target != null && target.gameObject.tag == "Enemy")
         {
@@ -83,7 +82,7 @@ public class VrPlayer : Player
                 enemy = target.gameObject.GetComponent<Enemy>();
 
                 //몬스터가 칼이랑 부딪힌 위치
-                vrhitPoint = target.transform.position;
+                vrhitPoint = hitPos;
 
                 //에너미가 살아있을때만 이펙트 생성
                 if (!enemy.isDead)

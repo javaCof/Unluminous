@@ -240,7 +240,7 @@ public class Enemy : UnitObject
 
         //vr±‚¡ÿ
         //if (player.isDead || player.roomNum != roomNum || Vector3.Distance(traceTarget.GetComponentInChildren<CharacterController>().transform.position, transform.position) > traceRange)
-            traceTarget = null;
+        traceTarget = null;
     }
 
     void SetNav(Vector3 dest, float stopDist)

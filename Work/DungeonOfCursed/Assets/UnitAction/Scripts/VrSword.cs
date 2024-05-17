@@ -23,12 +23,16 @@ public class VrSword : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        
+        //부딫힌 놈의 첫번째를 contact에 담음
+        ContactPoint contact = collision.contacts[0];
+
+        //그것의 포인트를 pos에 담음
+        Vector3 pos = contact.point;
 
         switch (collision.gameObject.tag)
         {
             case "Enemy":
-                vrPlayer.VrAttackAction(collision);
+                vrPlayer.VrAttackAction(collision,pos);
                 break;
             case "Chest":
                 vrPlayer.VrOpenChest(collision);
