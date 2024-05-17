@@ -201,14 +201,22 @@ public class Enemy : UnitObject
         float minDist = -1;
         foreach (var obj in GameObject.FindGameObjectsWithTag("Player"))
         {
-            Player player = obj.GetComponent<Player>();
+            //pc
+            //Player player = obj.GetComponent<Player>();
 
+            //vr
+            VrPlayer player = obj.GetComponentInParent<VrPlayer>();
+            
             if (!player.isDead && player.roomNum == this.roomNum)
             {
                 float dist = (player.transform.position - transform.position).sqrMagnitude;
                 if (minDist == -1 || dist < minDist)
                 {
-                    traceTarget = player.transform;
+                    //pc기준
+                    //traceTarget = player.transform;
+
+                    //vr기준
+                    traceTarget = player.GetComponentInChildren<CharacterController>().transform;
                     minDist = dist;
                 }
             }
@@ -221,8 +229,17 @@ public class Enemy : UnitObject
     {
         if (traceTarget == null) return;
 
-        Player player = traceTarget.GetComponent<Player>();
-        if (player.isDead || player.roomNum != roomNum || Vector3.Distance(traceTarget.position, transform.position) > traceRange)
+        //pc기준
+        //Player player = traceTarget.GetComponent<Player>();ㅁ
+
+        //vr기준
+        Player player = traceTarget.GetComponentInParent<VrPlayer>();
+
+        //pc기준
+        //if (player.isDead || player.roomNum != roomNum || Vector3.Distance(traceTarget.position, transform.position) > traceRange)
+
+        //vr기준
+        if (player.isDead || player.roomNum != roomNum || Vector3.Distance(traceTarget.GetComponentInChildren<CharacterController>().transform.position, transform.position) > traceRange)
             traceTarget = null;
     }
 
@@ -245,6 +262,7 @@ public class Enemy : UnitObject
     {
         anim.SetTrigger("attack");
     }
+
     public override void Attack()
     {
         if (!PhotonNetwork.inRoom || PhotonNetwork.isMasterClient)
@@ -260,7 +278,11 @@ public class Enemy : UnitObject
                 }
                 else
                 {
-                    attackTarget.GetComponent<Player>().OnHit(stat.ATK);
+                    //pc
+                    //attackTarget.GetComponent<Player>().OnHit(stat.ATK);
+
+                    //vr
+                    attackTarget.GetComponentInParent<VrPlayer>().OnHit(stat.ATK);
                 }
             }
         }
@@ -313,20 +335,31 @@ public class Enemy : UnitObject
         float minDist = -1;
         foreach (var obj in GameObject.FindGameObjectsWithTag("Player"))
         {
-            Player player = obj.GetComponent<Player>();
+            //pc
+            //Player player = obj.GetComponent<Player>();
+
+            //vr
+            VrPlayer player = obj.GetComponentInParent<VrPlayer>();
 
             if (!player.isDead && player.roomNum == this.roomNum)
             {
                 float dist = (player.transform.position - transform.position).sqrMagnitude;
                 if (minDist == -1 || dist < minDist)
                 {
-                    attackTarget = player.transform;
+                    //pc
+                    //attackTarget = player.transform;
+
+                    //vr
+                    attackTarget = player.GetComponentInChildren<CharacterController>().transform;
                     minDist = dist;
                 }
             }
         }
+        //pc
+        //if (attackTarget != null && Vector3.Distance(attackTarget.position, transform.position) > maxAttackRange)
 
-        if (attackTarget != null && Vector3.Distance(attackTarget.position, transform.position) > maxAttackRange)
+        //vr
+        if (attackTarget != null && Vector3.Distance(attackTarget.GetComponentInChildren<CharacterController>().transform.position, transform.position) > maxAttackRange)
             attackTarget = null;
     }
 

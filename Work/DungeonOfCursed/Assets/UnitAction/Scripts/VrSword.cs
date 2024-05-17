@@ -23,7 +23,7 @@ public class VrSword : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("¹º°¡ ºÎ‹HÈû!");
+        
 
         switch (collision.gameObject.tag)
         {

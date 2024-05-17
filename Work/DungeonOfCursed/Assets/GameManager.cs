@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator Start()
     {
+
         yield return StartLoading();
 
         InputSensitivity = PlayerPrefs.GetFloat("INPUT_SENSITIVITY", 0.5f);

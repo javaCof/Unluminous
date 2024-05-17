@@ -158,15 +158,16 @@ public class VrPlayer : Player
     }
     [PunRPC] void Hit_All()
     {
-        anim.SetTrigger("hit");
+        //anim.SetTrigger("hit");
     }
+
     [PunRPC] void Dead_All()
     {
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
     }
 
-   void UpdateRoomNum()
+   new void UpdateRoomNum()
     {
         roomNum = map.FindRoom(actor.position);
     }
