@@ -202,10 +202,10 @@ public class Enemy : UnitObject
         foreach (var obj in GameObject.FindGameObjectsWithTag("Player"))
         {
             //pc
-            //Player player = obj.GetComponent<Player>();
+            Player player = obj.GetComponent<Player>();
 
             //vr
-            VrPlayer player = obj.GetComponentInParent<VrPlayer>();
+            //VrPlayer player = obj.GetComponentInParent<VrPlayer>();
             
             if (!player.isDead && player.roomNum == this.roomNum)
             {
@@ -213,10 +213,10 @@ public class Enemy : UnitObject
                 if (minDist == -1 || dist < minDist)
                 {
                     //pc기준
-                    //traceTarget = player.transform;
+                    traceTarget = player.transform;
 
                     //vr기준
-                    traceTarget = player.GetComponentInChildren<CharacterController>().transform;
+                    //traceTarget = player.GetComponentInChildren<CharacterController>().transform;
                     minDist = dist;
                 }
             }
@@ -230,16 +230,16 @@ public class Enemy : UnitObject
         if (traceTarget == null) return;
 
         //pc기준
-        //Player player = traceTarget.GetComponent<Player>();ㅁ
+        Player player = traceTarget.GetComponent<Player>();
 
         //vr기준
-        Player player = traceTarget.GetComponentInParent<VrPlayer>();
+        //Player player = traceTarget.GetComponentInParent<VrPlayer>();
 
         //pc기준
-        //if (player.isDead || player.roomNum != roomNum || Vector3.Distance(traceTarget.position, transform.position) > traceRange)
+        if (player.isDead || player.roomNum != roomNum || Vector3.Distance(traceTarget.position, transform.position) > traceRange)
 
         //vr기준
-        if (player.isDead || player.roomNum != roomNum || Vector3.Distance(traceTarget.GetComponentInChildren<CharacterController>().transform.position, transform.position) > traceRange)
+        //if (player.isDead || player.roomNum != roomNum || Vector3.Distance(traceTarget.GetComponentInChildren<CharacterController>().transform.position, transform.position) > traceRange)
             traceTarget = null;
     }
 
@@ -279,10 +279,10 @@ public class Enemy : UnitObject
                 else
                 {
                     //pc
-                    //attackTarget.GetComponent<Player>().OnHit(stat.ATK);
+                    attackTarget.GetComponent<Player>().OnHit(stat.ATK);
 
                     //vr
-                    attackTarget.GetComponentInParent<VrPlayer>().OnHit(stat.ATK);
+                    //attackTarget.GetComponentInParent<VrPlayer>().OnHit(stat.ATK);
                 }
             }
         }
@@ -336,10 +336,10 @@ public class Enemy : UnitObject
         foreach (var obj in GameObject.FindGameObjectsWithTag("Player"))
         {
             //pc
-            //Player player = obj.GetComponent<Player>();
+            Player player = obj.GetComponent<Player>();
 
             //vr
-            VrPlayer player = obj.GetComponentInParent<VrPlayer>();
+            //VrPlayer player = obj.GetComponentInParent<VrPlayer>();
 
             if (!player.isDead && player.roomNum == this.roomNum)
             {
@@ -347,19 +347,19 @@ public class Enemy : UnitObject
                 if (minDist == -1 || dist < minDist)
                 {
                     //pc
-                    //attackTarget = player.transform;
+                    attackTarget = player.transform;
 
                     //vr
-                    attackTarget = player.GetComponentInChildren<CharacterController>().transform;
+                    //attackTarget = player.GetComponentInChildren<CharacterController>().transform;
                     minDist = dist;
                 }
             }
         }
         //pc
-        //if (attackTarget != null && Vector3.Distance(attackTarget.position, transform.position) > maxAttackRange)
+        if (attackTarget != null && Vector3.Distance(attackTarget.position, transform.position) > maxAttackRange)
 
         //vr
-        if (attackTarget != null && Vector3.Distance(attackTarget.GetComponentInChildren<CharacterController>().transform.position, transform.position) > maxAttackRange)
+        //if (attackTarget != null && Vector3.Distance(attackTarget.GetComponentInChildren<CharacterController>().transform.position, transform.position) > maxAttackRange)
             attackTarget = null;
     }
 
