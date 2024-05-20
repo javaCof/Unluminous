@@ -24,10 +24,11 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Button _closeInvenButton;
     [SerializeField] private GameObject _inventory;
 
-
     private bool isOpen = false;
 
     private readonly HashSet<int> _indexSetForUpdate = new HashSet<int>();
+
+    private List<TemporaryItem> temporaryItemList = new List<TemporaryItem>();
 
     private readonly static Dictionary<Type, int> _sortWeightDict = new Dictionary<Type, int>
         {
@@ -44,6 +45,19 @@ public class Inventory : MonoBehaviour
                  - (b.Data.ID + _sortWeightDict[b.Data.GetType()]);
         }
     }
+
+    private class TemporaryItem
+    {
+        public ItemData itemData;
+        public int amount;
+
+        public TemporaryItem(ItemData itemData, int amount)
+        {
+            this.itemData = itemData;
+            this.amount = amount;
+        }
+    }
+
     private static readonly ItemComparer _itemComparer = new ItemComparer();
 
 
@@ -196,7 +210,6 @@ public class Inventory : MonoBehaviour
                 }
                 else
                 {
-                    //Debug.Log(itemData.Name);
                     index = FindEmptySlotIndex(index + 1);
 
                     if (index == -1)
@@ -214,7 +227,6 @@ public class Inventory : MonoBehaviour
                         amount = (amount > ciData.MaxAmount) ? (amount - ciData.MaxAmount) : 0;
 
                         UpdateSlot(index);
-                       // Debug.Log(itemData.Name);
                     }
                 }
             }
@@ -251,7 +263,7 @@ public class Inventory : MonoBehaviour
         return amount;
     }
 
-    public void Remove(int index)
+        public void Remove(int index)
     {
         if (!IsValidIndex(index)) return;
 
@@ -440,6 +452,7 @@ public class Inventory : MonoBehaviour
                 Debug.Log("족발");
                 ShowPanel();
                 isOpen = true;
+                //ProcessTemporaryItems();
             }
             else if(isOpen)
             {
@@ -455,5 +468,7 @@ public class Inventory : MonoBehaviour
         _openInvenButton.onClick.AddListener(ShowPanel);
         _closeInvenButton.onClick.AddListener(HidePanel);
     }
+
+
 
 }
