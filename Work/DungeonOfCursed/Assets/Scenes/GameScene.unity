@@ -1624,7 +1624,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minLightIntensity: 2
   maxLightIntensity: 3
-  deltaIntensity: 0.01
+  deltaIntensity: 0.5
 --- !u!225 &1235621395
 CanvasGroup:
   m_ObjectHideFlags: 0

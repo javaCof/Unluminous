@@ -28,7 +28,7 @@ public class CameraLight : MonoBehaviour
         if (incIntensity && curLightIntensity > maxLightIntensity) incIntensity = false;
         if (!incIntensity && curLightIntensity < minLightIntensity) incIntensity = true;
 
-        curLightIntensity += incIntensity ? deltaIntensity : -deltaIntensity;
+        curLightIntensity += (incIntensity ? deltaIntensity : -deltaIntensity) * Time.deltaTime;
 
         camLight.intensity = curLightIntensity;
     }
