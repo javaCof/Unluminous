@@ -1124,7 +1124,7 @@ GameObject:
   - component: {fileID: 881685699}
   - component: {fileID: 881685700}
   m_Layer: 0
-  m_Name: Directional Light
+  m_Name: camLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1158,7 +1158,7 @@ Light:
   m_Color: {r: 0.83137256, g: 0.350818, b: 0.12941177, a: 1}
   m_Intensity: 0.1
   m_Range: 60
-  m_SpotAngle: 60
+  m_SpotAngle: 90
   m_InnerSpotAngle: 3
   m_CookieSize: 10
   m_Shadows:
@@ -1622,9 +1622,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0498dda279ef36e4fabac8ace694c6e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camLight: {fileID: 0}
-  minLightIntensity: 0.5
-  maxLightIntensity: 1
+  minLightIntensity: 2
+  maxLightIntensity: 3
   deltaIntensity: 0.01
 --- !u!225 &1235621395
 CanvasGroup:
@@ -1668,6 +1667,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventory: {fileID: 240382234}
+  _itemDataArray: []
   _removeAllButton: {fileID: 0}
   _AddArmorA1: {fileID: 0}
   _AddArmorB1: {fileID: 0}
