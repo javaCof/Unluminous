@@ -30,7 +30,7 @@ public class InventoryTester : MonoBehaviour
         //{
         //    for (int i = 0; i < _itemDataArray.Length; i++)
         //    {
-        //        _inventory.Add(_itemDataArray[i], 1);
+        //        _inventory.Add(_itemDataArray[i], 3);
 
         //        if (_itemDataArray[i] is CountableItemData)
         //            _inventory.Add(_itemDataArray[i], 255);
@@ -46,7 +46,7 @@ public class InventoryTester : MonoBehaviour
 
         //_AddArmorA1.onClick.AddListener(() => _inventory.Add(_itemDataArray[1]));
 
-        ////_inventory.Add(new CountableItemData(1002), 10);
+        //_inventory.Add(new CountableItemData(1002), 10);
 
 
         //_AddArmorB1.onClick.AddListener(() => _inventory.Add(_itemDataArray[1]));
@@ -62,21 +62,9 @@ public class InventoryTester : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F1))
+        if(Input.GetKeyDown(KeyCode.F1))
         {
-            _inventory.Add(_itemDataArray[0]);
-        }
-        if (Input.GetKeyDown(KeyCode.F2))
-        {
-            _inventory.Add(_itemDataArray[1]);
-        }
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            _inventory.Add(_itemDataArray[2]);
-        }
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            _inventory.Add(_itemDataArray[3]);
+            _inventory.Add(new CountableItemData(1002));
         }
     }
 

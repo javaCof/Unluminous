@@ -17,5 +17,5 @@ public class WeaponItemData : EquipmentItemData
         return new WeaponItem(this);
     }
 
-    // public WeaponItemData(int id) : base(id) { }
+    public WeaponItemData(int id) : base(id) { }
 }

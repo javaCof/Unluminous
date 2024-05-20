@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public abstract class CountableItem : Item2
+public class CountableItem : Item2
 {
     public CountableItemData CountableData { get; private set; }
     public int Amount { get; protected set; }
@@ -42,5 +42,11 @@ public abstract class CountableItem : Item2
         return Clone(amount);
     }
 
-    protected abstract CountableItem Clone(int amount);
+    protected virtual CountableItem Clone(int amount) 
+    {
+        CountableItem clone = new CountableItem(CountableData, amount); 
+        clone.SetAmount(amount); 
+                                
+        return clone;
+    }
 }

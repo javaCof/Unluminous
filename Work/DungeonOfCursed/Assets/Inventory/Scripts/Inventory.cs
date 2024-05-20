@@ -101,7 +101,6 @@ public class Inventory : MonoBehaviour
 
     private void UpdateSlot(int index)
     {
-        Debug.Log(index);
         if (!IsValidIndex(index)) return;
 
         Item2 item = _items[index];
@@ -109,7 +108,7 @@ public class Inventory : MonoBehaviour
         if (item != null)
         {
 
-            _inventoryUI.SetItemIcon(index, item.Data.IconSprite);
+            //_inventoryUI.SetItemIcon(index, item.Data.IconSprite);
 
             if (item is CountableItem ci)
             {
@@ -169,7 +168,7 @@ public class Inventory : MonoBehaviour
     public int Add(ItemData itemData, int amount = 1)
     {
         int index;
-        //Debug.Log(itemData.Tooltip);
+        Debug.Log(itemData.Tooltip);
         if (itemData is CountableItemData ciData)
         {
             bool findNextCountable = true;
@@ -177,7 +176,6 @@ public class Inventory : MonoBehaviour
 
             while (amount > 0)
             {
-               // Debug.Log(itemData.Name);
 
                 if (findNextCountable)
                 {
@@ -193,10 +191,12 @@ public class Inventory : MonoBehaviour
                         amount = ci.AddAmountAndGetExcess(amount);
 
                         UpdateSlot(index);
+                        Debug.Log(itemData.Name);
                     }
                 }
                 else
                 {
+                    //Debug.Log(itemData.Name);
                     index = FindEmptySlotIndex(index + 1);
 
                     if (index == -1)
@@ -205,6 +205,7 @@ public class Inventory : MonoBehaviour
                     }
                     else
                     {
+                        Debug.Log(itemData.Name);
                         CountableItem ci = ciData.CreateItem() as CountableItem;
                         ci.SetAmount(amount);
 
@@ -213,6 +214,7 @@ public class Inventory : MonoBehaviour
                         amount = (amount > ciData.MaxAmount) ? (amount - ciData.MaxAmount) : 0;
 
                         UpdateSlot(index);
+                       // Debug.Log(itemData.Name);
                     }
                 }
             }
