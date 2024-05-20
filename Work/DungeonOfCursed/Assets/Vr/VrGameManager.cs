@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class VrGameManager : MonoBehaviour
 {
@@ -11,13 +12,37 @@ public class VrGameManager : MonoBehaviour
     [SerializeField]
     Canvas menuCanvas;
 
+    [SerializeField]
+    Button vrButton;
+    
+    [SerializeField]
+    Button pcButton;
+
+    [SerializeField]
+    Camera pcCam;
+
+    [SerializeField]
+    Camera vrCam;
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
     }
 
-    public void ChangeVrMode()
+    public void ChangeMenuVrMode()
     {
+        //Pc카메라 비활성화
+        pcCam.gameObject.SetActive(false);
+        //vr버튼 비활성화
+        vrButton.gameObject.SetActive(false);
+
+
+        //pc버튼 활성화
+        pcButton.gameObject.SetActive(true);
+        //Vr카메라 활성화
+        vrCam.gameObject.SetActive(true);
+
+
         //씬에 있는 Xr 오리진 활성화
         menuVr.SetActive(true);
 
@@ -34,8 +59,28 @@ public class VrGameManager : MonoBehaviour
         newPos.y = 2.5f;
         
         rectTransform.anchoredPosition = newPos;
+    }
 
-      
+    public void ChangeMenuPcMode()
+    {
+        //Vr카메라 비활성화
+        vrCam.gameObject.SetActive(false);
+        //pc버튼 비활성화
+        pcButton.gameObject.SetActive(false);
+
+        //vr버튼 활성화
+        vrButton.gameObject.SetActive(true);
+        //Pc카메라 활성화
+        pcCam.gameObject.SetActive(true);
+
+
+        //씬에 있는 Xr 오리진 비활성화
+        menuVr.SetActive(false);
+
+        //메뉴 캔버스 스크린스페이스로 전환
+        menuCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+
     }
 
 
