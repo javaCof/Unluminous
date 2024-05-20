@@ -13,6 +13,7 @@ public class SettingUI : MonoBehaviour
     public Button homeBtn;
     public Button exitBtn;
     public Button closeBtn;
+    public Button vrBtn;
 
     private PopupContent popup;
     private GameManager game;
@@ -73,6 +74,9 @@ public class SettingUI : MonoBehaviour
         homeBtn.onClick.AddListener(() => StartCoroutine(GoToMenu()));
         exitBtn.onClick.AddListener(() => game.ExitGame(true));
         closeBtn.onClick.AddListener(() => popup.ClosePopup());
+
+        if (game.curScene == "MenuScene") vrBtn.gameObject.SetActive(false);
+        vrBtn.GetComponentInChildren<Text>().text = game.vrEnable ? "PC" : "VR";
     }
 
     IEnumerator GoToMenu()
@@ -87,5 +91,10 @@ public class SettingUI : MonoBehaviour
     void UpdateBtnUI(Button btn, bool on)
     {
         btn.GetComponent<Image>().color = on ? Color.white : Color.red;
+    }
+    public void SwitchVr()
+    {
+        game.VrOnOff();
+        vrBtn.GetComponentInChildren<Text>().text = game.vrEnable ? "PC" : "VR";
     }
 }

@@ -6961,7 +6961,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7931707577599125508}
   - component: {fileID: 1395430222}
-  - component: {fileID: 1395430223}
   - component: {fileID: 1395430224}
   - component: {fileID: 1395430225}
   m_Layer: 0
@@ -7004,29 +7003,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.24, z: 0}
---- !u!114 &1395430223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7931707577599125509}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29f79babf6a88c54e8936eb015ecb527, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  sprintSpeed: 15
-  jumpable: 1
-  jumpForce: 8
-  gravity: 20
-  maxCamRotateAngle: 45
-  model: {fileID: 7931707577465242781}
-  weapon: {fileID: 7931707579328238545}
-  modelOffset: {x: 0, y: -2, z: 1}
-  modelRotate: {x: -45, y: 0, z: 0}
-  camOffset: {x: 0, y: 1.7, z: 0.57}
 --- !u!114 &1395430224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7043,8 +7019,19 @@ MonoBehaviour:
   id: 0
   curHP: 0
   roomNum: 0
+  speed: 10
+  sprintSpeed: 15
+  jumpable: 1
+  jumpForce: 8
+  gravity: 20
+  maxCamRotateAngle: 45
   actionDist: 3
   attackEffect: {fileID: 7226583673155636401, guid: a2ab56839e1c9504ea9d141e95d0b16b, type: 3}
+  model: {fileID: 7931707577465242781}
+  weapon: {fileID: 7931707579328238545}
+  modelOffset: {x: 0, y: -2, z: 1}
+  modelRotate: {x: -45, y: 0, z: 0}
+  camOffset: {x: 0, y: 1.7, z: 0.57}
   controllable: 1
 --- !u!114 &1395430225
 MonoBehaviour:
@@ -7067,7 +7054,7 @@ MonoBehaviour:
   onSerializeRigidBodyOption: 2
   ownershipTransfer: 0
   ObservedComponents:
-  - {fileID: 1395430223}
+  - {fileID: 0}
   - {fileID: 1395430224}
   ObservedComponentsFoldoutOpen: 1
   viewIdField: 0

@@ -452,6 +452,7 @@ public class Inventory : MonoBehaviour
                 Debug.Log("족발");
                 ShowPanel();
                 isOpen = true;
+                Cursor.lockState = CursorLockMode.None;
                 //ProcessTemporaryItems();
             }
             else if(isOpen)
@@ -459,6 +460,7 @@ public class Inventory : MonoBehaviour
                 Debug.Log("베이비야");
                 HidePanel();
                 isOpen = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
         }
     }

@@ -1,19 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class Player : UnitObject
 {
+    [Header("PLAYER MOVE")]
+    public float speed = 7f;
+    public float sprintSpeed = 10f;
+    public bool jumpable = true;
+    public float jumpForce = 8f;
+    public float gravity = 20f;
+
+    [Header("PLAYER LOOK")]
+    public float maxCamRotateAngle = 45f;
+
+    [Header("PLAYER ACTION")]
     public float actionDist = 2f;
     public GameObject attackEffect;
+
+    [Header("MODEL")]
+    public Transform model;
+    public Transform weapon;
+    public Vector3 modelOffset;
+    public Vector3 modelRotate;
+
+    [Header("CAMERA")]
+    public Vector3 camOffset;
 
     [HideInInspector] public bool controllable = true;
 
     protected Animator anim;
+    protected CharacterController ctl;
+    protected Transform cam;
     protected MapGenerator map;
     protected PhotonView pv;
+    protected GameUI ui;
+    protected GameManager game;
+
+    private Renderer[] renderers;
+    private Renderer[] weapon_renderers;
+
+    private bool inpJump;
+    private Vector3 moveVec;
+
+    private float camRotateX;
+    private float camRotateY;
+
+    protected bool animMove;
+    protected Vector3 curPos;
+    protected Quaternion curRot;
 
     private Collider target;
     private Vector3 hitPoint;
@@ -22,16 +57,39 @@ public class Player : UnitObject
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+        ctl = GetComponent<CharacterController>();
+        cam = FindObjectOfType<MapGenerator>().mainCam.transform;
         map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
+        ui = FindObjectOfType<GameUI>();
+        game = FindObjectOfType<GameManager>();
 
-        FindObjectOfType<GameUI>().actionButton.onClick.AddListener(() => inpAction = true);
+        renderers = GetComponentsInChildren<Renderer>();
+        weapon_renderers = weapon.GetComponentsInChildren<Renderer>();
+
+        ui.jumpButton.onClick.AddListener(() => inpJump = true);
+        ui.actionButton.onClick.AddListener(() => inpAction = true);
     }
     private void Start()
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             roomNum = -1;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            Cursor.lockState = CursorLockMode.Locked;
+#endif
+            cam.parent = transform;
+            cam.localPosition = camOffset;
+
+            foreach (var rend in renderers)
+                rend.enabled = false;
+            foreach (var w_rend in weapon_renderers)
+                w_rend.enabled = true;
+
+            model.parent = cam;
+            model.localPosition = modelOffset;
+            model.localEulerAngles = modelRotate;
         }
     }
     private void Update()
@@ -46,13 +104,43 @@ public class Player : UnitObject
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             inpAction = Input.GetMouseButtonDown(0);
 #endif
-            if (controllable && inpAction)
+            if (controllable)
             {
-                if (PhotonNetwork.inRoom) pv.RPC("Action_All", PhotonTargets.All);
-                else Action_All();
+                Move();
+                Look();
 
-                inpAction = false;
+                if (inpAction)
+                {
+                    if (PhotonNetwork.inRoom) pv.RPC("Action_All", PhotonTargets.All);
+                    else Action_All();
+
+                    inpAction = false;
+                }
             }
+        }
+        else
+        {
+            UpdatePos();
+            UpdateAnimMove(animMove);
+        }
+    }
+    private void FixedUpdate()
+    {
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            if (!isDead)
+            {
+                ctl.Move(moveVec * Time.deltaTime);
+                inpJump = false;
+            }
+        }
+    }
+    private void LateUpdate()
+    {
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            if (!isDead)
+                CameraUpdate();
         }
     }
     public void Reset()
@@ -61,6 +149,79 @@ public class Player : UnitObject
         isDead = false;
         controllable = true;
         anim.applyRootMotion = false;
+    }
+
+    void Move()
+    {
+        if (ctl.isGrounded)
+        {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            float inpH = Input.GetAxisRaw("Horizontal");
+            float inpV = Input.GetAxisRaw("Vertical");
+
+            float mSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : speed;
+
+            inpJump = Input.GetKey(KeyCode.Space);
+
+#elif UNITY_ANDROID
+            float inpH = UltimateJoystick.GetHorizontalAxis("leftJoyStick");
+            float inpV = UltimateJoystick.GetVerticalAxis("leftJoyStick");
+
+            float mSpeed = speed;
+#endif
+
+            Vector3 inpDir = new Vector3(inpH, 0, inpV).normalized;
+            Vector3 camDir = cam.TransformDirection(inpDir);
+
+            UpdateAnimMove(inpDir.sqrMagnitude > 0.01f);
+
+            if (camDir.x == 0 && camDir.z == 0)
+            {
+                moveVec = transform.TransformDirection(inpDir).normalized * mSpeed;
+            }
+            else
+            {
+                camDir.y = 0;
+                moveVec = camDir.normalized * mSpeed;
+            }
+
+            if (jumpable && inpJump)
+            {
+                moveVec.y += jumpForce;
+            }
+        }
+        moveVec.y -= gravity * Time.deltaTime;
+    }
+    void Look()
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        float dMouseX = Input.GetAxisRaw("Mouse X");
+        float dMouseY = Input.GetAxisRaw("Mouse Y");
+#elif UNITY_ANDROID
+        //float dMouseX = UltimateJoystick.GetHorizontalAxis("rightJoyStick")/5;
+        //float dMouseY = UltimateJoystick.GetVerticalAxis("rightJoyStick")/5;
+
+        //float dMouseX = Mathf.Abs(inpX) > 0.1f ? Mathf.Sign(inpX) / 5 : 0;
+        //float dMouseY = Mathf.Abs(inpY) > 0.1f ? Mathf.Sign(inpY) / 5 : 0;
+
+        float dMouseX = ui.touchPad.dTouchPoint.x / 10;
+        float dMouseY = ui.touchPad.dTouchPoint.y / 10;
+#endif
+
+        camRotateY = dMouseX * 500f * game.InputSensitivity * Time.deltaTime;
+        camRotateX = -dMouseY * 500f * game.InputSensitivity * Time.deltaTime;
+    }
+    void CameraUpdate()
+    {
+        transform.Rotate(0, camRotateY, 0);
+        cam.Rotate(camRotateX, 0, 0);
+
+        float rot = cam.localEulerAngles.x;
+        if (rot < 180f && rot > maxCamRotateAngle)
+            rot = maxCamRotateAngle;
+        else if (rot >= 180f && rot < 360f - maxCamRotateAngle)
+            rot = 360f - maxCamRotateAngle;
+        cam.localEulerAngles = new Vector3(rot, 0, 0);
     }
 
     void SetLookTarget()
@@ -186,7 +347,7 @@ public class Player : UnitObject
     {
         yield return new WaitForSeconds(delay);
 
-        SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
+        game.LoadingScene("GameEndScene");
     }
 
     protected void UpdateRoomNum()
@@ -198,15 +359,34 @@ public class Player : UnitObject
         Instantiate(attackEffect, pos, Quaternion.identity);
     }
 
-    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    protected void UpdatePos()
+    {
+        transform.position = Vector3.Lerp(transform.position, curPos, 3.0f * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, curRot, 3.0f * Time.deltaTime);
+    }
+    protected void UpdateAnimMove(bool isMove)
+    {
+        animMove = isMove;
+        anim.SetBool("move", animMove);
+        weapon.gameObject.SetActive(!isMove);
+    }
+    protected void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.isWriting)
         {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(animMove);
+
             stream.SendNext(isDead);
             stream.SendNext(roomNum);
         }
         else
         {
+            curPos = (Vector3)stream.ReceiveNext();
+            curRot = (Quaternion)stream.ReceiveNext();
+            animMove = (bool)stream.ReceiveNext();
+
             isDead = (bool)stream.ReceiveNext();
             roomNum = (int)stream.ReceiveNext();
         }

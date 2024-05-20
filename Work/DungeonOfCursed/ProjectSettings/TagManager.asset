@@ -9,6 +9,7 @@ TagManager:
   - Trader
   - Chest
   - Item
+  - VrInteracter
   layers:
   - Default
   - TransparentFX

@@ -8,7 +8,7 @@ public abstract class UnitObject : MonoBehaviour, IPoolObject
     [HideInInspector] public int id;
     [HideInInspector] public UnitStatInfo stat;
     [HideInInspector] public float curHP;
-    public int roomNum;
+    [HideInInspector] public int roomNum;
 
     protected void SetStat()
     {

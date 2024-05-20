@@ -134,8 +134,8 @@ GameObject:
   - component: {fileID: 540963100}
   - component: {fileID: 540963099}
   m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
+  m_Name: UI Camera
+  m_TagString: UICamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,7 +150,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -242,4 +242,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextScene: MenuScene
   curScene: 
-  ToDo: "\n[\uC544\uC774\uD15C/\uC7A5\uBE44]\r"
