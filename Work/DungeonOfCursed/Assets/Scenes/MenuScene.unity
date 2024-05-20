@@ -2778,7 +2778,7 @@ MonoBehaviour:
   vrButton: {fileID: 1866567853}
   pcButton: {fileID: 161082017}
   pcCam: {fileID: 963194227}
-  vrCam: {fileID: 0}
+  vrCam: {fileID: 882486456}
 --- !u!4 &1836913905
 Transform:
   m_ObjectHideFlags: 0
