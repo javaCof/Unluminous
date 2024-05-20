@@ -691,7 +691,6 @@ GameObject:
   m_Component:
   - component: {fileID: 909423580}
   - component: {fileID: 909423579}
-  - component: {fileID: 909423578}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -699,14 +698,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &909423578
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909423577}
-  m_Enabled: 1
 --- !u!20 &909423579
 Camera:
   m_ObjectHideFlags: 0
@@ -1249,7 +1240,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1264959824}
         m_TargetAssemblyTypeName: RoomManager, Assembly-CSharp
-        m_MethodName: OnReadyCancel
+        m_MethodName: BackToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

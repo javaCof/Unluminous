@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerLight : MonoBehaviour
+public class CameraLight : MonoBehaviour
 {
-    public Light playerLight;
+    public Light camLight;
     public float minLightIntensity = 0.5f;
     public float maxLightIntensity = 1f;
     public float deltaIntensity = 0.01f;
@@ -25,6 +25,6 @@ public class PlayerLight : MonoBehaviour
 
         curLightIntensity += incIntensity ? deltaIntensity : -deltaIntensity;
 
-        playerLight.intensity = curLightIntensity;
+        camLight.intensity = curLightIntensity;
     }
 }

@@ -1544,7 +1544,6 @@ GameObject:
   m_Component:
   - component: {fileID: 951486411}
   - component: {fileID: 951486410}
-  - component: {fileID: 951486409}
   - component: {fileID: 951486412}
   m_Layer: 0
   m_Name: MainCamera
@@ -1553,14 +1552,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &951486409
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 951486408}
-  m_Enabled: 1
 --- !u!20 &951486410
 Camera:
   m_ObjectHideFlags: 0
@@ -1631,7 +1622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0498dda279ef36e4fabac8ace694c6e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerLight: {fileID: 881685700}
+  camLight: {fileID: 0}
   minLightIntensity: 0.5
   maxLightIntensity: 1
   deltaIntensity: 0.01

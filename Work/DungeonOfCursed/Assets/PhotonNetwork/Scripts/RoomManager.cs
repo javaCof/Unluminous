@@ -24,6 +24,8 @@ public class RoomManager : MonoBehaviour
     }
     IEnumerator Start()
     {
+        game.curScene = gameObject.scene.name;
+
         roomNameText.text = PhotonNetwork.room.Name;
         roomReadyText.text = "0/" + PhotonNetwork.room.PlayerCount;
 
@@ -43,7 +45,10 @@ public class RoomManager : MonoBehaviour
 
     private void Update()
     {
-        roomReadyText.text = "" + pr.GetReadyPlayerCount() + "/" + PhotonNetwork.room.PlayerCount;
+        if (PhotonNetwork.inRoom)
+        {
+            roomReadyText.text = "" + pr.GetReadyPlayerCount() + "/" + PhotonNetwork.room.PlayerCount;
+        }
     }
 
     public void OnReady()
@@ -59,6 +64,12 @@ public class RoomManager : MonoBehaviour
         pr.ReadyCancel();
     }
 
+    public void BackToLobby()
+    {
+        if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
+        game.LoadingScene("LobbyScene");
+    }
+
     [PunRPC] void LoadStage()
     {
         StartCoroutine(_LoadStage());
@@ -68,6 +79,6 @@ public class RoomManager : MonoBehaviour
         PhotonNetwork.isMessageQueueRunning = false;
 
         yield return game.StartLoading();
-        yield return game.ChangeScene(nextScene);
+        yield return game.ChangeScene(game.curScene, nextScene);
     }
 }

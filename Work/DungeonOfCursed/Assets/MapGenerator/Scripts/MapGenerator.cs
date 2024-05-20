@@ -161,9 +161,11 @@ public class MapGenerator : MonoBehaviour
     }
     IEnumerator Start()
     {
+        game.curScene = gameObject.scene.name;
+
         if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
 
-        yield return game.pdateLoadingText("타일 Pool 생성 중...");
+        yield return game.UpdateLoadingText("타일 Pool 생성 중...");
 
         int mapSizeInt = mapSize.x * mapSize.y;
         CreateObjectPool(floorPrefab, (int)TileID.FLOOR, mapSizeInt);
@@ -171,7 +173,7 @@ public class MapGenerator : MonoBehaviour
         CreateObjectPool(cornerPrefab, (int)TileID.CORNER, mapSizeInt / 2);
         CreateObjectPool(pillarPrefab, (int)TileID.PILLAR, mapSizeInt / 2);
 
-        yield return game.pdateLoadingText("몬스터 Pool 생성 중...");
+        yield return game.UpdateLoadingText("몬스터 Pool 생성 중...");
 
         foreach (var unit in FirebaseManager.units)
         {
@@ -192,18 +194,18 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        yield return game.pdateLoadingText("맵 오브젝트 Pool 생성 중...");
+        yield return game.UpdateLoadingText("맵 오브젝트 Pool 생성 중...");
 
         CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(potalResName, (int)MapObjectID.POTAL, 1, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
-        yield return game.pdateLoadingText("장식 Pool 생성 중...");
+        yield return game.UpdateLoadingText("장식 Pool 생성 중...");
 
         for (int i = 0; i < decoPrefabs.Count; i++)
             CreateObjectPool(decoPrefabs[i], MapDecoID + i, 50);
 
-        yield return game.pdateLoadingText("아이템 Pool 생성 중...");
+        yield return game.UpdateLoadingText("아이템 Pool 생성 중...");
 
         CreateObjectPool(itemResName, 1000, 50, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
@@ -222,7 +224,7 @@ public class MapGenerator : MonoBehaviour
     {
         yield return game.StartLoading();
 
-        yield return game.pdateLoadingText("맵 생성 중...");
+        yield return game.UpdateLoadingText("맵 생성 중...");
 
         ChangeTileMat();
 

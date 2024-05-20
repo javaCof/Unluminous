@@ -77,11 +77,11 @@ public class SettingUI : MonoBehaviour
 
     IEnumerator GoToMenu()
     {
-        if (game.curSceneName == "MenuScene") yield break;
+        if (game.curScene == "MenuScene") yield break;
 
         yield return game.StartLoading();
         if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
-        yield return game.ChangeScene("MenuScene");
+        yield return game.ChangeScene(game.curScene, "MenuScene");
         yield return game.EndLoading();
     }
     void UpdateBtnUI(Button btn, bool on)

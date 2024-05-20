@@ -7,7 +7,7 @@ using UnityEditor;
 public class GameManager : MonoBehaviour
 {
     public string nextScene;
-    public string curSceneName { get; private set; }
+    [HideInInspector] public string curScene;
 
     [TextArea(0, 1000)] public string ToDo;
 
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator Start()
     {
-        curSceneName = SceneManager.GetActiveScene().name;
+        curScene = SceneManager.GetActiveScene().name;
 
         yield return StartLoading();
 
@@ -38,32 +38,44 @@ public class GameManager : MonoBehaviour
         /*DB Load*/
         System.Threading.Tasks.Task task;
         {
-            yield return pdateLoadingText("몬스터 정보를 불러오는 중...");
+            yield return UpdateLoadingText("몬스터 정보를 불러오는 중...");
             task = FirebaseManager.UnitLoadData();
             yield return new WaitUntil(() => task.IsCompleted);
 
-            yield return pdateLoadingText("아이템 정보를 불러오는 중...");
+            yield return UpdateLoadingText("아이템 정보를 불러오는 중...");
             task = FirebaseManager.ItemLoadData();
             yield return new WaitUntil(() => task.IsCompleted);
 
-            yield return pdateLoadingText("장비 정보를 불러오는 중...");
+            yield return UpdateLoadingText("장비 정보를 불러오는 중...");
             task = FirebaseManager.EquipLoadData();
             yield return new WaitUntil(() => task.IsCompleted);
         }
 
-        yield return ChangeScene(nextScene);
+        yield return ChangeScene(curScene, nextScene);
         yield return EndLoading();
     }
 
-    public IEnumerator ChangeScene(string scene)
+    public IEnumerator MoveToScene(string scene)
     {
-        AsyncOperation opLoad = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
-        AsyncOperation opUnload = SceneManager.UnloadSceneAsync(curSceneName, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+        yield return SceneManager.LoadSceneAsync(scene);
+    }
+    public IEnumerator ChangeScene(string from_scene, string to_scene)
+    {
+        AsyncOperation opLoad = SceneManager.LoadSceneAsync(to_scene, LoadSceneMode.Additive);
+        AsyncOperation opUnload = SceneManager.UnloadSceneAsync(from_scene);
 
         yield return opLoad;
         yield return opUnload;
-
-        curSceneName = scene;
+    }
+    public void LoadingScene(string scene)
+    {
+        StartCoroutine(_LoadingScene(scene));
+    }
+    private IEnumerator _LoadingScene(string scene)
+    {
+        yield return StartLoading();
+        yield return ChangeScene(curScene, scene);
+        yield return EndLoading();
     }
     public IEnumerator StartLoading()
     {
@@ -79,7 +91,7 @@ public class GameManager : MonoBehaviour
     {
         if (now_loading)
         {
-            yield return pdateLoadingText("");
+            yield return UpdateLoadingText("");
             AsyncOperation op = SceneManager.UnloadSceneAsync("LoadingScene", UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
             yield return op;
             now_loading = false;
@@ -87,18 +99,7 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
-    public void LoadingScene(string name)
-    {
-        StartCoroutine(_LoadingScene(name));
-    }
-    private IEnumerator _LoadingScene(string name)
-    {
-        yield return StartLoading();
-        yield return ChangeScene(name);
-        yield return EndLoading();
-    }
-
-    public IEnumerator pdateLoadingText(string msg)
+    public IEnumerator UpdateLoadingText(string msg)
     {
         LoadingUI loadingUI;
         if (loadingUI = FindObjectOfType<LoadingUI>())
@@ -115,7 +116,7 @@ public class GameManager : MonoBehaviour
             case ERROR_CODE.PHOTON_CONNECT_ERROR:
             case ERROR_CODE.PHOTON_CREATE_ROOM_ERROR:
             case ERROR_CODE.PHOTON_JOIN_ROOM_ERROR:
-                StartCoroutine(ChangeScene("ErrorScene"));
+                StartCoroutine(MoveToScene("ErrorScene"));
                 break;
         }
     }

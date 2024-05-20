@@ -37,6 +37,16 @@ public class PhotonInit : MonoBehaviour
             else game.ErrorGame(ERROR_CODE.PHOTON_CONNECT_ERROR);
         }
     }
+    private void Start()
+    {
+        game.curScene = gameObject.scene.name;
+        if (PhotonNetwork.insideLobby)
+        {
+            UpdateUserId();
+            UpdateRoomName();
+            StartCoroutine(game.EndLoading());
+        }
+    }
 
     public void JoinRandom()
     {
@@ -84,6 +94,12 @@ public class PhotonInit : MonoBehaviour
         roomNameInput.text = _roomName;
     }
 
+    public void BackToMenu()
+    {
+        if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
+        game.LoadingScene("MenuScene");
+    }
+
     IEnumerator EnterRoom()
     {
         AsyncOperation ao = PhotonNetwork.LoadLevelAsync(nextScene);
@@ -102,7 +118,7 @@ public class PhotonInit : MonoBehaviour
     void OnJoinedRoom()
     {
         Debug.Log("PHOTON : Enter Room");
-        game.ChangeScene(nextScene);
+        StartCoroutine(EnterRoom());
     }
     void OnReceivedRoomListUpdate()
     {
