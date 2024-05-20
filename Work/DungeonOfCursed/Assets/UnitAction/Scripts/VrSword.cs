@@ -14,11 +14,11 @@ public class VrSword : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Æ®¸®°Å ¹º°¡ ºÎ‹HÈû!");
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    Debug.Log("Æ®¸®°Å ¹º°¡ ºÎ‹HÈû!");
 
-    }
+    //}
 
 
     public void OnCollisionEnter(Collision collision)

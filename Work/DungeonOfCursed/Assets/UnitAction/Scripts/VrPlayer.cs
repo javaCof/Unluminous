@@ -63,6 +63,7 @@ public class VrPlayer : Player
     //상인거래
     public void VrTrade(Collision trade)
     {
+        Debug.Log("상인");
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             if (trade != null && trade.gameObject.tag == "Trade")
@@ -111,6 +112,7 @@ public class VrPlayer : Player
     //상자 열기
     public void VrOpenChest(Collision chest)
     {
+        Debug.Log("상자 오픈");
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             if (chest != null && chest.gameObject.tag == "Chest")
@@ -121,6 +123,7 @@ public class VrPlayer : Player
     //아이템 줍기
     public void VrPickupItem(Collision item)
     {
+        Debug.Log("아이템 줏음");
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             if (item != null && item.gameObject.tag == "Item")
