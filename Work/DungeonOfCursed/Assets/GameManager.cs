@@ -9,7 +9,7 @@ using UnityEngine.XR.Management;
 public class GameManager : MonoBehaviour
 {
     public string nextScene;
-    [HideInInspector] public string curScene;
+    public string curScene;
 
     private bool now_loading;
 
@@ -74,11 +74,8 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator ChangeScene(string from_scene, string to_scene)
     {
-        AsyncOperation opLoad = SceneManager.LoadSceneAsync(to_scene, LoadSceneMode.Additive);
-        AsyncOperation opUnload = SceneManager.UnloadSceneAsync(from_scene);
-
-        yield return opLoad;
-        yield return opUnload;
+        yield return SceneManager.LoadSceneAsync(to_scene, LoadSceneMode.Additive);
+        yield return SceneManager.UnloadSceneAsync(from_scene, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
     }
     public void LoadingScene(string scene)
     {

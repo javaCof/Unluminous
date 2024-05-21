@@ -161,6 +161,8 @@ public class MapGenerator : MonoBehaviour
     }
     IEnumerator Start()
     {
+        yield return new WaitForSeconds(1);
+
         game.curScene = gameObject.scene.name;
 
         if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
@@ -198,7 +200,9 @@ public class MapGenerator : MonoBehaviour
 
         CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
-        CreateObjectPool(potalResName, (int)MapObjectID.POTAL, 1, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+        CreateObjectPool(potalResName, (int)MapObjectID.POTAL, 10, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+        
+        
 
         yield return game.UpdateLoadingText("장식 Pool 생성 중...");
 
@@ -227,6 +231,7 @@ public class MapGenerator : MonoBehaviour
         yield return game.UpdateLoadingText("맵 생성 중...");
 
         ChangeTileMat();
+
 
         if (PhotonNetwork.inRoom)
         {
