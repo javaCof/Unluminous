@@ -17,6 +17,6 @@ public class VRCanvas : MonoBehaviour
 
     private void Start()
     {
-        //game.VrOnOff(game.vrEnable);
+        game.VrOnOff(game.vrEnable);
     }
 }

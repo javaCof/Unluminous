@@ -38,8 +38,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitUntil(() => XRGeneralSettings.Instance.Manager.isInitializationComplete);
         }
 
-        //vrEnable = XRSettings.enabled;
-        //VrOnOff(vrEnable);
+        vrEnable = XRSettings.enabled;
 
         InputSensitivity = PlayerPrefs.GetFloat("INPUT_SENSITIVITY", 0.5f);
         BgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1f);

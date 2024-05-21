@@ -16,7 +16,7 @@ public class MenuUI : MonoBehaviour
     private void Start()
     {
         game.curScene = gameObject.scene.name;
-
+        
         vrBtn.GetComponentInChildren<Text>().text = game.vrEnable ? "PC" : "VR";
     }
 
@@ -44,7 +44,7 @@ public class MenuUI : MonoBehaviour
 
     public void SwitchVr()
     {
-        //game.VrOnOff();
+        game.VrOnOff();
         vrBtn.GetComponentInChildren<Text>().text = game.vrEnable ? "PC" : "VR";
     }
 

@@ -94,7 +94,7 @@ public class SettingUI : MonoBehaviour
     }
     public void SwitchVr()
     {
-        game.VrOnOff();
+        //game.VrOnOff();
         vrBtn.GetComponentInChildren<Text>().text = game.vrEnable ? "PC" : "VR";
     }
 }
