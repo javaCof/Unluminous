@@ -34,6 +34,7 @@ public class Chest : MonoBehaviour, IPoolObject
         {
             targetItem.transform.Translate(Time.deltaTime * (new Vector3(0, 0, -upSpeed)));
         }
+
     }
 
     public void Open()
