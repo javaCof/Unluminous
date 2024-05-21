@@ -9,7 +9,11 @@ public class Chest : MonoBehaviour, IPoolObject
     public bool isLocked = false;
     public List<Item> items;
 
-    private Animator anim;
+    public float upSpeed;
+
+    Item targetItem;
+
+    public Animator anim;
     private MapGenerator map;
     private PhotonView pv;
 
@@ -20,6 +24,16 @@ public class Chest : MonoBehaviour, IPoolObject
         anim = GetComponentInChildren<Animator>();
         map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
+
+
+    }
+
+    private void Update()
+    {
+        if (targetItem != null&& targetItem.transform.position.y <= 1.5f)
+        {
+            targetItem.transform.Translate(Time.deltaTime * (new Vector3(0, 0, -upSpeed)));
+        }
     }
 
     public void Open()
@@ -31,16 +45,19 @@ public class Chest : MonoBehaviour, IPoolObject
 
         Debug.Log("»óÀÚ");
     }
-    [PunRPC] void Open_All()
+
+    [ContextMenu("Gen Item")]
+    [PunRPC]
+    void Open_All()
     {
         isOpened = true;
         anim.SetTrigger("Open");
 
-        Instantiate(items[0], transform);
-
+        targetItem =Instantiate(items[0], gameObject.transform);
     }
 
-    [PunRPC] public void OnPoolCreate(int id)
+    [PunRPC]
+    public void OnPoolCreate(int id)
     {
         if (PhotonNetwork.inRoom)
         {
@@ -49,7 +66,8 @@ public class Chest : MonoBehaviour, IPoolObject
             gameObject.SetActive(false);
         }
     }
-    [PunRPC] public void OnPoolEnable(Vector3 pos, Quaternion rot)
+    [PunRPC]
+    public void OnPoolEnable(Vector3 pos, Quaternion rot)
     {
         if (PhotonNetwork.inRoom)
         {
@@ -60,7 +78,8 @@ public class Chest : MonoBehaviour, IPoolObject
             gameObject.SetActive(true);
         }
     }
-    [PunRPC] public void OnPoolDisable()
+    [PunRPC]
+    public void OnPoolDisable()
     {
         if (PhotonNetwork.inRoom)
         {

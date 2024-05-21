@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 228766342160678326}
   - component: {fileID: -7788352134496847422}
   m_Layer: 0
-  m_Name: Atk_potion
+  m_Name: atk_potion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

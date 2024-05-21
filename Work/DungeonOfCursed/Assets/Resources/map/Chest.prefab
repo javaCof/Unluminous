@@ -62,6 +62,8 @@ MonoBehaviour:
   isLocked: 0
   items:
   - {fileID: -7788352134496847422, guid: 55e85248302909d438856dc56e075bd8, type: 3}
+  upSpeed: 1
+  anim: {fileID: 0}
 --- !u!114 &2478133052896785526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,8 +87,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 0}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 2
+  instantiationId: 2
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!1 &6534133625063754297
