@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 8533181146554466304}
   - component: {fileID: 8533181146554466305}
   m_Layer: 0
-  m_Name: rare_pants
+  m_Name: Rare_pants
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

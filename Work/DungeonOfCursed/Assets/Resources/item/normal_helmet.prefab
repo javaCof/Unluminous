@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3341783488430323402}
   - component: {fileID: 3341783488430323403}
   m_Layer: 0
-  m_Name: normal_helmet
+  m_Name: Normal_helmet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

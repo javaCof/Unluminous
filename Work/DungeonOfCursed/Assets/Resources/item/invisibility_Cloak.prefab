@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1877267000007235256}
   - component: {fileID: 6405032954554778603}
   m_Layer: 0
-  m_Name: invisibility_Cloak
+  m_Name: Invisibility_Cloak
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

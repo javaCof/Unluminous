@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6556089071055513470}
   - component: {fileID: 1735490785975185965}
   m_Layer: 0
-  m_Name: rare_armor
+  m_Name: Rare_armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

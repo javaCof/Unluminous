@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2326066374125456029}
   - component: {fileID: 2326066374125456028}
   m_Layer: 0
-  m_Name: legend_pants
+  m_Name: Legend_pants
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

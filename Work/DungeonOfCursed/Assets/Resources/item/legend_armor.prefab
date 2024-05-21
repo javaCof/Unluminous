@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 7489148793366767717}
   - component: {fileID: 2666296797348887862}
   m_Layer: 0
-  m_Name: legend_armor
+  m_Name: Legend_armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 4175016464564981785}
   - component: {fileID: 8871801751584081226}
   m_Layer: 0
-  m_Name: normal_armor
+  m_Name: Normal_armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
