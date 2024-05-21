@@ -829,7 +829,8 @@ public class MapGenerator : MonoBehaviour
     }
     [PunRPC] void GeneratePlayer()
     {
-        objectsPool[(int)DB_INFO.PLAYER_ID].GetObject(playerSpawnPoint, Quaternion.identity, objectPos);
+        int player_id = game.vrEnable ? (int)DB_INFO.VR_PLAYER_ID : (int)DB_INFO.PLAYER_ID;
+        objectsPool[player_id].GetObject(playerSpawnPoint, Quaternion.identity, objectPos);
     }
     [PunRPC] void MapReadyOK()
     {

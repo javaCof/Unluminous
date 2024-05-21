@@ -4,11 +4,24 @@ using UnityEngine;
 
 public class Potal : MonoBehaviour, IPoolObject
 {
+    public Transform icon;
+    [HideInInspector] public Transform target;
+
     private MapGenerator map;
 
     private void Awake()
     {
         map = FindObjectOfType<MapGenerator>();
+    }
+
+    private void Update()
+    {
+        if (target != null)
+        {
+            Vector3 pos = target.position;
+            pos.y = icon.position.y;
+            icon.LookAt(pos);
+        }
     }
 
     private void OnTriggerEnter(Collider oth)

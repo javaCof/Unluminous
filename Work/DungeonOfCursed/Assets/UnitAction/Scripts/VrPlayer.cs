@@ -2,23 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class VrPlayer : Player
 {
-
-
-    //void f()
-    //{
-    //    XRSettings.enabled = 
-    //}
-
-
     public float attackCooldown = 0.3f;     //°ø°Ý ÄðÅ¸ÀÓ
-
-    //private bool animMove;
-    //private Vector3 curPos;
-    //private Quaternion curRot;
 
     private float lastAttackTime;
 
@@ -170,44 +157,41 @@ public class VrPlayer : Player
     {
         yield return new WaitForSeconds(delay);
 
-        SceneManager.LoadSceneAsync("GameEndScene", LoadSceneMode.Additive);
+        game.LoadingScene("GameEndScene");
     }
 
-    //void UpdatePos()
-    //{
-    //    transform.position = Vector3.Lerp(transform.position, curPos, 3.0f * Time.deltaTime);
-    //    transform.rotation = Quaternion.Slerp(transform.rotation, curRot, 3.0f * Time.deltaTime);
-    //}
-    //void UpdateAnimMove(bool isMove)
-    //{
-    //    animMove = isMove;
-    //    anim.SetBool("move", animMove);
-    //}
-    //void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    if (stream.isWriting)
-    //    {
-    //        stream.SendNext(transform.position);
-    //        stream.SendNext(transform.rotation);
-    //        stream.SendNext(animMove);
+    void UpdatePos()
+    {
+        transform.position = Vector3.Lerp(transform.position, curPos, 3.0f * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, curRot, 3.0f * Time.deltaTime);
+    }
+    void UpdateAnimMove(bool isMove)
+    {
+        animMove = isMove;
+        anim.SetBool("move", animMove);
+    }
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.isWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+            stream.SendNext(animMove);
 
-    //        stream.SendNext(isDead);
-    //        stream.SendNext(roomNum);
-    //    }
-    //    else
-    //    {
-    //        curPos = (Vector3)stream.ReceiveNext();
-    //        curRot = (Quaternion)stream.ReceiveNext();
-    //        animMove = (bool)stream.ReceiveNext();
+            stream.SendNext(isDead);
+            stream.SendNext(roomNum);
+        }
+        else
+        {
+            curPos = (Vector3)stream.ReceiveNext();
+            curRot = (Quaternion)stream.ReceiveNext();
+            animMove = (bool)stream.ReceiveNext();
 
-    //        isDead = (bool)stream.ReceiveNext();
-    //        roomNum = (int)stream.ReceiveNext();
-    //    }
-    //}
+            isDead = (bool)stream.ReceiveNext();
+            roomNum = (int)stream.ReceiveNext();
+        }
+    }
 
-    [PunRPC] public override void OnPoolCreate(int id) => base.OnPoolCreate(id);
-    [PunRPC] public override void OnPoolEnable(Vector3 pos, Quaternion rot) => base.OnPoolEnable(pos, rot);
-    [PunRPC] public override void OnPoolDisable() => base.OnPoolDisable();
 
     private void OnDrawGizmosSelected() { }
 }

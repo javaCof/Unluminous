@@ -359,18 +359,18 @@ public class Player : UnitObject
         Instantiate(attackEffect, pos, Quaternion.identity);
     }
 
-    protected void UpdatePos()
+    void UpdatePos()
     {
         transform.position = Vector3.Lerp(transform.position, curPos, 3.0f * Time.deltaTime);
         transform.rotation = Quaternion.Slerp(transform.rotation, curRot, 3.0f * Time.deltaTime);
     }
-    protected void UpdateAnimMove(bool isMove)
+    void UpdateAnimMove(bool isMove)
     {
         animMove = isMove;
         anim.SetBool("move", animMove);
         weapon.gameObject.SetActive(!isMove);
     }
-    protected void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.isWriting)
         {
@@ -417,6 +417,10 @@ public class Player : UnitObject
 
         Reset();
 
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            FindObjectOfType<Potal>().target = transform;
+        }
     }
     [PunRPC] public override void OnPoolDisable()
     {
