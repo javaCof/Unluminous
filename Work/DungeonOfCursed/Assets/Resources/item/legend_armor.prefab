@@ -91,8 +91,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7489148793366767717}
   - component: {fileID: 2666296797348887862}
+  - component: {fileID: 240045438}
   m_Layer: 0
-  m_Name: Legend_armor
+  m_Name: legend_armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134,3 +135,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &240045438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8067038724434555734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b50f428ada62c3a40b63fb5674b59ee3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDurability: 0
+  _defence: 0

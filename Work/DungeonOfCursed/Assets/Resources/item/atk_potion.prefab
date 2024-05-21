@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4738602835474344165}
   - component: {fileID: 228766342160678326}
   - component: {fileID: -7788352134496847422}
+  - component: {fileID: 461861740}
   m_Layer: 0
   m_Name: atk_potion
   m_TagString: Untagged
@@ -68,6 +69,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   amount: 0
+  _inventory: {fileID: 0}
+--- !u!114 &461861740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5323197530615149526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b597242af57330945a22e8bf03013df0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxAmount: 0
+  _value: 0
 --- !u!1 &7433224434608705149
 GameObject:
   m_ObjectHideFlags: 0
