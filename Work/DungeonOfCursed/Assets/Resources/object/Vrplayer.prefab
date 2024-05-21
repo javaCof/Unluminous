@@ -8455,11 +8455,20 @@ MonoBehaviour:
   id: 0
   curHP: 0
   roomNum: 0
+  speed: 7
+  sprintSpeed: 10
+  jumpable: 1
+  jumpForce: 8
+  gravity: 20
+  maxCamRotateAngle: 45
   actionDist: 2
   attackEffect: {fileID: 7226583673155636401, guid: a2ab56839e1c9504ea9d141e95d0b16b, type: 3}
+  model: {fileID: 0}
+  weapon: {fileID: 0}
+  modelOffset: {x: 0, y: 0, z: 0}
+  modelRotate: {x: 0, y: 0, z: 0}
+  camOffset: {x: 0, y: 0, z: 0}
   controllable: 1
-  actor: {fileID: 8256094662509976605}
-  avatar: {fileID: 1957492605645803474}
   attackCooldown: 0.7
 --- !u!114 &1957492604906264344
 MonoBehaviour:
@@ -8484,8 +8493,8 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 1957492604906264350}
   ObservedComponentsFoldoutOpen: 1
-  viewIdField: 0
-  instantiationId: -1
+  viewIdField: 1
+  instantiationId: 1
   currentMasterID: -1
   isRuntimeInstantiated: 0
 --- !u!1 &1957492605645803475
@@ -9081,36 +9090,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5308362380576931766}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2891250168992847031
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4324207440727543919}
-  m_Layer: 0
-  m_Name: vrPlayer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4324207440727543919
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2891250168992847031}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.1175997, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8256094662509976605}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2996247340952936547
 GameObject:
@@ -12881,7 +12860,6 @@ MonoBehaviour:
   m_left: {fileID: 8256094661739684315}
   m_right: {fileID: 8256094661206337934}
   anim: {fileID: 5413977651196881026}
-  actionValue: 0
 --- !u!1 &7438095550470033136
 GameObject:
   m_ObjectHideFlags: 0
@@ -14904,7 +14882,6 @@ Transform:
   m_Children:
   - {fileID: 8256094661158466846}
   - {fileID: 5591139136184175085}
-  - {fileID: 4324207440727543919}
   m_Father: {fileID: 1957492604906264351}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16052,5 +16029,5 @@ SkinnedMeshRenderer:
   m_RootBone: {fileID: 2814520734270203911}
   m_AABB:
     m_Center: {x: 0.0018563569, y: 0.05080071, z: 1.3907557}
-    m_Extent: {x: 0.41219047, y: 0.28149188, z: 1.0156858}
+    m_Extent: {x: 0.41219047, y: 0.28149188, z: 0.18}
   m_DirtyAABB: 0
