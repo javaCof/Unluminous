@@ -10,6 +10,8 @@ public class Item : MonoBehaviour, IPoolObject
     private MapGenerator map;
     private PhotonView pv;
 
+    public Inventory _inventory;
+
     private void Awake()
     {
         map = FindObjectOfType<MapGenerator>();
@@ -18,7 +20,7 @@ public class Item : MonoBehaviour, IPoolObject
 
     public void Pickup()
     {
-        //inventory item add
+        _inventory.Add(new ItemData(id), amount);
         Debug.Log("item get");
 
         if (PhotonNetwork.inRoom) pv.RPC("RemoveObject", PhotonTargets.MasterClient);

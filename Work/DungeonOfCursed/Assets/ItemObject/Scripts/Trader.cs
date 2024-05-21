@@ -7,9 +7,9 @@ public class Trader : MonoBehaviour, IPoolObject
     private MapGenerator map;
     private PhotonView pv;
 
-    public List<Item> randomItemSlot1;
-    public List<Item> randomItemSlot2;
-    public List<Item> randomItemSlot3;
+    public List<ItemData> randomItemSlot1;
+    public List<ItemData> randomItemSlot2;
+    public List<ItemData> randomItemSlot3;
 
     private int[] itemIdxs = new int[3];
 
@@ -41,7 +41,7 @@ public class Trader : MonoBehaviour, IPoolObject
     }
     [PunRPC] void Trade_Master()
     {
-        //show item list
+        
     }
 
     [PunRPC] public void OnPoolCreate(int id)
