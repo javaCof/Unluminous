@@ -35,6 +35,9 @@ public class Chest : MonoBehaviour, IPoolObject
     {
         isOpened = true;
         anim.SetTrigger("Open");
+
+        Instantiate(items[0], transform);
+
     }
 
     [PunRPC] public void OnPoolCreate(int id)
