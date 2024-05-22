@@ -65,6 +65,8 @@ public class FirebaseManager
                     value = "\"" + value + "\"";
 
                 json += "\"" + dataValue.Key + "\":" + value + ",";
+
+                Debug.Log(dataValue.Key + "\":" + value);
             }
             json = json.Substring(0, json.Length - 1) + "}";
 

@@ -26,13 +26,15 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        Firebase.Database.FirebaseDatabase.DefaultInstance.GoOffline();
     }
     IEnumerator Start()
     {
         curScene = SceneManager.GetActiveScene().name;
 
+        Firebase.Database.FirebaseDatabase.DefaultInstance.GoOffline();
+        yield return null;
         Firebase.Database.FirebaseDatabase.DefaultInstance.SetPersistenceEnabled(false);
+        yield return null;
         Firebase.Database.FirebaseDatabase.DefaultInstance.GoOnline();
 
         yield return StartLoading();

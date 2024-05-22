@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ItemData : MonoBehaviour
 {
-    public int ID { get; private set; }
+    public int ID { get; set; }
     public int Price { get; private set; }
     public string Name { get; private set; }
     public string Tooltip { get; private set; }

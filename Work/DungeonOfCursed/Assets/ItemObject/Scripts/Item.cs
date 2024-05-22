@@ -7,21 +7,33 @@ public class Item : MonoBehaviour, IPoolObject
     public int id;
     public int amount;
 
+    public Inventory _inventory;
+
     private MapGenerator map;
     private PhotonView pv;
-
-    public Inventory _inventory;
+    private ItemData itemData;
 
     private void Awake()
     {
         map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
+        itemData = this.gameObject.GetComponent<ItemData>();
     }
 
     public void Pickup()
     {
-        _inventory.Add(new ItemData(id), amount);
-        Debug.Log("item get");
+        if(itemData != null)
+        {
+            itemData.ID = id;
+
+            if(itemData is CountableItemData)
+            {
+                Debug.Log(itemData.Name + "È¹µæ");
+                _inventory.Add(itemData, amount);
+            }
+            else
+                _inventory.Add(itemData);
+        }
 
         if (PhotonNetwork.inRoom) pv.RPC("RemoveObject", PhotonTargets.MasterClient);
         else RemoveObject();
