@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class VrPlayer : Player
 {
-    private AudioSource audioSource;
-    private AudioSource swordAudioSource;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource swordAudioSource;
 
     public float attackCooldown = 0.3f;     //공격 쿨타임
 
@@ -19,8 +19,6 @@ public class VrPlayer : Player
         pv = GetComponent<PhotonView>();
         ui = FindObjectOfType<GameUI>();
 
-        audioSource = gameObject.GetComponent<AudioSource>();
-        swordAudioSource = GetComponentInChildren<AudioSource>();
     }
     private void Start()
     {
@@ -99,7 +97,7 @@ public class VrPlayer : Player
     //상자 열기
     public void VrOpenChest(Collision chest)
     {
-       // Debug.Log("상자 오픈");
+        // Debug.Log("상자 오픈");
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             if (chest != null && chest.gameObject.tag == "Chest")
@@ -205,7 +203,8 @@ public class VrPlayer : Player
         }
     }
 
-    [PunRPC] public override void OnPoolEnable(Vector3 pos, Quaternion rot)
+    [PunRPC]
+    public override void OnPoolEnable(Vector3 pos, Quaternion rot)
     {
         base.OnPoolEnable(pos, rot);
 

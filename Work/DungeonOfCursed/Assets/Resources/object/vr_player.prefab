@@ -7807,6 +7807,8 @@ MonoBehaviour:
   modelRotate: {x: 0, y: 0, z: 0}
   camOffset: {x: 0, y: 0, z: 0}
   controllable: 1
+  audioSource: {fileID: 119337414874707048}
+  swordAudioSource: {fileID: 504208374256609235}
   attackCooldown: 0.3
 --- !u!114 &3026402865194565962
 MonoBehaviour:
