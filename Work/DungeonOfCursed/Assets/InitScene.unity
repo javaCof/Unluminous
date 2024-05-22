@@ -311,6 +311,7 @@ GameObject:
   m_Component:
   - component: {fileID: 974305335}
   - component: {fileID: 974305336}
+  - component: {fileID: 974305338}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -344,6 +345,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1498d3a80419654fa19e36614b1daa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  music:
+  - {fileID: 8300000, guid: 24fb0a3aa8d257747b53f554e369b43b, type: 3}
+  - {fileID: 8300000, guid: f52d36ca633bbcb478d2d42287391aad, type: 3}
+  - {fileID: 8300000, guid: 2d34828a56e661841b4547ed27e89f18, type: 3}
+  sfx:
+  - {fileID: 8300000, guid: 26662a394291b6642b8a098dc54567a4, type: 3}
+  - {fileID: 8300000, guid: 5c96be2b0e81d114aab1b6c717543aa0, type: 3}
+  - {fileID: 8300000, guid: 8157634989670fd44885818aa3a2e9b2, type: 3}
+  - {fileID: 8300000, guid: 0318573dc5c01e845ae8f33083522e1f, type: 3}
+  - {fileID: 8300000, guid: 9292a8460fb00fe4e9d3d8bdd8a3070e, type: 3}
+  playerSounds:
+  - {fileID: 8300000, guid: 24ef517b6444c384aa11d132d32b0bc1, type: 3}
+  - {fileID: 8300000, guid: 431221d4e177f85469d857584052baef, type: 3}
+  - {fileID: 8300000, guid: 8459259689e567c42b7ad93ac13b1d52, type: 3}
+  - {fileID: 8300000, guid: 61589f9cd17a3df47ba3f1144a0c99d6, type: 3}
+  - {fileID: 8300000, guid: f7ff26232f279b640a80c08e3ccc2c51, type: 3}
+  - {fileID: 8300000, guid: 22624c7d4c8954543bba26babcf5837e, type: 3}
+  - {fileID: 8300000, guid: cba8cd9c4474d50479a880658530fdb1, type: 3}
+  - {fileID: 8300000, guid: 5c459d497665e3544a2513e34d3a50c9, type: 3}
+--- !u!81 &974305338
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 974305334}
+  m_Enabled: 1
 --- !u!1 &2119454578
 GameObject:
   m_ObjectHideFlags: 0
