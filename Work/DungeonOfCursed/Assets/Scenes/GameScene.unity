@@ -621,7 +621,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9109272857311879973, guid: cf6ec6a801b366746a9266a1f782bdd7, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9109272857311879973, guid: cf6ec6a801b366746a9266a1f782bdd7, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1232,6 +1232,7 @@ GameObject:
   - component: {fileID: 935082985}
   - component: {fileID: 935082984}
   - component: {fileID: 935082987}
+  - component: {fileID: 935082988}
   - component: {fileID: 935082986}
   m_Layer: 5
   m_Name: GameUI
@@ -1470,6 +1471,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6200641626ad98a4ebe05173585dd801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &935082988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935082979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7269a4d27892ca4e8c8808c38100605, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiCam: {fileID: 951486410}
+  vrInteracter: {fileID: 0}
 --- !u!1 &951486408
 GameObject:
   m_ObjectHideFlags: 0
@@ -1538,7 +1553,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 951486408}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 120, y: 88, z: 120}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1949,7 +1964,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 865144480045729905, guid: ef9fdaed09ea9e841b5eb37a398e77a4, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 865144480045729905, guid: ef9fdaed09ea9e841b5eb37a398e77a4, type: 3}
       propertyPath: m_AnchorMax.x

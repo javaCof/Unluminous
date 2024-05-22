@@ -205,5 +205,13 @@ public class VrPlayer : Player
         }
     }
 
+    [PunRPC] public override void OnPoolEnable(Vector3 pos, Quaternion rot)
+    {
+        base.OnPoolEnable(pos, rot);
+
+        FindObjectOfType<VRCanvas>().vrInteracter = gameObject;
+        GameManager.Instance.UpdateVRUI();
+    }
+
     private void OnDrawGizmosSelected() { }
 }

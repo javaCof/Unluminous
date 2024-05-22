@@ -380,15 +380,16 @@ public class Player : UnitObject
         GameManager.Instance.LoadingScene("GameEndScene");
     }
 
-    protected void UpdateRoomNum()
-    {
-        roomNum = map.FindRoom(transform.position);
-    }
     protected void MakeEffect(Vector3 pos)
     {
         Instantiate(attackEffect, pos, Quaternion.identity);
     }
 
+    protected void UpdateRoomNum()
+    {
+        roomNum = map.FindRoom(transform.position);
+    }
+    
     void UpdatePos()
     {
         transform.position = Vector3.Lerp(transform.position, curPos, 3.0f * Time.deltaTime);
@@ -398,7 +399,7 @@ public class Player : UnitObject
     {
         animMove = isMove;
         if (isMove) SoundManager.instance.PlayRun(audioSource);
-        weapon.gameObject.SetActive(!isMove);
+        //weapon.gameObject.SetActive(!isMove);
     }
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -448,7 +449,6 @@ public class Player : UnitObject
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             GameManager.Instance.player = this;
-            FindObjectOfType<Potal>().target = transform;
         }
     }
     [PunRPC] public override void OnPoolDisable()
@@ -458,6 +458,11 @@ public class Player : UnitObject
             if (pv.isMine) pv.RPC("OnPoolDisable", PhotonTargets.Others);
             transform.parent = map.poolPos;
             gameObject.SetActive(false);
+        }
+
+        if (!PhotonNetwork.inRoom || pv.isMine)
+        {
+            GameManager.Instance.player = null;
         }
     }
 

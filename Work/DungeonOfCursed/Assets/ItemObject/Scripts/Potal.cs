@@ -5,7 +5,6 @@ using UnityEngine;
 public class Potal : MonoBehaviour, IPoolObject
 {
     public Transform icon;
-    [HideInInspector] public Transform target;
 
     private MapGenerator map;
 
@@ -16,6 +15,7 @@ public class Potal : MonoBehaviour, IPoolObject
 
     private void Update()
     {
+        Transform target = GameManager.Instance.player.transform;
         if (target != null)
         {
             Vector3 pos = target.position;

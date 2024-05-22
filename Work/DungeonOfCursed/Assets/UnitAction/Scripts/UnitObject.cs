@@ -7,7 +7,7 @@ public abstract class UnitObject : MonoBehaviour, IPoolObject
     [HideInInspector] public bool isDead;
     [HideInInspector] public int id;
     [HideInInspector] public UnitStatInfo stat;
-    [HideInInspector] public float curHP;
+    public float curHP;
     [HideInInspector] public int roomNum;
 
     protected void SetStat()

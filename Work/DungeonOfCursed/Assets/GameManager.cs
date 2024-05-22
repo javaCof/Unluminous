@@ -128,10 +128,10 @@ public class GameManager : MonoBehaviour
     {
         VrEnable = on;
 
-        UpdateVRUI();
-
         if (VrEnable) XRGeneralSettings.Instance.Manager.StartSubsystems();
         else XRGeneralSettings.Instance.Manager.StopSubsystems();
+
+        UpdateVRUI();
     }
     public void UpdateVRUI()
     {
@@ -139,6 +139,7 @@ public class GameManager : MonoBehaviour
         {
             foreach (var vrCanvas in FindObjectsByType<VRCanvas>(FindObjectsSortMode.None))
             {
+                if (vrCanvas.vrInteracter == null) continue;
                 if (vrCanvas)
                 {
                     Canvas canvas = vrCanvas.GetComponent<Canvas>();
