@@ -24,12 +24,12 @@ public class Item : MonoBehaviour, IPoolObject
     {
         if(itemData != null)
         {
-            itemData.ID = id;
+            itemData.ID = this.id;
 
             if(itemData is CountableItemData)
             {
                 Debug.Log(itemData.Name + "È¹µæ");
-                _inventory.Add(itemData, amount);
+                _inventory.Add(itemData, this.amount);
             }
             else
                 _inventory.Add(itemData);
