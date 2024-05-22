@@ -15,10 +15,10 @@ public class Potal : MonoBehaviour, IPoolObject
 
     private void Update()
     {
-        Transform target = GameManager.Instance.player.transform;
+        Player target = GameManager.Instance.player;
         if (target != null)
         {
-            Vector3 pos = target.position;
+            Vector3 pos = target.transform.position;
             pos.y = icon.position.y;
             icon.LookAt(pos);
         }

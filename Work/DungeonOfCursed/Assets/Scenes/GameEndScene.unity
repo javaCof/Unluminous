@@ -287,6 +287,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiCam: {fileID: 1962319927}
   vrInteracter: {fileID: 2096362437}
+  position: {x: 0, y: 2.5, z: 0}
+  rotation: {x: 0, y: 0, z: 0}
+  scale: {x: 0.01, y: 0.01, z: 0.01}
 --- !u!1 &1130625467
 GameObject:
   m_ObjectHideFlags: 0

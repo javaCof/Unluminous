@@ -621,7 +621,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9109272857311879973, guid: cf6ec6a801b366746a9266a1f782bdd7, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 9109272857311879973, guid: cf6ec6a801b366746a9266a1f782bdd7, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1485,6 +1485,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiCam: {fileID: 951486410}
   vrInteracter: {fileID: 0}
+  position: {x: 0, y: 2.5, z: 5}
+  rotation: {x: 0, y: 0, z: 0}
+  scale: {x: 0.01, y: 0.01, z: 0.01}
 --- !u!1 &951486408
 GameObject:
   m_ObjectHideFlags: 0
@@ -1964,7 +1967,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 865144480045729905, guid: ef9fdaed09ea9e841b5eb37a398e77a4, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 865144480045729905, guid: ef9fdaed09ea9e841b5eb37a398e77a4, type: 3}
       propertyPath: m_AnchorMax.x

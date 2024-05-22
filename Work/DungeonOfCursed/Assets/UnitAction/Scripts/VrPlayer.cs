@@ -208,7 +208,9 @@ public class VrPlayer : Player
     {
         base.OnPoolEnable(pos, rot);
 
-        FindObjectOfType<VRCanvas>().vrInteracter = gameObject;
+        VRCanvas vrCanvas = FindObjectOfType<GameUI>().GetComponent<VRCanvas>();
+        vrCanvas.vrInteracter = gameObject;
+        vrCanvas.transform.parent = transform;
         GameManager.Instance.UpdateVRUI();
     }
 

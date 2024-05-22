@@ -147,8 +147,9 @@ public class GameManager : MonoBehaviour
                     canvas.worldCamera = vrCanvas.vrInteracter.GetComponentInChildren<Camera>();
 
                     RectTransform rect = canvas.GetComponent<RectTransform>();
-                    rect.localScale = new Vector3(0.01f, 0.01f, 0.01f);
-                    rect.anchoredPosition = new Vector2(0, 2.5f);
+                    rect.localPosition = vrCanvas.position;
+                    rect.localEulerAngles = vrCanvas.rotation;
+                    rect.localScale = vrCanvas.scale;
 
                     Camera uiCam = vrCanvas.uiCam;
                     if (uiCam) uiCam.gameObject.SetActive(false);
