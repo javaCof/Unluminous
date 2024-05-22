@@ -11,7 +11,7 @@ public class XrInput : MonoBehaviour
     float leftValue;
     float rightValue;
 
-    public AudioSource audioSource;
+    [SerializeField] AudioSource vrAudioSource;
 
     [SerializeField] XRController m_left;
     [SerializeField] XRController m_right;
@@ -70,7 +70,7 @@ public class XrInput : MonoBehaviour
             {
                 //°È´Â ¸ð¼Ç
                 anim.SetBool("move", true);
-                SoundManager.instance.PlayRun(audioSource);
+                SoundManager.instance.PlayRun(vrAudioSource);
 
 
             }
