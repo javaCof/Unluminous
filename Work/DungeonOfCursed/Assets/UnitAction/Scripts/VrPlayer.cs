@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class VrPlayer : Player
 {
-    AudioSource audioSource;
+    private AudioSource audioSource;
+
+    private AudioSource swordAudioSource;
 
     public float attackCooldown = 0.3f;     //공격 쿨타임
 
@@ -19,6 +21,7 @@ public class VrPlayer : Player
         ui = FindObjectOfType<GameUI>();
         game = FindObjectOfType<GameManager>();
         audioSource = gameObject.GetComponent<AudioSource>();
+        swordAudioSource = GetComponentInChildren<AudioSource>();
     }
     private void Start()
     {
@@ -59,7 +62,7 @@ public class VrPlayer : Player
         if (target != null && target.gameObject.tag == "Enemy")
         {
             //칼소리 재생
-            SoundManager.instance.PlaySwrod(audioSource);
+            SoundManager.instance.PlaySwrod(swordAudioSource);
 
             //지정된 초마다 1번씩만 호출
             if (Time.time - lastAttackTime >= attackCooldown)

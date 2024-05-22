@@ -97,4 +97,12 @@ public class SoundManager : MonoBehaviour
         player.Play();
     }
 
+    public void PlayJump(AudioSource player)
+    {
+        player.clip = playerSounds[8];
+
+        //«√∑π¿Ã
+        player.Play();
+    }
+
 }

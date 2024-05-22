@@ -54,10 +54,16 @@ public class Player : UnitObject
     private Vector3 hitPoint;
     private bool inpAction;
 
+    //플레이어 오디오 소스
     private AudioSource audioSource;
+
+    //플레이어 칼 오디오 소스
+    private AudioSource swordAudioSource;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        swordAudioSource = GetComponentInChildren<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
         cam = FindObjectOfType<MapGenerator>().mainCam.transform;
@@ -194,6 +200,7 @@ public class Player : UnitObject
             if (jumpable && inpJump)
             {
                 moveVec.y += jumpForce;
+                SoundManager.instance.PlayJump(audioSource);
             }
         }
         moveVec.y -= gravity * Time.deltaTime;
@@ -313,7 +320,7 @@ public class Player : UnitObject
     public override void Attack()
     {
         //사운드 매니저의 플레이어히트 소리 재생 함수 실행
-        SoundManager.instance.PlaySwrod(audioSource);
+        SoundManager.instance.PlaySwrod(swordAudioSource);
         if (target != null && target.tag == "Enemy")
         {
             Enemy enemy = target.GetComponent<Enemy>();
