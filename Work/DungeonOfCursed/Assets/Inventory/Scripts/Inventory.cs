@@ -451,6 +451,7 @@ public class Inventory : MonoBehaviour
             {
                 Debug.Log("족발");
                 ShowPanel();
+                SoundManager.instance.PlaySfx("inven");
                 isOpen = true;
                 Cursor.lockState = CursorLockMode.None;
                 //ProcessTemporaryItems();
@@ -468,6 +469,7 @@ public class Inventory : MonoBehaviour
     private void InvenEvent()
     {
         _openInvenButton.onClick.AddListener(ShowPanel);
+
         _closeInvenButton.onClick.AddListener(HidePanel);
     }
 
