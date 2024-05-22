@@ -28,6 +28,7 @@ public class Potal : MonoBehaviour, IPoolObject
     {
         if (oth.tag == "Player")
         {
+            SoundManager.instance.PlaySfx("portal");
             if (!PhotonNetwork.inRoom)
                 map.ResetLevel();
             else if (oth.GetComponent<PhotonView>().isMine)

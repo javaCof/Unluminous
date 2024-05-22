@@ -54,8 +54,10 @@ public class Player : UnitObject
     private Vector3 hitPoint;
     private bool inpAction;
 
+    private AudioSource audioSource;
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
         cam = FindObjectOfType<MapGenerator>().mainCam.transform;
@@ -175,6 +177,10 @@ public class Player : UnitObject
 
             UpdateAnimMove(inpDir.sqrMagnitude > 0.01f);
 
+            
+            
+            
+
             if (camDir.x == 0 && camDir.z == 0)
             {
                 moveVec = transform.TransformDirection(inpDir).normalized * mSpeed;
@@ -245,7 +251,8 @@ public class Player : UnitObject
     }
     void ShowLookTarget() { }
 
-    [PunRPC] void Action_All()
+    [PunRPC]
+    void Action_All()
     {
         if (target == null)
         {
@@ -283,7 +290,11 @@ public class Player : UnitObject
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             if (target != null && target.tag == "Chest")
+            {
                 target.GetComponent<Chest>().Open();
+                //상자 사운드 재생
+                SoundManager.instance.PlaySfx("chest");
+            }
         }
     }
     void PickupItem()
@@ -291,12 +302,18 @@ public class Player : UnitObject
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             if (target != null && target.tag == "Item")
+            {
                 target.GetComponent<Item>().Pickup();
+                //아이템 픽업 사운드 재생
+                SoundManager.instance.PlaySfx("item");
+            }
         }
     }
 
     public override void Attack()
     {
+        //사운드 매니저의 플레이어히트 소리 재생 함수 실행
+        SoundManager.instance.PlaySwrod(audioSource);
         if (target != null && target.tag == "Enemy")
         {
             Enemy enemy = target.GetComponent<Enemy>();
@@ -309,12 +326,16 @@ public class Player : UnitObject
                 target.GetComponent<PhotonView>().RPC("OnHit", PhotonNetwork.masterClient, stat.ATK);
         }
     }
-    [PunRPC] public override void OnHit(float dmg)
+    [PunRPC]
+    public override void OnHit(float dmg)
     {
         if (isDead) return;
 
         curHP -= dmg;
         FindObjectOfType<GameUI>().hpBar.fillAmount = curHP / stat.HP;
+
+        //사운드 매니저의 플레이어히트 소리 재생 함수 실행
+        SoundManager.instance.PlayHit(audioSource);
 
         if (curHP <= 0)
         {
@@ -334,11 +355,16 @@ public class Player : UnitObject
             else Hit_All();
         }
     }
-    [PunRPC] void Hit_All()
+    [PunRPC]
+    void Hit_All()
     {
         anim.SetTrigger("hit");
+
+
+
     }
-    [PunRPC] void Dead_All()
+    [PunRPC]
+    void Dead_All()
     {
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
@@ -367,7 +393,10 @@ public class Player : UnitObject
     void UpdateAnimMove(bool isMove)
     {
         animMove = isMove;
-        anim.SetBool("move", animMove);
+        if (isMove)
+        {
+            SoundManager.instance.PlayRun(audioSource);
+        }
         weapon.gameObject.SetActive(!isMove);
     }
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -392,7 +421,8 @@ public class Player : UnitObject
         }
     }
 
-    [PunRPC] public override void OnPoolCreate(int id)
+    [PunRPC]
+    public override void OnPoolCreate(int id)
     {
         this.id = id;
         SetStat();
@@ -404,7 +434,8 @@ public class Player : UnitObject
             gameObject.SetActive(false);
         }
     }
-    [PunRPC] public override void OnPoolEnable(Vector3 pos, Quaternion rot)
+    [PunRPC]
+    public override void OnPoolEnable(Vector3 pos, Quaternion rot)
     {
         if (PhotonNetwork.inRoom)
         {
@@ -422,7 +453,8 @@ public class Player : UnitObject
             FindObjectOfType<Potal>().target = transform;
         }
     }
-    [PunRPC] public override void OnPoolDisable()
+    [PunRPC]
+    public override void OnPoolDisable()
     {
         if (PhotonNetwork.inRoom)
         {

@@ -24,6 +24,7 @@ public class MenuUI : MonoBehaviour
     public void OnSingleButtonClick()
     {
         StartCoroutine(SingleLoad());
+        SoundManager.instance.PlaySfx("menu");
     }
     private IEnumerator SingleLoad()
     {
@@ -35,6 +36,7 @@ public class MenuUI : MonoBehaviour
     public void OnMultiButtonClick()
     {
         StartCoroutine(MultiLoad());
+        SoundManager.instance.PlaySfx("menu");
     }
     private IEnumerator MultiLoad()
     {
@@ -45,12 +47,15 @@ public class MenuUI : MonoBehaviour
 
     public void SwitchVr()
     {
+
         game.VrOnOff();
         vrBtn.GetComponentInChildren<Text>().text = game.vrEnable ? "PC" : "VR";
+        SoundManager.instance.PlaySfx("menu");
     }
 
     public void OnExitButtonClick()
     {
         game.ExitGame(true);
+        SoundManager.instance.PlaySfx("menu");
     }
 }

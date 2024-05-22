@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class VrPlayer : Player
 {
+    AudioSource audioSource;
+
     public float attackCooldown = 0.3f;     //공격 쿨타임
 
     private float lastAttackTime;
@@ -16,6 +18,7 @@ public class VrPlayer : Player
         pv = GetComponent<PhotonView>();
         ui = FindObjectOfType<GameUI>();
         game = FindObjectOfType<GameManager>();
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
     private void Start()
     {
@@ -51,13 +54,18 @@ public class VrPlayer : Player
     }
 
     //에너미 공격
-    public void VrAttackAction(Collision target,Vector3 hitPos)
+    public void VrAttackAction(Collision target, Vector3 hitPos)
     {
         if (target != null && target.gameObject.tag == "Enemy")
         {
+            //칼소리 재생
+            SoundManager.instance.PlaySwrod(audioSource);
+
             //지정된 초마다 1번씩만 호출
             if (Time.time - lastAttackTime >= attackCooldown)
             {
+
+
                 //에너미 변수에 받아온 인자의 에너미를 넣는다
                 Enemy enemy = target.gameObject.GetComponent<Enemy>();
 
@@ -91,33 +99,44 @@ public class VrPlayer : Player
     //상자 열기
     public void VrOpenChest(Collision chest)
     {
-        Debug.Log("상자 오픈");
+       // Debug.Log("상자 오픈");
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             if (chest != null && chest.gameObject.tag == "Chest")
+            {
                 chest.gameObject.GetComponent<Chest>().Open();
+                SoundManager.instance.PlaySfx("chest");
+            }
+
         }
     }
 
     //아이템 줍기
     public void VrPickupItem(Collision item)
     {
-        Debug.Log("아이템 줏음");
+        //Debug.Log("아이템 줏음");
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             if (item != null && item.gameObject.tag == "Item")
+            {
                 item.gameObject.GetComponent<Item>().Pickup();
+                SoundManager.instance.PlaySfx("item");
+            }
         }
     }
 
 
     public override void Attack() { } //call by anim
-    [PunRPC] public override void OnHit(float dmg)
+    [PunRPC]
+    public override void OnHit(float dmg)
     {
         if (isDead) return;
 
         curHP -= dmg;
         FindObjectOfType<GameUI>().hpBar.fillAmount = curHP / stat.HP;
+
+        //맞는소리 재생
+        SoundManager.instance.PlayHit(audioSource);
 
         if (curHP <= 0)
         {
@@ -137,18 +156,20 @@ public class VrPlayer : Player
             else Hit_All();
         }
     }
-    [PunRPC] void Hit_All()
+    [PunRPC]
+    void Hit_All()
     {
         //anim.SetTrigger("hit");
     }
 
-    [PunRPC] void Dead_All()
+    [PunRPC]
+    void Dead_All()
     {
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
     }
 
-   new void UpdateRoomNum()
+    new void UpdateRoomNum()
     {
         roomNum = map.FindRoom(transform.position);
     }

@@ -11,6 +11,8 @@ public class PopupUI : MonoBehaviour
         if (nowPopup == null)
         {
             nowPopup = Instantiate(popup, transform);
+
+            SoundManager.instance.PlaySfx("menu");
         }
     }
 
@@ -20,6 +22,7 @@ public class PopupUI : MonoBehaviour
         {
             Destroy(nowPopup);
             nowPopup = null;
+            SoundManager.instance.PlaySfx("menu");
         }
     }
 }
