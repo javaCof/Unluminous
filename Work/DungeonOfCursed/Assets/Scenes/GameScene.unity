@@ -547,7 +547,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 230, y: -230}
+  m_AnchoredPosition: {x: 230, y: -848}
   m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &338547108
@@ -1234,6 +1234,7 @@ GameObject:
   - component: {fileID: 935082987}
   - component: {fileID: 935082988}
   - component: {fileID: 935082986}
+  - component: {fileID: 935082989}
   m_Layer: 5
   m_Name: GameUI
   m_TagString: Untagged
@@ -1485,9 +1486,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiCam: {fileID: 951486410}
   vrInteracter: {fileID: 0}
-  position: {x: 0, y: 2.5, z: 5}
-  rotation: {x: 0, y: 0, z: 0}
-  scale: {x: 0.01, y: 0.01, z: 0.01}
+  position: {x: -0.1, y: 0.22, z: -0.17}
+  rotation: {x: 0, y: -45, z: 75}
+  scale: {x: 0.0002, y: 0.0002, z: 0.0002}
+--- !u!114 &935082989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935082979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1
 --- !u!1 &951486408
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class VrPlayer : Player
 {
+    
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioSource swordAudioSource;
+
+    [SerializeField] private Transform hand;
 
     public float attackCooldown = 0.3f;     //공격 쿨타임
 
@@ -207,10 +210,46 @@ public class VrPlayer : Player
     public override void OnPoolEnable(Vector3 pos, Quaternion rot)
     {
         base.OnPoolEnable(pos, rot);
+        GameObject hud = GameObject.Find("GameUI");
+
+
+        //크로스헤어 끔
+        hud.transform.GetChild(1).gameObject.SetActive(false);
+
+        //미니맵
+        RectTransform miniMap = hud.transform.GetChild(0).GetComponent<RectTransform>();
+
+        //셋팅버튼 
+        RectTransform set = hud.transform.GetChild(6).GetComponent<RectTransform>();
+
+        //인벤 버튼
+        RectTransform inven = hud.transform.GetChild(7).GetComponent<RectTransform>();
+
+        //hp바
+        RectTransform hp = hud.transform.GetChild(8).GetComponent<RectTransform>();
+
+        //미니맵 위치 조절
+        miniMap.anchoredPosition = new Vector3(230, -850, 0);
+
+        //셋팅버튼 위치 조절
+        set.anchoredPosition = new Vector3(-1380, -937, 0);
+        set.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+
+        //인벤 버튼 위치 조절
+        inven.anchoredPosition = new Vector3(-1380, -734, 0);
+        inven.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+
+        //hp바 위치 조절
+        hp.anchoredPosition = new Vector3(-646, -44,0);
+
+
+
 
         VRCanvas vrCanvas = FindObjectOfType<GameUI>().GetComponent<VRCanvas>();
         vrCanvas.vrInteracter = gameObject;
-        vrCanvas.transform.parent = transform;
+        vrCanvas.transform.parent = hand;
+        
+
         GameManager.Instance.UpdateVRUI();
     }
 
