@@ -16,33 +16,29 @@ public class SettingUI : MonoBehaviour
     public Button vrBtn;
 
     private PopupContent popup;
-    private GameManager game;
 
-    private float bgmVolume;
-    private float sfxVolume;
+    [SerializeField] private float bgmVolume;
+    [SerializeField] private float sfxVolume;
 
     private void Awake()
     {
         popup = GetComponent<PopupContent>();
-        game = FindObjectOfType<GameManager>();
     }
     private void Start()
     {
-        bgmSlider.value = game.BgmVolume;
-        sfxSlider.value = game.SfxVolume;
-        sensiSlider.value = game.InputSensitivity;
+        bgmSlider.value = GameManager.Instance.BgmVolume;
+        sfxSlider.value = GameManager.Instance.SfxVolume;
+        sensiSlider.value = GameManager.Instance.InputSensitivity;
 
         bgmSlider.onValueChanged.AddListener((float value) => {
             UpdateBtnUI(bgmBtn, value > 0);
-            bgmVolume = value;
-            game.BgmVolume = value;
+            GameManager.Instance.BgmVolume = value;
         });
         sfxSlider.onValueChanged.AddListener((float value) => {
             UpdateBtnUI(sfxBtn, value > 0);
-            sfxVolume = value;
-            game.SfxVolume = value;
+            GameManager.Instance.SfxVolume = value;
         });
-        sensiSlider.onValueChanged.AddListener((float value) => game.InputSensitivity = value);
+        sensiSlider.onValueChanged.AddListener((float value) => GameManager.Instance.InputSensitivity = value);
 
         bgmBtn.onClick.AddListener(() => {
             if (bgmSlider.value > 0)
@@ -72,21 +68,21 @@ public class SettingUI : MonoBehaviour
         UpdateBtnUI(sfxBtn, sfxSlider.value > 0);
 
         homeBtn.onClick.AddListener(() => StartCoroutine(GoToMenu()));
-        exitBtn.onClick.AddListener(() => game.ExitGame(true));
+        exitBtn.onClick.AddListener(() => GameManager.Instance.ExitGame(true));
         closeBtn.onClick.AddListener(() => popup.ClosePopup());
 
-        if (game.curScene == "MenuScene") vrBtn.gameObject.SetActive(false);
-        vrBtn.GetComponentInChildren<Text>().text = game.vrEnable ? "PC" : "VR";
+        if (GameManager.Instance.curScene == "MenuScene") vrBtn.gameObject.SetActive(false);
+        vrBtn.GetComponentInChildren<Text>().text = GameManager.Instance.VrEnable ? "PC" : "VR";
     }
 
     IEnumerator GoToMenu()
     {
-        if (game.curScene == "MenuScene") yield break;
+        if (GameManager.Instance.curScene == "MenuScene") yield break;
 
-        yield return game.StartLoading();
+        yield return GameManager.Instance.StartLoading();
         if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
-        yield return game.ChangeScene(game.curScene, "MenuScene");
-        yield return game.EndLoading();
+        yield return GameManager.Instance.ChangeScene(GameManager.Instance.curScene, "MenuScene");
+        yield return GameManager.Instance.EndLoading();
     }
     void UpdateBtnUI(Button btn, bool on)
     {
@@ -94,7 +90,7 @@ public class SettingUI : MonoBehaviour
     }
     public void SwitchVr()
     {
-        //game.VrOnOff();
-        vrBtn.GetComponentInChildren<Text>().text = game.vrEnable ? "PC" : "VR";
+        GameManager.Instance.VrOnOff();
+        vrBtn.GetComponentInChildren<Text>().text = GameManager.Instance.VrEnable ? "PC" : "VR";
     }
 }

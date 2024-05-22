@@ -35,7 +35,6 @@ public class Player : UnitObject
     protected MapGenerator map;
     protected PhotonView pv;
     protected GameUI ui;
-    protected GameManager game;
 
     private Renderer[] renderers;
     private Renderer[] weapon_renderers;
@@ -70,7 +69,6 @@ public class Player : UnitObject
         map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
         ui = FindObjectOfType<GameUI>();
-        game = FindObjectOfType<GameManager>();
 
         renderers = GetComponentsInChildren<Renderer>();
         weapon_renderers = weapon.GetComponentsInChildren<Renderer>();
@@ -87,6 +85,7 @@ public class Player : UnitObject
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             Cursor.lockState = CursorLockMode.Locked;
 #endif
+
             cam.parent = transform;
             cam.localPosition = camOffset;
 
@@ -99,6 +98,7 @@ public class Player : UnitObject
             model.localPosition = modelOffset;
             model.localEulerAngles = modelRotate;
         }
+        Reset();
     }
     private void Update()
     {
@@ -111,6 +111,7 @@ public class Player : UnitObject
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             inpAction = Input.GetMouseButtonDown(0);
+            //Cursor.lockState = Input.GetKey(KeyCode.LeftControl) ? CursorLockMode.None : CursorLockMode.Locked;
 #endif
             if (controllable)
             {
@@ -136,7 +137,7 @@ public class Player : UnitObject
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            if (!isDead)
+            if (!isDead && controllable)
             {
                 ctl.Move(moveVec * Time.deltaTime);
                 inpJump = false;
@@ -147,7 +148,7 @@ public class Player : UnitObject
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            if (!isDead)
+            if (!isDead && controllable)
                 CameraUpdate();
         }
     }
@@ -183,10 +184,6 @@ public class Player : UnitObject
 
             UpdateAnimMove(inpDir.sqrMagnitude > 0.01f);
 
-            
-            
-            
-
             if (camDir.x == 0 && camDir.z == 0)
             {
                 moveVec = transform.TransformDirection(inpDir).normalized * mSpeed;
@@ -221,8 +218,8 @@ public class Player : UnitObject
         float dMouseY = ui.touchPad.dTouchPoint.y / 10;
 #endif
 
-        camRotateY = dMouseX * 500f * game.InputSensitivity * Time.deltaTime;
-        camRotateX = -dMouseY * 500f * game.InputSensitivity * Time.deltaTime;
+        camRotateY = dMouseX * 500f * GameManager.Instance.InputSensitivity * Time.deltaTime;
+        camRotateX = -dMouseY * 500f * GameManager.Instance.InputSensitivity * Time.deltaTime;
     }
     void CameraUpdate()
     {
@@ -256,10 +253,16 @@ public class Player : UnitObject
             hitPoint = hit.point;
         }
     }
-    void ShowLookTarget() { }
+    void ShowLookTarget()
+    {
+        ILookEvent look;
+        if (target != null && (look = target.GetComponent<ILookEvent>()) != null)
+        {
+            look.OnLook(this);
+        }
+    }
 
-    [PunRPC]
-    void Action_All()
+    [PunRPC] void Action_All()
     {
         if (target == null)
         {
@@ -333,8 +336,7 @@ public class Player : UnitObject
                 target.GetComponent<PhotonView>().RPC("OnHit", PhotonNetwork.masterClient, stat.ATK);
         }
     }
-    [PunRPC]
-    public override void OnHit(float dmg)
+    [PunRPC] public override void OnHit(float dmg)
     {
         if (isDead) return;
 
@@ -362,16 +364,11 @@ public class Player : UnitObject
             else Hit_All();
         }
     }
-    [PunRPC]
-    void Hit_All()
+    [PunRPC] void Hit_All()
     {
         anim.SetTrigger("hit");
-
-
-
     }
-    [PunRPC]
-    void Dead_All()
+    [PunRPC] void Dead_All()
     {
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
@@ -380,7 +377,7 @@ public class Player : UnitObject
     {
         yield return new WaitForSeconds(delay);
 
-        game.LoadingScene("GameEndScene");
+        GameManager.Instance.LoadingScene("GameEndScene");
     }
 
     protected void UpdateRoomNum()
@@ -400,10 +397,7 @@ public class Player : UnitObject
     void UpdateAnimMove(bool isMove)
     {
         animMove = isMove;
-        if (isMove)
-        {
-            SoundManager.instance.PlayRun(audioSource);
-        }
+        if (isMove) SoundManager.instance.PlayRun(audioSource);
         weapon.gameObject.SetActive(!isMove);
     }
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -428,8 +422,7 @@ public class Player : UnitObject
         }
     }
 
-    [PunRPC]
-    public override void OnPoolCreate(int id)
+    [PunRPC] public override void OnPoolCreate(int id)
     {
         this.id = id;
         SetStat();
@@ -441,8 +434,7 @@ public class Player : UnitObject
             gameObject.SetActive(false);
         }
     }
-    [PunRPC]
-    public override void OnPoolEnable(Vector3 pos, Quaternion rot)
+    [PunRPC] public override void OnPoolEnable(Vector3 pos, Quaternion rot)
     {
         if (PhotonNetwork.inRoom)
         {
@@ -453,15 +445,13 @@ public class Player : UnitObject
             gameObject.SetActive(true);
         }
 
-        Reset();
-
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
+            GameManager.Instance.player = this;
             FindObjectOfType<Potal>().target = transform;
         }
     }
-    [PunRPC]
-    public override void OnPoolDisable()
+    [PunRPC] public override void OnPoolDisable()
     {
         if (PhotonNetwork.inRoom)
         {

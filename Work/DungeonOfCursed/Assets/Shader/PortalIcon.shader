@@ -9,12 +9,14 @@ Shader "Custom/PortalIcon"
         Tags
         {
             "Queue" = "Overlay"
+            "RenderType" = "Overlay"
         }
 
         Pass
         {
             Lighting Off
-            
+            ZWrite Off
+            ZTest Always
             Cull Back
             Fog
             {

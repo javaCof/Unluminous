@@ -8,15 +8,8 @@ public class VRCanvas : MonoBehaviour
     public Camera uiCam;
     public GameObject vrInteracter;
 
-    private GameManager game;
-
-    private void Awake()
-    {
-        game = FindObjectOfType<GameManager>();
-    }
-
     private void Start()
     {
-        game.VrOnOff(game.vrEnable);
+        GameManager.Instance.VrOnOff(GameManager.Instance.VrEnable);
     }
 }

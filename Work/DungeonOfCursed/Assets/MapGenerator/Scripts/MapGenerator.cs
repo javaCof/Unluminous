@@ -127,7 +127,6 @@ public class MapGenerator : MonoBehaviour
     List<RoomInfo> roomInfos;           //방 정보 리스트
     List<ObjInfo> objects;              //오브젝트 리스트
 
-    GameManager game;
     PhotonView pv;
     PhotonReady pr;
 
@@ -141,7 +140,6 @@ public class MapGenerator : MonoBehaviour
 
     private void Awake()
     {
-        game = FindObjectOfType<GameManager>();
         pv = GetComponent<PhotonView>();
         pr = GetComponent<PhotonReady>();
 
@@ -163,11 +161,11 @@ public class MapGenerator : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        game.curScene = gameObject.scene.name;
+        GameManager.Instance.curScene = gameObject.scene.name;
 
         if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
 
-        yield return game.UpdateLoadingText("타일 Pool 생성 중...");
+        yield return GameManager.Instance.UpdateLoadingText("타일 Pool 생성 중...");
 
         int mapSizeInt = mapSize.x * mapSize.y;
         CreateObjectPool(floorPrefab, (int)TileID.FLOOR, mapSizeInt);
@@ -175,7 +173,7 @@ public class MapGenerator : MonoBehaviour
         CreateObjectPool(cornerPrefab, (int)TileID.CORNER, mapSizeInt / 2);
         CreateObjectPool(pillarPrefab, (int)TileID.PILLAR, mapSizeInt / 2);
 
-        yield return game.UpdateLoadingText("몬스터 Pool 생성 중...");
+        yield return GameManager.Instance.UpdateLoadingText("몬스터 Pool 생성 중...");
 
         foreach (var unit in FirebaseManager.units)
         {
@@ -196,7 +194,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        yield return game.UpdateLoadingText("맵 오브젝트 Pool 생성 중...");
+        yield return GameManager.Instance.UpdateLoadingText("맵 오브젝트 Pool 생성 중...");
 
         CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
@@ -204,12 +202,12 @@ public class MapGenerator : MonoBehaviour
         
         
 
-        yield return game.UpdateLoadingText("장식 Pool 생성 중...");
+        yield return GameManager.Instance.UpdateLoadingText("장식 Pool 생성 중...");
 
         for (int i = 0; i < decoPrefabs.Count; i++)
             CreateObjectPool(decoPrefabs[i], MapDecoID + i, 50);
 
-        yield return game.UpdateLoadingText("아이템 Pool 생성 중...");
+        yield return GameManager.Instance.UpdateLoadingText("아이템 Pool 생성 중...");
 
         CreateObjectPool(itemResName, 1000, 50, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
@@ -226,9 +224,9 @@ public class MapGenerator : MonoBehaviour
     }
     IEnumerator LoadLevel()
     {
-        yield return game.StartLoading();
+        yield return GameManager.Instance.StartLoading();
 
-        yield return game.UpdateLoadingText("맵 생성 중...");
+        yield return GameManager.Instance.UpdateLoadingText("맵 생성 중...");
 
         ChangeTileMat();
 
@@ -245,7 +243,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         //로딩화면 제거
-        yield return game.EndLoading();
+        yield return GameManager.Instance.EndLoading();
     }
 
     void ChangeTileMat()
@@ -834,7 +832,7 @@ public class MapGenerator : MonoBehaviour
     }
     [PunRPC] void GeneratePlayer()
     {
-        int player_id = game.vrEnable ? (int)DB_INFO.VR_PLAYER_ID : (int)DB_INFO.PLAYER_ID;
+        int player_id = GameManager.Instance.VrEnable ? (int)DB_INFO.VR_PLAYER_ID : (int)DB_INFO.PLAYER_ID;
         objectsPool[player_id].GetObject(playerSpawnPoint, Quaternion.identity, objectPos);
     }
     [PunRPC] void MapReadyOK()

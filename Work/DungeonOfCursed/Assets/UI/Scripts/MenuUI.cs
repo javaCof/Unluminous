@@ -8,17 +8,11 @@ public class MenuUI : MonoBehaviour
 {
     public Button vrBtn;
 
-    private GameManager game;
-
-    private void Awake()
-    {
-        game = FindObjectOfType<GameManager>();
-    }
     private void Start()
     {
-        game.curScene = gameObject.scene.name;
+        GameManager.Instance.curScene = gameObject.scene.name;
         
-        vrBtn.GetComponentInChildren<Text>().text = game.vrEnable ? "PC" : "VR";
+        vrBtn.GetComponentInChildren<Text>().text = GameManager.Instance.VrEnable ? "PC" : "VR";
     }
 
     public void OnSingleButtonClick()
@@ -28,9 +22,8 @@ public class MenuUI : MonoBehaviour
     }
     private IEnumerator SingleLoad()
     {
-        yield return game.StartLoading();
-        yield return game.UpdateLoadingText("싱글 플레이 로드");
-        yield return game.ChangeScene(game.curScene, "GameScene");
+        yield return GameManager.Instance.StartLoading();
+        yield return GameManager.Instance.ChangeScene(GameManager.Instance.curScene, "GameScene");
     }
 
     public void OnMultiButtonClick()
@@ -40,22 +33,21 @@ public class MenuUI : MonoBehaviour
     }
     private IEnumerator MultiLoad()
     {
-        yield return game.StartLoading();
-        yield return game.UpdateLoadingText("멀티 플레이 로드");
-        yield return game.ChangeScene(game.curScene, "LobbyScene");
+        yield return GameManager.Instance.StartLoading();
+        yield return GameManager.Instance.ChangeScene(GameManager.Instance.curScene, "LobbyScene");
     }
 
     public void SwitchVr()
     {
 
-        game.VrOnOff();
-        vrBtn.GetComponentInChildren<Text>().text = game.vrEnable ? "PC" : "VR";
+        GameManager.Instance.VrOnOff();
+        vrBtn.GetComponentInChildren<Text>().text = GameManager.Instance.VrEnable ? "PC" : "VR";
         SoundManager.instance.PlaySfx("menu");
     }
 
     public void OnExitButtonClick()
     {
-        game.ExitGame(true);
+        GameManager.Instance.ExitGame(true);
         SoundManager.instance.PlaySfx("menu");
     }
 }

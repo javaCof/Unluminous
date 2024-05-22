@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
@@ -8,33 +7,36 @@ using UnityEngine.XR.Management;
 
 public class GameManager : MonoBehaviour
 {
-    public string nextScene;
-    public string curScene;
+    public static GameManager Instance { get; private set; }
+
+    [SerializeField] private string nextScene;
+    [HideInInspector] public string curScene;
 
     private bool now_loading;
-
-    private float _InputSensitivity;
-    private float _BgmVolume;
-    private float _SfxVolume;
-
-    public bool vrEnable;// { get; set; }
 
     public float InputSensitivity { get { return _InputSensitivity; } set { _InputSensitivity = value; PlayerPrefs.SetFloat("INPUT_SENSITIVITY", value); } }
     public float BgmVolume { get { return _BgmVolume; } set { _BgmVolume = value; PlayerPrefs.SetFloat("BGM_VOLUME", value); } }
     public float SfxVolume { get { return _SfxVolume; } set { _SfxVolume = value; PlayerPrefs.SetFloat("SFX_VOLUME", value); } }
 
+    private float _InputSensitivity;
+    private float _BgmVolume;
+    private float _SfxVolume;
+
+    public bool VrEnable { get; private set; }
+
+    [HideInInspector] public Player player;
+
     private void Awake()
     {
+        Instance = this;
         DontDestroyOnLoad(gameObject);
+        Firebase.Database.FirebaseDatabase.DefaultInstance.GoOffline();
     }
     IEnumerator Start()
     {
         curScene = SceneManager.GetActiveScene().name;
 
-        Firebase.Database.FirebaseDatabase.DefaultInstance.GoOffline();
-        yield return null;
         Firebase.Database.FirebaseDatabase.DefaultInstance.SetPersistenceEnabled(false);
-        yield return null;
         Firebase.Database.FirebaseDatabase.DefaultInstance.GoOnline();
 
         yield return StartLoading();
@@ -43,8 +45,7 @@ public class GameManager : MonoBehaviour
         {
             yield return new WaitUntil(() => XRGeneralSettings.Instance.Manager.isInitializationComplete);
         }
-
-        vrEnable = XRSettings.enabled;
+        VrEnable = XRSettings.enabled;
 
         InputSensitivity = PlayerPrefs.GetFloat("INPUT_SENSITIVITY", 0.5f);
         BgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1f);
@@ -122,19 +123,19 @@ public class GameManager : MonoBehaviour
     }
 
     [ContextMenu("onoff vr")]
-    public void VrOnOff() => VrOnOff(!vrEnable);
+    public void VrOnOff() => VrOnOff(!VrEnable);
     public void VrOnOff(bool on)
     {
-        vrEnable = on;
+        VrEnable = on;
 
         UpdateVRUI();
 
-        if (vrEnable) XRGeneralSettings.Instance.Manager.StartSubsystems();
+        if (VrEnable) XRGeneralSettings.Instance.Manager.StartSubsystems();
         else XRGeneralSettings.Instance.Manager.StopSubsystems();
     }
     public void UpdateVRUI()
     {
-        if (vrEnable)
+        if (VrEnable)
         {
             foreach (var vrCanvas in FindObjectsByType<VRCanvas>(FindObjectsSortMode.None))
             {

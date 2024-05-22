@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class PhotonInit : MonoBehaviour
 {
@@ -21,12 +20,8 @@ public class PhotonInit : MonoBehaviour
     [Header("NEXT SCENE")]
     public string nextScene;
 
-    private GameManager game;
-
     private void Awake()
     {
-        game = FindObjectOfType<GameManager>();
-
         if (!PhotonNetwork.connected)
         {
             if (PhotonNetwork.ConnectUsingSettings(version))
@@ -34,17 +29,17 @@ public class PhotonInit : MonoBehaviour
                 PhotonNetwork.logLevel = LogLevel;
                 PhotonNetwork.playerName = "USER_" + Random.Range(1, 9999);
             }
-            else game.ErrorGame(ERROR_CODE.PHOTON_CONNECT_ERROR);
+            else GameManager.Instance.ErrorGame(ERROR_CODE.PHOTON_CONNECT_ERROR);
         }
     }
     private void Start()
     {
-        game.curScene = gameObject.scene.name;
+        GameManager.Instance.curScene = gameObject.scene.name;
         if (PhotonNetwork.insideLobby)
         {
             UpdateUserId();
             UpdateRoomName();
-            StartCoroutine(game.EndLoading());
+            StartCoroutine(GameManager.Instance.EndLoading());
         }
     }
 
@@ -94,16 +89,15 @@ public class PhotonInit : MonoBehaviour
         roomNameInput.text = _roomName;
     }
 
-    public void BackToMenu()
-    {
-        if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
-        game.LoadingScene("MenuScene");
-    }
-
     IEnumerator EnterRoom()
     {
         AsyncOperation ao = PhotonNetwork.LoadLevelAsync(nextScene);
         yield return ao;
+    }
+    public void BackToMenu()
+    {
+        if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
+        GameManager.Instance.LoadingScene("MenuScene");
     }
 
     /*---------------Photon OK---------------*/
@@ -113,7 +107,7 @@ public class PhotonInit : MonoBehaviour
         UpdateUserId();
         UpdateRoomName();
 
-        StartCoroutine(game.EndLoading());
+        StartCoroutine(GameManager.Instance.EndLoading());
     }
     void OnJoinedRoom()
     {
@@ -155,7 +149,7 @@ public class PhotonInit : MonoBehaviour
     void OnFailedToConnectToPhoton(DisconnectCause cause)
     {
         Debug.Log("PHOTON : Photon Connect Failed");
-        game.ErrorGame(ERROR_CODE.PHOTON_CONNECT_ERROR);
+        GameManager.Instance.ErrorGame(ERROR_CODE.PHOTON_CONNECT_ERROR);
     }
     void OnPhotonRandomJoinFailed(object[] codeAndMsg)
     {
@@ -175,11 +169,11 @@ public class PhotonInit : MonoBehaviour
     void OnPhotonCreateRoomFailed(object[] codeAndMsg) 
     {
         Debug.Log("PHOTON : Create Room Failed");
-        game.ErrorGame(ERROR_CODE.PHOTON_CREATE_ROOM_ERROR);
+        GameManager.Instance.ErrorGame(ERROR_CODE.PHOTON_CREATE_ROOM_ERROR);
     }
     void OnPhotonJoinRoomFailed(object[] codeAndMsg)
     {
         Debug.Log("PHOTON : Join Room Failed");
-        game.ErrorGame(ERROR_CODE.PHOTON_JOIN_ROOM_ERROR);
+        GameManager.Instance.ErrorGame(ERROR_CODE.PHOTON_JOIN_ROOM_ERROR);
     }
 }

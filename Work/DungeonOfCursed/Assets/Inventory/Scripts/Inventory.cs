@@ -449,19 +449,24 @@ public class Inventory : MonoBehaviour
         {
             if(!isOpen)
             {
-                Debug.Log("족발");
                 ShowPanel();
-                SoundManager.instance.PlaySfx("inven");
                 isOpen = true;
-                Cursor.lockState = CursorLockMode.None;
                 //ProcessTemporaryItems();
+
+                SoundManager.instance.PlaySfx("inven");
+
+                Cursor.lockState = CursorLockMode.None;
+                Player player = GameManager.Instance.player;
+                if (player != null) player.controllable = false;
             }
             else if(isOpen)
             {
-                Debug.Log("베이비야");
                 HidePanel();
                 isOpen = false;
+
                 Cursor.lockState = CursorLockMode.Locked;
+                Player player = GameManager.Instance.player;
+                if (player != null) player.controllable = true;
             }
         }
     }
@@ -472,7 +477,4 @@ public class Inventory : MonoBehaviour
 
         _closeInvenButton.onClick.AddListener(HidePanel);
     }
-
-
-
 }

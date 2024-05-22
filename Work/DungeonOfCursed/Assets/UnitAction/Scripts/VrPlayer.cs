@@ -6,7 +6,6 @@ using UnityEngine;
 public class VrPlayer : Player
 {
     private AudioSource audioSource;
-
     private AudioSource swordAudioSource;
 
     public float attackCooldown = 0.3f;     //공격 쿨타임
@@ -19,7 +18,7 @@ public class VrPlayer : Player
         map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
         ui = FindObjectOfType<GameUI>();
-        game = FindObjectOfType<GameManager>();
+
         audioSource = gameObject.GetComponent<AudioSource>();
         swordAudioSource = GetComponentInChildren<AudioSource>();
     }
@@ -30,6 +29,7 @@ public class VrPlayer : Player
             roomNum = -1;
             map.mainCam.gameObject.SetActive(false);
         }
+        Reset();
     }
     private void Update()
     {
@@ -67,8 +67,6 @@ public class VrPlayer : Player
             //지정된 초마다 1번씩만 호출
             if (Time.time - lastAttackTime >= attackCooldown)
             {
-
-
                 //에너미 변수에 받아온 인자의 에너미를 넣는다
                 Enemy enemy = target.gameObject.GetComponent<Enemy>();
 
@@ -98,7 +96,6 @@ public class VrPlayer : Player
         }
     }
 
-
     //상자 열기
     public void VrOpenChest(Collision chest)
     {
@@ -110,7 +107,6 @@ public class VrPlayer : Player
                 chest.gameObject.GetComponent<Chest>().Open();
                 SoundManager.instance.PlaySfx("chest");
             }
-
         }
     }
 
@@ -127,7 +123,6 @@ public class VrPlayer : Player
             }
         }
     }
-
 
     public override void Attack() { } //call by anim
     [PunRPC]
@@ -162,7 +157,7 @@ public class VrPlayer : Player
     [PunRPC]
     void Hit_All()
     {
-        //anim.SetTrigger("hit");
+        anim.SetTrigger("hit");
     }
 
     [PunRPC]
@@ -171,17 +166,11 @@ public class VrPlayer : Player
         anim.applyRootMotion = true;
         anim.SetTrigger("dead");
     }
-
-    new void UpdateRoomNum()
-    {
-        roomNum = map.FindRoom(transform.position);
-    }
-
     protected override IEnumerator Dead(float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        game.LoadingScene("GameEndScene");
+        GameManager.Instance.LoadingScene("GameEndScene");
     }
 
     void UpdatePos()
@@ -215,7 +204,6 @@ public class VrPlayer : Player
             roomNum = (int)stream.ReceiveNext();
         }
     }
-
 
     private void OnDrawGizmosSelected() { }
 }
