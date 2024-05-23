@@ -304,6 +304,12 @@ public class Enemy : UnitObject
     {
         yield return new WaitForSeconds(delay);
 
+        if (isBoss)
+        {
+            GameManager.Instance.gameClear = true;
+            yield return GameManager.Instance.MoveToScene("GameEndScene");
+        }
+
         map.RemoveObject(gameObject, id);
     }
 

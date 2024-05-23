@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector] public Player player;
 
+    [HideInInspector] public bool gameClear;
+
     private void Awake()
     {
         Instance = this;

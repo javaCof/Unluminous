@@ -170,6 +170,7 @@ public class MapGenerator : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         GameManager.Instance.curScene = gameObject.scene.name;
+        GameManager.Instance.gameClear = false;
 
         if (PhotonNetwork.inRoom) PhotonNetwork.isMessageQueueRunning = true;
 
