@@ -70,7 +70,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   amount: 0
-  _inventory: {fileID: 0}
 --- !u!114 &461861740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84,7 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxAmount: 0
-  _value: 0
+  _value: 10
 --- !u!65 &3947261504322419162
 BoxCollider:
   m_ObjectHideFlags: 0

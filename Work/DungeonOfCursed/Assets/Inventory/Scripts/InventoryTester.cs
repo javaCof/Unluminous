@@ -64,7 +64,8 @@ public class InventoryTester : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.F1))
         {
-            _inventory.Add(new CountableItemData(1002));
+            _inventory.Add(_itemDataArray[0]);
+            Debug.Log("Ãß°¡");
         }
     }
 

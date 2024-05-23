@@ -6,13 +6,12 @@ using UnityEngine;
 public class ItemData : MonoBehaviour
 {
     public int ID { get; set; }
-    public int Price { get; private set; }
-    public string Name { get; private set; }
-    public string Tooltip { get; private set; }
-    public string Icon { get; private set; }
+    public int Price { get; set; }
+    public string Name { get; set; }
+    public string Tooltip { get; set; }
+    public string Icon { get; set; }
+    public string Res { get; set; }
 
-    public string Res { get; private set; }
-    public Sprite IconSprite { get; private set; }
 
     //[SerializeField] private GameObject _dropItemPrefab;
 

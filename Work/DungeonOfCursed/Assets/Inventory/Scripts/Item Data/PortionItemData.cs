@@ -13,4 +13,5 @@ public class PortionItemData : CountableItemData
     }
 
     public PortionItemData(int id) : base(id) { }
+
 }

@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class ArmorItemData : EquipmentItemData
 {
-    public int Defence => _defence;
+    public int Set { get; set; }
+    public float Atk { get; set; }
+    public float Def { get; set; }
+    public float Hp { get; set; }
+    public float Speed { get; set; }
 
-    [SerializeField] private int _defence = 1;
+
     public override Item2 CreateItem()
     {
         return new ArmorItem(this);
     }
 
-    public ArmorItemData(int id) : base(id) { }
+    public ArmorItemData(int id) : base(id) {}
 }

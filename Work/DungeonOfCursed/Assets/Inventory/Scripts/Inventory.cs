@@ -9,7 +9,7 @@ public class Inventory : MonoBehaviour
     public int Capacity { get; private set; }
 
     [SerializeField, Range(8, 64)]
-    private int _initalCapacity = 32;
+    private int _initalCapacity = 20;
 
     [SerializeField, Range(8, 64)]
     private int _maxCapacity = 64;
@@ -73,13 +73,14 @@ public class Inventory : MonoBehaviour
         _items = new Item2[_maxCapacity];
         Capacity = _initalCapacity;
         _inventoryUI.SetInventoryReference(this);
-        HidePanel();
         InvenEvent();
     }
 
     private void Start()
     {
         UpdateAccessibleStatesAll();
+        ShowPanel();
+        HidePanel();
     }
 
     private bool IsValidIndex(int index)
@@ -115,14 +116,17 @@ public class Inventory : MonoBehaviour
 
     private void UpdateSlot(int index)
     {
-        if (!IsValidIndex(index)) return;
+        if (!IsValidIndex(index))
+        {
+            return;
+        }
 
         Item2 item = _items[index];
 
         if (item != null)
         {
 
-            //_inventoryUI.SetItemIcon(index, item.Data.IconSprite);
+            //_inventoryUI.SetItemIcon(index, Resources.Load<Sprite>(item.Data.Icon));
 
             if (item is CountableItem ci)
             {
@@ -182,7 +186,7 @@ public class Inventory : MonoBehaviour
     public int Add(ItemData itemData, int amount = 1)
     {
         int index;
-        Debug.Log(itemData.Tooltip);
+
         if (itemData is CountableItemData ciData)
         {
             bool findNextCountable = true;
@@ -205,7 +209,6 @@ public class Inventory : MonoBehaviour
                         amount = ci.AddAmountAndGetExcess(amount);
 
                         UpdateSlot(index);
-                        Debug.Log(itemData.Name);
                     }
                 }
                 else
@@ -218,7 +221,6 @@ public class Inventory : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log(itemData.Name);
                         CountableItem ci = ciData.CreateItem() as CountableItem;
                         ci.SetAmount(amount);
 
