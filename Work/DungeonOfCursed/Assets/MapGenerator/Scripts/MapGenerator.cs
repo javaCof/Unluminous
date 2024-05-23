@@ -1,9 +1,15 @@
+#define USE_DEBUG_ROOM_TYPE
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+#if USE_DEBUG_ROOM_TYPE
+    public RoomType DEBUG_ROOM_TYPE;
+#endif
+
     [Header("MAP SETTING")]
     public Camera mainCam;                          //카메라
     public Transform mapPos;                        //맵 위치
@@ -183,10 +189,10 @@ public class MapGenerator : MonoBehaviour
                     CreateObjectPool(unit.Value.res, unit.Key, 1, PhotonPool.PhotonInstantiateOption.STANDARD);
                     break;
                 case 0:     //normal monster
-                    CreateObjectPool(unit.Value.res, unit.Key, 100, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+                    CreateObjectPool(unit.Value.res, unit.Key, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
                     break;
                 case 1:     //elite monster
-                    CreateObjectPool(unit.Value.res, unit.Key, 10, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+                    CreateObjectPool(unit.Value.res, unit.Key, 20, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
                     break;
                 case 2:     //boss monster
                     CreateObjectPool(unit.Value.res, unit.Key, 1, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
@@ -194,22 +200,28 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
+        yield return GameManager.Instance.UpdateLoadingText("아이템 Pool 생성 중...");
+        foreach (var item in FirebaseManager.items)
+        {
+            CreateObjectPool(item.Value.res, item.Key, 5, PhotonPool.PhotonInstantiateOption.LOCAL);
+        }
+
+        yield return GameManager.Instance.UpdateLoadingText("장비 Pool 생성 중...");
+        foreach (var equip in FirebaseManager.equips)
+        {
+            CreateObjectPool(equip.Value.res, equip.Key, 5, PhotonPool.PhotonInstantiateOption.LOCAL);
+        }
+
         yield return GameManager.Instance.UpdateLoadingText("맵 오브젝트 Pool 생성 중...");
 
-        CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
-        CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 30, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
-        CreateObjectPool(potalResName, (int)MapObjectID.POTAL, 10, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+        CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 20, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+        CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 20, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+        CreateObjectPool(potalResName, (int)MapObjectID.POTAL, 1, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         
-        
-
         yield return GameManager.Instance.UpdateLoadingText("장식 Pool 생성 중...");
 
         for (int i = 0; i < decoPrefabs.Count; i++)
             CreateObjectPool(decoPrefabs[i], MapDecoID + i, 50);
-
-        yield return GameManager.Instance.UpdateLoadingText("아이템 Pool 생성 중...");
-
-        CreateObjectPool(itemResName, 1000, 50, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
 
         StartCoroutine(LoadLevel());
     }
@@ -448,10 +460,14 @@ public class MapGenerator : MonoBehaviour
             else if (i == 0)
                 type = RoomType.POTAL;
             else
-                type = RoomType.BATTLE;
+            {
                 //type = (RoomType)Random.Range((int)RoomType.BATTLE, (int)RoomType.POTAL);
-            
 
+#if USE_DEBUG_ROOM_TYPE
+                type = DEBUG_ROOM_TYPE;
+#endif
+            }
+            
             roomInfos.Add(new RoomInfo(type, rooms[i]));
         }
     }
@@ -499,10 +515,7 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.TREASURE:
                     {
-                        for (int j = 0; j < chestCount; j++)
-                        {
-                            AddObjectRandom((int)MapObjectID.CHEST, i, combine);
-                        }
+                        AddObjectCenter((int)MapObjectID.CHEST, i, combine);
                     }
                     break;
                 case RoomType.BOSS:
@@ -830,6 +843,11 @@ public class MapGenerator : MonoBehaviour
         if (!objectsPool.ContainsKey(info.objID)) Debug.Log("object pool key not found : " + info.objID);
         return objectsPool[info.objID].GetObject(info.pos, Quaternion.identity, objectPos);
     }
+    public GameObject GenerateObject(int id, Vector3 pos, Quaternion rot)
+    {
+        if (!objectsPool.ContainsKey(id)) Debug.Log("object pool key not found : " + id);
+        return objectsPool[id].GetObject(pos, rot, objectPos);
+    }
     [PunRPC] void GeneratePlayer()
     {
         int player_id = GameManager.Instance.VrEnable ? (int)DB_INFO.VR_PLAYER_ID : (int)DB_INFO.PLAYER_ID;
@@ -839,8 +857,6 @@ public class MapGenerator : MonoBehaviour
     {
         pr.Ready();
     }
-
-    /*public method*/
     public int FindRoom(Vector3 pos)
     {
         for (int i = 0; i < roomInfos.Count; i++)

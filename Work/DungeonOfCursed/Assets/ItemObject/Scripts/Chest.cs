@@ -44,7 +44,12 @@ public class Chest : MonoBehaviour, IPoolObject
         if (PhotonNetwork.inRoom) pv.RPC("Open_All", PhotonTargets.All);
         else Open_All();
 
-        Debug.Log("»óÀÚ");
+        bool isItem = Random.Range(0, 2) == 0;
+        int id = isItem ? Random.Range((int)DB_INFO.ITEM_BEGIN, (int)DB_INFO.ITEM_NEXT) :
+            Random.Range((int)DB_INFO.EQUIP_BEGIN, (int)DB_INFO.EQUIP_NEXT);
+        Item item = map.GenerateObject(id, transform.position, Quaternion.identity).GetComponent<Item>();
+        item.amount = (id == (int)DB_INFO.ITEM_GOLD) ? Random.Range(100, 400) : 1;
+        targetItem = item;
     }
 
     [ContextMenu("Gen Item")]
@@ -53,8 +58,6 @@ public class Chest : MonoBehaviour, IPoolObject
     {
         isOpened = true;
         anim.SetTrigger("Open");
-
-        targetItem =Instantiate(items[0], gameObject.transform);
     }
 
     [PunRPC]

@@ -92,9 +92,11 @@ GameObject:
   - component: {fileID: 9066985799766535946}
   - component: {fileID: 4556020361548692057}
   - component: {fileID: 693420882}
-  m_Layer: 0
+  - component: {fileID: 7507049374252693547}
+  - component: {fileID: -4763375464650068057}
+  m_Layer: 7
   m_Name: RebornScroll
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,3 +150,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxAmount: 0
+--- !u!65 &7507049374252693547
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8487396700331078713}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4763375464650068057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8487396700331078713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14431757409c07047b4edad852fa8262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  amount: 0
+  _inventory: {fileID: 0}

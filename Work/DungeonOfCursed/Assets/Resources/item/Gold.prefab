@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 4661600898223117459}
   - component: {fileID: 170871507489980864}
   - component: {fileID: 86150944}
-  m_Layer: 0
+  - component: {fileID: 8554694028076687419}
+  - component: {fileID: 3083826358819383617}
+  m_Layer: 7
   m_Name: Gold
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,6 +69,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxAmount: 0
+--- !u!65 &8554694028076687419
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5236693022211379104}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6, y: 0.1, z: 0.6}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3083826358819383617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5236693022211379104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14431757409c07047b4edad852fa8262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  amount: 0
+  _inventory: {fileID: 0}
 --- !u!1 &7375679305872536075
 GameObject:
   m_ObjectHideFlags: 0

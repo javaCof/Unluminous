@@ -92,9 +92,11 @@ GameObject:
   - component: {fileID: 5987410870535241706}
   - component: {fileID: 5987410870535241707}
   - component: {fileID: 1609585794}
-  m_Layer: 0
+  - component: {fileID: 5119038406134738906}
+  - component: {fileID: -4254755556637483923}
+  m_Layer: 7
   m_Name: legend_helmet
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,3 +151,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxDurability: 0
   _defence: 0
+--- !u!65 &5119038406134738906
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5987410870535241708}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4254755556637483923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5987410870535241708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14431757409c07047b4edad852fa8262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  amount: 0
+  _inventory: {fileID: 0}
