@@ -87,8 +87,8 @@ public class InventoryUI : MonoBehaviour
         InitButtonEvents();
         InitToggleEvents();
         interactor = GameObject.FindObjectOfType<XRRayInteractor>();
-        m_rightCon = interactor.GetComponent<XRController>();
-        m_leftCon = m_rightCon.transform.parent.GetChild(2).GetComponent<XRController>();
+       // m_rightCon = interactor.GetComponent<XRController>();
+        //m_leftCon = m_rightCon.transform.parent.GetChild(2).GetComponent<XRController>();
     }
 
     private void Update()
@@ -277,7 +277,11 @@ public class InventoryUI : MonoBehaviour
         if (isValid)
         {
             UpdateTooltipUI(_pointerOverSlot);
-            _itemTooltip.Show();
+            //_itemTooltip.Show();
+        }
+        else if(!isValid)
+        {
+            Debug.Log("뭔가 뭔가임");
         }
         //else
         //   // _itemTooltip.Hide();
@@ -547,9 +551,12 @@ public class InventoryUI : MonoBehaviour
     private void UpdateTooltipUI(ItemSlotUI slot)
     {
         if (!slot.IsAccessible || !slot.HasItem)
+        {
+            Debug.Log("툴팁 정보 전달 실패");
             return;
-
+        }  
         _itemTooltip.SetItemInfo(_inventory.GetItemData(slot.Index));
+        Debug.Log("툴팁 정보 전달");
         //_itemTooltip.SetRectPosition(slot.SlotRect);
     }
 

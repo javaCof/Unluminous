@@ -56,6 +56,8 @@ public class ItemTooltipUI : MonoBehaviour
 
     public void SetItemInfo(ItemData data)
     {
+        Debug.Log(data.Name);
+
         if (data != null)
         {
             int price = data.Price;
@@ -109,7 +111,7 @@ public class ItemTooltipUI : MonoBehaviour
 
     }
 
-    public void Show() => gameObject.SetActive(true);
+   // public void Show() => gameObject.SetActive(true);
 
    // public void Hide() => gameObject.SetActive(false);
 
