@@ -171,7 +171,7 @@ public class VrPlayer : Player
     {
         yield return new WaitForSeconds(delay);
 
-        GameManager.Instance.LoadingScene("GameEndScene");
+        yield return GameManager.Instance.MoveToScene("GameEndScene");
     }
 
     void UpdatePos()

@@ -169,6 +169,7 @@ GameObject:
   - component: {fileID: 579270862}
   - component: {fileID: 579270861}
   - component: {fileID: 579270865}
+  - component: {fileID: 579270867}
   - component: {fileID: 579270866}
   m_Layer: 5
   m_Name: GameEndUI
@@ -290,6 +291,18 @@ MonoBehaviour:
   position: {x: 0, y: 2.5, z: 0}
   rotation: {x: 0, y: 0, z: 0}
   scale: {x: 0.01, y: 0.01, z: 0.01}
+--- !u!114 &579270867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579270860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13e0389fce1668046a9847af5dfaa446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1130625467
 GameObject:
   m_ObjectHideFlags: 0

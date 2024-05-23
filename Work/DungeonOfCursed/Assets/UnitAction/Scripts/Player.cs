@@ -377,7 +377,7 @@ public class Player : UnitObject
     {
         yield return new WaitForSeconds(delay);
 
-        GameManager.Instance.LoadingScene("GameEndScene");
+        yield return GameManager.Instance.MoveToScene("GameEndScene");
     }
 
     protected void MakeEffect(Vector3 pos)
