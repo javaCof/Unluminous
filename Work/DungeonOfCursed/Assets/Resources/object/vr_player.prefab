@@ -7807,8 +7807,10 @@ MonoBehaviour:
   modelRotate: {x: 0, y: 0, z: 0}
   camOffset: {x: 0, y: 0, z: 0}
   controllable: 1
-  audioSource: {fileID: 119337414874707048}
-  swordAudioSource: {fileID: 504208374256609235}
+  audioSource: {fileID: 0}
+  swordAudioSource: {fileID: 0}
+  VrAudioSource: {fileID: 119337414874707048}
+  vrSwordAudioSource: {fileID: 504208374256609235}
   hand: {fileID: 2480070813914289475}
   attackCooldown: 0.3
 --- !u!114 &3026402865194565962

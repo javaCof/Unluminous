@@ -6,9 +6,10 @@ using UnityEngine;
 public class VrPlayer : Player
 {
     
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioSource swordAudioSource;
-
+    [SerializeField] private AudioSource VrAudioSource;
+    [SerializeField] private AudioSource vrSwordAudioSource;
+    
+    
     [SerializeField] private Transform hand;
 
     public float attackCooldown = 0.3f;     //공격 쿨타임
@@ -21,6 +22,7 @@ public class VrPlayer : Player
         map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
         ui = FindObjectOfType<GameUI>();
+        
 
     }
     private void Start()
@@ -63,7 +65,7 @@ public class VrPlayer : Player
         if (target != null && target.gameObject.tag == "Enemy")
         {
             //칼소리 재생
-            SoundManager.instance.PlaySwrod(swordAudioSource);
+            SoundManager.instance.PlaySwrod(vrSwordAudioSource);
 
             //지정된 초마다 1번씩만 호출
             if (Time.time - lastAttackTime >= attackCooldown)
@@ -135,7 +137,7 @@ public class VrPlayer : Player
         FindObjectOfType<GameUI>().hpBar.fillAmount = curHP / stat.HP;
 
         //맞는소리 재생
-        SoundManager.instance.PlayHit(audioSource);
+        SoundManager.instance.PlayHit(VrAudioSource);
 
         if (curHP <= 0)
         {
@@ -251,6 +253,7 @@ public class VrPlayer : Player
         
 
         GameManager.Instance.UpdateVRUI();
+        
     }
 
     private void OnDrawGizmosSelected() { }

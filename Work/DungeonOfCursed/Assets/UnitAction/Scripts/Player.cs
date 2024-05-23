@@ -54,15 +54,14 @@ public class Player : UnitObject
     private bool inpAction;
 
     //플레이어 오디오 소스
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
 
     //플레이어 칼 오디오 소스
-    private AudioSource swordAudioSource;
+    [SerializeField] AudioSource swordAudioSource;
 
     private void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-        swordAudioSource = GetComponentInChildren<AudioSource>();
+        
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
         cam = FindObjectOfType<MapGenerator>().mainCam.transform;
@@ -324,6 +323,7 @@ public class Player : UnitObject
     {
         //사운드 매니저의 플레이어히트 소리 재생 함수 실행
         SoundManager.instance.PlaySwrod(swordAudioSource);
+
         if (target != null && target.tag == "Enemy")
         {
             Enemy enemy = target.GetComponent<Enemy>();
