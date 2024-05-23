@@ -73,14 +73,11 @@ public class Inventory : MonoBehaviour
         _items = new Item2[_maxCapacity];
         Capacity = _initalCapacity;
         _inventoryUI.SetInventoryReference(this);
-        InvenEvent();
     }
 
     private void Start()
     {
         UpdateAccessibleStatesAll();
-        ShowPanel();
-        HidePanel();
     }
 
     private bool IsValidIndex(int index)
@@ -448,43 +445,5 @@ public class Inventory : MonoBehaviour
 
         UpdateAllSlot();
         _inventoryUI.UpdateAllSlotFilters();
-    }
-
-    private void HidePanel() => _inventory.SetActive(false);
-    private void ShowPanel() => _inventory.SetActive(true);
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            if(!isOpen)
-            {
-                ShowPanel();
-                isOpen = true;
-                //ProcessTemporaryItems();
-
-                SoundManager.instance.PlaySfx("inven");
-
-                Cursor.lockState = CursorLockMode.None;
-                Player player = GameManager.Instance.player;
-                if (player != null) player.controllable = false;
-            }
-            else if(isOpen)
-            {
-                HidePanel();
-                isOpen = false;
-
-                Cursor.lockState = CursorLockMode.Locked;
-                Player player = GameManager.Instance.player;
-                if (player != null) player.controllable = true;
-            }
-        }
-    }
-
-    private void InvenEvent()
-    {
-        _openInvenButton.onClick.AddListener(ShowPanel);
-
-        _closeInvenButton.onClick.AddListener(HidePanel);
     }
 }

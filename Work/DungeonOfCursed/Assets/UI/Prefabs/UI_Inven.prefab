@@ -253,6 +253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58477b8bf615933438f968cc893375d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popupEnable: 0
 --- !u!114 &6449506485498544431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1154,7 +1155,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2726777638763991364}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4624816022754281560}
+        m_TargetAssemblyTypeName: PopupContent, Assembly-CSharp
+        m_MethodName: ClosePopup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4754386297467544665
 GameObject:
   m_ObjectHideFlags: 0

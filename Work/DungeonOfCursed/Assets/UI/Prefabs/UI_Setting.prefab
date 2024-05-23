@@ -1979,6 +1979,8 @@ MonoBehaviour:
   exitBtn: {fileID: 1277905255}
   closeBtn: {fileID: 7318208500268315297}
   vrBtn: {fileID: 923148284183381751}
+  bgmVolume: 0
+  sfxVolume: 0
 --- !u!114 &1553602772112688143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1991,6 +1993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58477b8bf615933438f968cc893375d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popupEnable: 0
 --- !u!114 &2278929696520797747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2124,7 +2127,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8103753668095548691}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1553602772112688143}
+        m_TargetAssemblyTypeName: PopupContent, Assembly-CSharp
+        m_MethodName: ClosePopup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8009763099504202037
 GameObject:
   m_ObjectHideFlags: 0

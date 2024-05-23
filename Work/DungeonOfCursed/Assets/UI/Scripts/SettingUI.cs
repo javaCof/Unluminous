@@ -69,7 +69,10 @@ public class SettingUI : MonoBehaviour
 
         homeBtn.onClick.AddListener(() => StartCoroutine(GoToMenu()));
         exitBtn.onClick.AddListener(() => GameManager.Instance.ExitGame(true));
-        closeBtn.onClick.AddListener(() => popup.ClosePopup());
+        closeBtn.onClick.AddListener(() => {
+            popup.ClosePopup();
+            SoundManager.instance.PlaySfx("menu");
+        });
 
         if (GameManager.Instance.curScene == "MenuScene") vrBtn.gameObject.SetActive(false);
         vrBtn.GetComponentInChildren<Text>().text = GameManager.Instance.VrEnable ? "PC" : "VR";

@@ -6,13 +6,29 @@ using UnityEngine.UI;
 
 public class MenuUI : MonoBehaviour
 {
+    public PopupContent settingPopup;
     public Button vrBtn;
+
+    private PopupUI popup;
+
+    private void Awake()
+    {
+        popup = GetComponent<PopupUI>();
+    }
 
     private void Start()
     {
         GameManager.Instance.curScene = gameObject.scene.name;
         
         vrBtn.GetComponentInChildren<Text>().text = GameManager.Instance.VrEnable ? "PC" : "VR";
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            popup.PopupOnOff(settingPopup);
+            SoundManager.instance.PlaySfx("menu");
+        }
     }
 
     public void OnSingleButtonClick()
@@ -35,6 +51,12 @@ public class MenuUI : MonoBehaviour
     {
         yield return GameManager.Instance.StartLoading();
         yield return GameManager.Instance.ChangeScene(GameManager.Instance.curScene, "LobbyScene");
+    }
+
+    public void OpenSetting()
+    {
+        popup.PopupOpen(settingPopup);
+        SoundManager.instance.PlaySfx("menu");
     }
 
     public void SwitchVr()

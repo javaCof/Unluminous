@@ -80,10 +80,6 @@ public class Player : UnitObject
         {
             roomNum = -1;
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            Cursor.lockState = CursorLockMode.Locked;
-#endif
-
             cam.parent = transform;
             cam.localPosition = camOffset;
 
@@ -109,7 +105,6 @@ public class Player : UnitObject
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             inpAction = Input.GetMouseButtonDown(0);
-            //Cursor.lockState = Input.GetKey(KeyCode.LeftControl) ? CursorLockMode.None : CursorLockMode.Locked;
 #endif
             if (controllable)
             {
@@ -284,6 +279,8 @@ public class Player : UnitObject
                 PickupItem();
                 break;
         }
+
+        inpAction = false;
     }
 
     void Trade()
@@ -401,11 +398,7 @@ public class Player : UnitObject
         if (!PhotonNetwork.inRoom || pv.isMine) { }
         else anim.SetBool("move", isMove);
 
-        if (isMove)
-        {
-            inpAction = false;
-            SoundManager.instance.PlayRun(audioSource);
-        }
+        if (isMove) SoundManager.instance.PlayRun(audioSource);
             
         //weapon.gameObject.SetActive(!isMove);
     }

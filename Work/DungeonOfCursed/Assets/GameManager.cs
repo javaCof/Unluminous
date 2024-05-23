@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     private float _BgmVolume;
     private float _SfxVolume;
 
+    [HideInInspector] public bool enablePopup;
+
     public bool VrEnable { get; private set; }
 
     [HideInInspector] public Player player;
@@ -69,6 +71,16 @@ public class GameManager : MonoBehaviour
 
         yield return ChangeScene(curScene, nextScene);
         yield return EndLoading();
+    }
+    private void Update()
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        if (curScene == "GameScene" && !enablePopup && !Input.GetKey(KeyCode.LeftControl))
+            Cursor.lockState = CursorLockMode.Locked;
+        else Cursor.lockState = CursorLockMode.None;
+#endif
+
+        if (player != null) player.controllable = !enablePopup && !Input.GetKey(KeyCode.LeftControl);
     }
 
     public IEnumerator MoveToScene(string scene)

@@ -5,11 +5,21 @@ using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
+    public PopupContent settingPopup;
+    public PopupContent invenPopup;
+
     public GameObject leftJoyStick;
     public Button actionButton;
     public Button jumpButton;
     public TouchPad touchPad;
     public Image hpBar;
+
+    private PopupUI popup;
+
+    private void Awake()
+    {
+        popup = GetComponent<PopupUI>();
+    }
 
     private void Start()
     {
@@ -24,5 +34,30 @@ public class GameUI : MonoBehaviour
         jumpButton.gameObject.SetActive(true);
         touchPad.gameObject.SetActive(true);
 #endif
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            popup.PopupOnOff(settingPopup);
+            SoundManager.instance.PlaySfx("menu");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            popup.PopupOnOff(invenPopup);
+            if (invenPopup.popupEnable) SoundManager.instance.PlaySfx("inven");
+        }
+    }
+
+    public void OpenSetting()
+    {
+        popup.PopupOpen(settingPopup);
+        SoundManager.instance.PlaySfx("menu");
+    }
+    public void OpenInven()
+    {
+        popup.PopupOpen(invenPopup);
+        SoundManager.instance.PlaySfx("inven");
     }
 }
