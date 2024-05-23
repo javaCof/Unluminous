@@ -96,7 +96,6 @@ MonoBehaviour:
   instantAttack: 1
   removeDelay: 1.8
   originPos: {x: 0, y: 0, z: 0}
-  debugon: 0
 --- !u!114 &-7679390295509109960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2426,12 +2425,12 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8227435659870766579}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295

@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-
 
 public class Chest : MonoBehaviour, IPoolObject
 {
@@ -24,8 +22,6 @@ public class Chest : MonoBehaviour, IPoolObject
         anim = GetComponentInChildren<Animator>();
         map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
-
-
     }
 
     private void Update()
@@ -34,7 +30,6 @@ public class Chest : MonoBehaviour, IPoolObject
         {
             targetItem.transform.Translate(Time.deltaTime * (new Vector3(0, 0, -upSpeed)));
         }
-
     }
 
     public void Open()
@@ -81,6 +76,8 @@ public class Chest : MonoBehaviour, IPoolObject
             transform.rotation = rot;
             gameObject.SetActive(true);
         }
+
+        isOpened = false;
     }
     [PunRPC]
     public void OnPoolDisable()

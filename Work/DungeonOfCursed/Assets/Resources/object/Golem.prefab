@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 7258602436108516843}
   - component: {fileID: 7258602436108516840}
   m_Layer: 7
-  m_Name: golem
+  m_Name: Golem
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -252,7 +252,6 @@ MonoBehaviour:
   instantAttack: 1
   removeDelay: 2
   originPos: {x: 0, y: 0, z: 0}
-  debugon: 0
 --- !u!114 &7258602436108516840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -792,12 +791,12 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7592503029241337597}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1

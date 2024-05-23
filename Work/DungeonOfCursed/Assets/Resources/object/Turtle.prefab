@@ -845,12 +845,12 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1471071445758983108}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
@@ -1346,7 +1346,7 @@ GameObject:
   - component: {fileID: 6995820811867571136}
   - component: {fileID: 6995820811867571138}
   m_Layer: 7
-  m_Name: turtle
+  m_Name: Turtle
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1421,14 +1421,13 @@ MonoBehaviour:
   roomNum: 0
   isBoss: 0
   enableState: 1
-  minAttackRange: 5.5
-  maxAttackRange: 6
-  traceRange: 8
+  minAttackRange: 7
+  maxAttackRange: 8
+  traceRange: 10
   attackDelay: 1
   instantAttack: 1
   removeDelay: 3.5
   originPos: {x: 0, y: 0, z: 0}
-  debugon: 0
 --- !u!114 &6995820811867571138
 MonoBehaviour:
   m_ObjectHideFlags: 0

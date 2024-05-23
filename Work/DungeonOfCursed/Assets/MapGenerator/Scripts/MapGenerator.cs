@@ -1,4 +1,4 @@
-#define USE_DEBUG_ROOM_TYPE
+//#define USE_DEBUG_ROOM_TYPE
 
 using System.Collections;
 using System.Collections.Generic;
@@ -23,6 +23,7 @@ public class MapGenerator : MonoBehaviour
     [Header("MAP OBJECT SETTING")]
     public int normalMonsterCount = 5;
     public int chestCount = 5;
+    public int decoCount = 5;
 
     [Header("MAP MATERAILS")]
     public List<Material> mapFloorMats;
@@ -139,6 +140,7 @@ public class MapGenerator : MonoBehaviour
     TileType[] mapTiles;                //맵 타일
     Texture2D tileTexture;              //타일 텍스쳐
 
+    int level = 1;
     int mapMatIdx = -1;
 
     Vector3 playerSpawnPoint;
@@ -195,7 +197,7 @@ public class MapGenerator : MonoBehaviour
                     CreateObjectPool(unit.Value.res, unit.Key, 20, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
                     break;
                 case 2:     //boss monster
-                    CreateObjectPool(unit.Value.res, unit.Key, 1, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+                    CreateObjectPool(unit.Value.res, unit.Key, 10, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
                     break;
             }
         }
@@ -232,6 +234,7 @@ public class MapGenerator : MonoBehaviour
 
     [ContextMenu("Reset Map")] [PunRPC] public void ResetLevel()
     {
+        level++;
         StartCoroutine(LoadLevel());
     }
     IEnumerator LoadLevel()
@@ -241,7 +244,6 @@ public class MapGenerator : MonoBehaviour
         yield return GameManager.Instance.UpdateLoadingText("맵 생성 중...");
 
         ChangeTileMat();
-
 
         if (PhotonNetwork.inRoom)
         {
@@ -451,22 +453,22 @@ public class MapGenerator : MonoBehaviour
     /*------------OBJ DATA------------*/
     void DecideRoomType()
     {
-        for (int i = 0; i < (int)Mathf.Pow(2, maxDivideDepth); i++)
-        {
-            RoomType type;
+        int roomCount = (int)Mathf.Pow(2, maxDivideDepth);
+        Combination combin = new Combination(roomCount);
+        List<RoomType> roomTypes = new List<RoomType>(roomCount);
+        roomTypes[combin.GetNum(0)] = RoomType.START;
+        roomTypes[combin.GetNum(roomCount - 1)] = (level == 3) ? RoomType.BOSS : RoomType.POTAL;
+        roomTypes[combin.GetRandom()] = RoomType.TRADER;
+        for (int i = 0; i < roomCount - 3; i++)
+            roomTypes[combin.GetRandom()] = (Random.Range(0, 2) == 0) ? RoomType.BATTLE : RoomType.TREASURE;
 
-            if (i == (int)Mathf.Pow(2, maxDivideDepth) - 1)
-                type = RoomType.START;
-            else if (i == 0)
-                type = RoomType.POTAL;
-            else
-            {
-                //type = (RoomType)Random.Range((int)RoomType.BATTLE, (int)RoomType.POTAL);
+        for (int i = 0; i < roomCount; i++)
+        {
+            RoomType type = roomTypes[i];
 
 #if USE_DEBUG_ROOM_TYPE
-                type = DEBUG_ROOM_TYPE;
+            type = DEBUG_ROOM_TYPE;
 #endif
-            }
             
             roomInfos.Add(new RoomInfo(type, rooms[i]));
         }
@@ -482,62 +484,53 @@ public class MapGenerator : MonoBehaviour
             RoomInfo info = roomInfos[i];
             RectInt objRect = new RectInt(info.rect.x + 1, info.rect.y + 1, info.rect.width - 2, info.rect.height - 2);
 
-            CombinationRect combine = new CombinationRect(objRect);
+            CombinationRect combin = new CombinationRect(objRect);
 
             switch (info.type)
             {
                 case RoomType.START:
                     {
                         if (PhotonNetwork.inRoom)
-                            AddObjectsRandom((int)DB_INFO.PLAYER_ID, PhotonNetwork.room.PlayerCount, i, combine, true);
+                            AddObjectsRandom((int)DB_INFO.PLAYER_ID, PhotonNetwork.room.PlayerCount, i, combin, true);
                         else
-                            AddObjectCenter((int)DB_INFO.PLAYER_ID, i, combine, true);
+                            AddObjectCenter((int)DB_INFO.PLAYER_ID, i, combin, true);
+
+                        AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
                 case RoomType.BATTLE:
                     {
-                        for (int j = 0; j < normalMonsterCount; j++)
-                        {
-                            int id = Random.Range((int)DB_INFO.NORMAL_MONSTER_BEGIN, (int)DB_INFO.NORMAL_MONSTER_NEXT);
-                            AddObjectRandom(id, i, combine);
-                        }
-
-                        //for (int jj = 0; jj < 3; jj++)
-                        //    AddObjectRandom(1000, i, combine);
-
-                        for (int j = 0; j < 5; j++)
-                        {
-                            int id = Random.Range(MapDecoID, MapDecoID + decoPrefabs.Count);
-                            AddObjectRandom(id, i, combine);
-                        }
-                            
+                        AddObjectsRandom((int)DB_INFO.NORMAL_MONSTER_BEGIN, (int)DB_INFO.NORMAL_MONSTER_NEXT, i, normalMonsterCount, combin);
+                        AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
                 case RoomType.TREASURE:
                     {
-                        AddObjectCenter((int)MapObjectID.CHEST, i, combine);
+                        AddObjectCenter((int)MapObjectID.CHEST, i, combin);
+                        AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
                 case RoomType.BOSS:
                     {
-                        int id = Random.Range((int)DB_INFO.BOSS_MONSTER_BEGIN, (int)DB_INFO.BOSS_MONSTER_NEXT);
-                        AddObjectCenter(id, i, combine);
+                        AddObjectsRandom((int)DB_INFO.BOSS_MONSTER_BEGIN, (int)DB_INFO.BOSS_MONSTER_NEXT, i, 1, combin);
+                        AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
                 case RoomType.ELITE:
                     {
-                        int id = Random.Range((int)DB_INFO.ELITE_MONSTER_BEGIN, (int)DB_INFO.ELITE_MONSTER_NEXT);
-                        AddObjectCenter(id, i, combine);
+                        AddObjectsRandom((int)DB_INFO.ELITE_MONSTER_BEGIN, (int)DB_INFO.ELITE_MONSTER_NEXT, i, 1, combin);
+                        AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
                 case RoomType.TRADER:
                     {
-                        AddObjectCenter((int)MapObjectID.TRADER, i, combine);
+                        AddObjectCenter((int)MapObjectID.TRADER, i, combin);
+                        AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
                 case RoomType.POTAL:
                     {
-                        AddObjectCenter((int)MapObjectID.POTAL, i, combine);
+                        AddObjectCenter((int)MapObjectID.POTAL, i, combin);
                     }
                     break;
             }
@@ -568,6 +561,14 @@ public class MapGenerator : MonoBehaviour
 
             if (addHead) objects[i] = new ObjInfo(objId, roomId, pos);
             else objects.Add(new ObjInfo(objId, roomId, pos));
+        }
+    }
+    void AddObjectsRandom(int id_begin, int id_next, int count, int roomId, CombinationRect combin)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            int id = Random.Range(id_begin, id_next);
+            AddObjectRandom(id, roomId, combin);
         }
     }
 
