@@ -1705,7 +1705,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca45815fb20ad2f48b748cfca77cb1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DEBUG_ROOM_TYPE: 3
   mainCam: {fileID: 951486410}
   mapPos: {fileID: 1897770998}
   mapTexture: {fileID: 2800000, guid: 3c4a14e0c1ede4241817ffb10b0936f3, type: 3}
@@ -1716,6 +1715,7 @@ MonoBehaviour:
   maxDividePer: 0.6
   normalMonsterCount: 5
   chestCount: 5
+  decoCount: 5
   mapFloorMats:
   - {fileID: 2100000, guid: 85ad0ccfa668175419dad18edb1069da, type: 2}
   - {fileID: 2100000, guid: 3b44bde9fa6caaa439b394bb46b1677d, type: 2}
@@ -2793,3 +2793,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5b81c692dc3d044483c3ae773ada1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1640900848697036913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1640900848697036910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7951c64acb0fa62458bf30a60089fe2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 0
+  m_CheckFor2DOcclusion: 0
+  m_CheckFor3DOcclusion: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RaycastTriggerInteraction: 1

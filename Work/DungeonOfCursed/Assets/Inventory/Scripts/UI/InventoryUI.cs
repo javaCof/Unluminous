@@ -85,9 +85,8 @@ public class InventoryUI : MonoBehaviour
         InitSlots();
         InitButtonEvents();
         InitToggleEvents();
-        interactor = GameObject.FindObjectOfType<XRRayInteractor>();
-       // m_rightCon = interactor.GetComponent<XRController>();
-        //m_leftCon = m_rightCon.transform.parent.GetChild(2).GetComponent<XRController>();
+
+        Debug.Log("인벤토리 어웨이크");
     }
 
     private void Update()
@@ -95,12 +94,15 @@ public class InventoryUI : MonoBehaviour
         //vr모드일때
         if (GameManager.Instance.VrEnable)
         {
+            if (m_rightCon==null)
+            {
+                VrRef();
+            }
+
             VrInput();
             // 히트된 지점으로 _ped의 위치를 설정
             interactor.TryGetCurrentUIRaycastResult(out hit);
             _ped.position = hit.screenPosition;
-
-
         }
         else
         {
@@ -124,7 +126,14 @@ public class InventoryUI : MonoBehaviour
 
         //왼컨 그립
         m_leftCon.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out l_grip);
+    }
 
+    public void VrRef()
+    {
+        m_rightCon = GameObject.Find("RightHand Controller").GetComponent<XRController>();
+        m_leftCon = m_rightCon.transform.parent.GetChild(1).GetComponent<XRController>();
+        interactor = m_rightCon.GetComponent<XRRayInteractor>();
+        
     }
     private void Init()
     {
