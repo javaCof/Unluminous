@@ -57,7 +57,6 @@ public class InventoryUI : MonoBehaviour
 
     private int _leftClick = 0;
     private int _rightClick = 1;
-    private bool isOpen = false;
 
     private Vector3 _beginDragIconPoint;   // 드래그 시작 시 슬롯의 위치
     private Vector3 _beginDragCursorPoint; // 드래그 시작 시 커서의 위치
@@ -278,10 +277,6 @@ public class InventoryUI : MonoBehaviour
         {
             UpdateTooltipUI(_pointerOverSlot);
             //_itemTooltip.Show();
-        }
-        else if(!isValid)
-        {
-            Debug.Log("뭔가 뭔가임");
         }
         //else
         //   // _itemTooltip.Hide();
@@ -575,6 +570,10 @@ public class InventoryUI : MonoBehaviour
 
     public void SetItemIcon(int index, Sprite icon)
     {
+        if(icon == null)
+        {
+            Debug.Log("icon 없음");
+        }
         EditorLog($"Set Item Icon : Slot [{index}]");
 
         _slotUIList[index].SetItem(icon);

@@ -28,8 +28,6 @@ public class Item : MonoBehaviour, IPoolObject
     {
         if (itemData != null)
         {
-            Debug.Log("아이템 픽업");
-
             itemData.ID = this.id;
 
             if (itemData is CountableItemData)
@@ -47,6 +45,10 @@ public class Item : MonoBehaviour, IPoolObject
             {
                 ArmorItemData elseItemData = itemData as ArmorItemData;
                 elseItemData.Name = FirebaseManager.equips[this.id].name;
+                elseItemData.Price = FirebaseManager.equips[this.id].price;
+                elseItemData.Tooltip = FirebaseManager.equips[this.id].dec;
+                elseItemData.Res = FirebaseManager.equips[this.id].res;
+                elseItemData.Icon = FirebaseManager.equips[this.id].icon;
                 elseItemData.Atk = FirebaseManager.equips[this.id].atk;
                 elseItemData.Def = FirebaseManager.equips[this.id].def;
                 elseItemData.Speed = FirebaseManager.equips[this.id].speed;
