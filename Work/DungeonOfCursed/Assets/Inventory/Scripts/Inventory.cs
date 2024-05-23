@@ -126,7 +126,16 @@ public class Inventory : MonoBehaviour
         if (item != null)
         {
             Debug.Log(item.Data.Name);
-            _inventoryUI.SetItemIcon(index, Resources.Load<Sprite>(item.Data.Icon));
+            Debug.Log(item.Data.Icon);
+            Sprite sprite = Resources.Load<Sprite>(item.Data.Icon);
+            
+            if(sprite == null)
+            {
+                Debug.Log("스프라이트 없음");
+                return;
+            }
+     
+            _inventoryUI.SetItemIcon(index, sprite);
 
             if (item is CountableItem ci)
             {
@@ -185,16 +194,16 @@ public class Inventory : MonoBehaviour
 
     public int Add(ItemData itemData, int amount = 1)
     {
-        int index;
+        int index = -1;
 
         if (itemData is CountableItemData ciData)
         {
             bool findNextCountable = true;
-            index = -1;
+
+            ciData.MaxAmount = 99;
 
             while (amount > 0)
             {
-
                 if (findNextCountable)
                 {
                     index = FindCountableItemSlotIndex(ciData, index + 1);
@@ -207,12 +216,12 @@ public class Inventory : MonoBehaviour
                     {
                         CountableItem ci = _items[index] as CountableItem;
                         amount = ci.AddAmountAndGetExcess(amount);
-
                         UpdateSlot(index);
                     }
                 }
                 else
                 {
+
                     index = FindEmptySlotIndex(index + 1);
 
                     if (index == -1)
@@ -223,41 +232,40 @@ public class Inventory : MonoBehaviour
                     {
                         CountableItem ci = ciData.CreateItem() as CountableItem;
                         ci.SetAmount(amount);
-
+                        
                         _items[index] = ci;
-
                         amount = (amount > ciData.MaxAmount) ? (amount - ciData.MaxAmount) : 0;
-
                         UpdateSlot(index);
                     }
                 }
             }
         }
+        else if (itemData is ArmorItemData)
+        {
+            // ArmorItemData는 중복되지 않도록 한 번만 추가
+            index = FindEmptySlotIndex();
+            if (index != -1)
+            {
+                _items[index] = itemData.CreateItem();
+                amount = 0; // 아이템 하나만 추가되도록 설정
+                Debug.Log($"Added ArmorItemData: {itemData.Name}");
+                UpdateSlot(index);
+            }
+        }
         else
         {
-            if (amount == 1)
-            {
-                index = FindEmptySlotIndex();
-                if (index != -1)
-                {
-                    _items[index] = itemData.CreateItem();
-                    amount = 0;
-
-                    UpdateSlot(index);
-                }
-            }
-
-            index = -1;
+            // 기본 ItemData 처리
             for (; amount > 0; amount--)
             {
                 index = FindEmptySlotIndex(index + 1);
+                Debug.Log($"FindEmptySlotIndex returned: {index}");
 
                 if (index == -1)
                 {
                     break;
                 }
                 _items[index] = itemData.CreateItem();
-
+                Debug.Log($"Added ItemData: {itemData.Name}");
                 UpdateSlot(index);
             }
         }
@@ -265,7 +273,7 @@ public class Inventory : MonoBehaviour
         return amount;
     }
 
-        public void Remove(int index)
+    public void Remove(int index)
     {
         if (!IsValidIndex(index)) return;
 

@@ -517,4 +517,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextScene: MenuScene
   curScene: 
-  vrEnable: 0
+  player: {fileID: 0}
