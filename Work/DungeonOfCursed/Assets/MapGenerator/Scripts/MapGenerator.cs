@@ -1,4 +1,4 @@
-//#define USE_DEBUG_ROOM_TYPE
+#define USE_DEBUG_ROOM_TYPE
 
 using System.Collections;
 using System.Collections.Generic;
@@ -457,8 +457,8 @@ public class MapGenerator : MonoBehaviour
         Combination combin = new Combination(roomCount);
         List<RoomType> roomTypes = new List<RoomType>();
         for (int i = 0; i < roomCount; i++) roomTypes.Add(RoomType.START);
-        roomTypes[0] = RoomType.START;
-        roomTypes[combin.GetNum(roomCount - 1)] = (level == 3) ? RoomType.BOSS : RoomType.POTAL;
+        roomTypes[combin.GetRandom()] = RoomType.START;
+        roomTypes[combin.GetRandom()] = (level == 3) ? RoomType.BOSS : RoomType.POTAL;
         roomTypes[combin.GetRandom()] = RoomType.TRADER;
         for (int i = 0; i < roomCount - 3; i++)
             roomTypes[combin.GetRandom()] = (Random.Range(0, 2) == 0) ? RoomType.BATTLE : RoomType.TREASURE;
@@ -468,7 +468,8 @@ public class MapGenerator : MonoBehaviour
             RoomType type = roomTypes[i];
 
 #if USE_DEBUG_ROOM_TYPE
-            type = DEBUG_ROOM_TYPE;
+            if (i == 0) type = RoomType.START;
+            else type = DEBUG_ROOM_TYPE;
 #endif
             
             roomInfos.Add(new RoomInfo(type, rooms[i]));
