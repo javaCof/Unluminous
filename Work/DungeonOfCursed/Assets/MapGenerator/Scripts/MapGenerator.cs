@@ -1,4 +1,4 @@
-#define USE_DEBUG_ROOM_TYPE
+//#define USE_DEBUG_ROOM_TYPE
 
 using System.Collections;
 using System.Collections.Generic;
