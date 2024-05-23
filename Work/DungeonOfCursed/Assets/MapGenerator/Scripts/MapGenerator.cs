@@ -454,13 +454,20 @@ public class MapGenerator : MonoBehaviour
     void DecideRoomType()
     {
         int roomCount = (int)Mathf.Pow(2, maxDivideDepth);
+        int othRoomCount = roomCount;
         Combination combin = new Combination(roomCount);
         List<RoomType> roomTypes = new List<RoomType>();
         for (int i = 0; i < roomCount; i++) roomTypes.Add(RoomType.START);
-        roomTypes[combin.GetRandom()] = RoomType.START;
-        roomTypes[combin.GetRandom()] = (level == 3) ? RoomType.BOSS : RoomType.POTAL;
-        roomTypes[combin.GetRandom()] = RoomType.TRADER;
-        for (int i = 0; i < roomCount - 3; i++)
+        roomTypes[combin.GetRandom()] = RoomType.START; othRoomCount--;
+        roomTypes[combin.GetRandom()] = (level == 3) ? RoomType.BOSS : RoomType.POTAL; othRoomCount--;
+        roomTypes[combin.GetRandom()] = RoomType.TRADER; othRoomCount--;
+        int othCount = Random.Range(0, 3);
+        for (int i = 0; i < othCount; i++)
+        {
+            roomTypes[combin.GetRandom()] = RoomType.ELITE;
+            othRoomCount--;
+        }
+        for (int i = 0; i < othRoomCount; i++)
             roomTypes[combin.GetRandom()] = (Random.Range(0, 2) == 0) ? RoomType.BATTLE : RoomType.TREASURE;
 
         for (int i = 0; i < roomCount; i++)
@@ -514,13 +521,13 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.BOSS:
                     {
-                        AddObjectsRandom((int)DB_INFO.BOSS_MONSTER_BEGIN, (int)DB_INFO.BOSS_MONSTER_NEXT, 1, i, combin);
+                        AddObjectCenter(Random.Range((int)DB_INFO.BOSS_MONSTER_BEGIN, (int)DB_INFO.BOSS_MONSTER_NEXT), i, combin);
                         AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
                 case RoomType.ELITE:
                     {
-                        AddObjectsRandom((int)DB_INFO.ELITE_MONSTER_BEGIN, (int)DB_INFO.ELITE_MONSTER_NEXT, 1, i, combin);
+                        AddObjectCenter(Random.Range((int)DB_INFO.ELITE_MONSTER_BEGIN, (int)DB_INFO.ELITE_MONSTER_NEXT), i, combin);
                         AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
