@@ -338,7 +338,6 @@ public class InventoryUI : MonoBehaviour
             {
                 _beginDragSlot = RaycastAndGetFirstComponent<ItemSlotUI>();
 
-
                 if (_beginDragSlot != null && _beginDragSlot.HasItem && _beginDragSlot.IsAccessible)
                 {
                     EditorLog($"Drag Begin : Slot [{_beginDragSlot.Index}]");

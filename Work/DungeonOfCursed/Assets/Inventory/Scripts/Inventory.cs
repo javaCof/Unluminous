@@ -73,11 +73,14 @@ public class Inventory : MonoBehaviour
         _items = new Item2[_maxCapacity];
         Capacity = _initalCapacity;
         _inventoryUI.SetInventoryReference(this);
+
     }
 
     private void Start()
     {
         UpdateAccessibleStatesAll();
+        ShowPanel();
+        HidePanel();
     }
 
     private bool IsValidIndex(int index)
@@ -122,8 +125,6 @@ public class Inventory : MonoBehaviour
 
         if (item != null)
         {
-            Debug.Log(item.Data.Name);
-            Debug.Log(item.Data.Icon);
             Sprite sprite = Resources.Load<Sprite>(item.Data.Icon);
             
             if(sprite == null)
@@ -446,4 +447,7 @@ public class Inventory : MonoBehaviour
         UpdateAllSlot();
         _inventoryUI.UpdateAllSlotFilters();
     }
+
+    private void HidePanel() => _inventory.SetActive(false);
+    private void ShowPanel() => _inventory.SetActive(true);
 }
