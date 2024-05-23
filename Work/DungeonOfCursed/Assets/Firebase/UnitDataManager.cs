@@ -103,13 +103,13 @@ public class UnitDataManager : MonoBehaviour
     public async void RenameUnitKey()
     {
         // 1. 데이터 가져오기
-        var unitDataSnapshot = await FirebaseManager.databaseReference.Child("Equip").Child("Pants").Child("2200").GetValueAsync();
+        var unitDataSnapshot = await FirebaseManager.databaseReference.Child("Equip").Child("2202").GetValueAsync();
 
         // 2. "???"으로 새 키에 데이터 복사
-        await FirebaseManager.databaseReference.Child("Equip").Child("2200").SetValueAsync(unitDataSnapshot.Value);
+        await FirebaseManager.databaseReference.Child("Equip").Child("2008").SetValueAsync(unitDataSnapshot.Value);
 
         // 3. 기존 키 삭제
-        await FirebaseManager.databaseReference.Child("Equip").Child("Pants").Child("2200").RemoveValueAsync();
+        await FirebaseManager.databaseReference.Child("Equip").Child("2202").RemoveValueAsync();
 
         Debug.Log("키 변경이 완료되었습니다.");
         

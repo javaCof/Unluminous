@@ -26,7 +26,6 @@ public class ItemTooltipUI : MonoBehaviour
     private void Awake()
     {
         Init();
-        Hide();
     }
     private void Init()
     {
@@ -99,6 +98,6 @@ public class ItemTooltipUI : MonoBehaviour
 
     public void Show() => gameObject.SetActive(true);
 
-    public void Hide() => gameObject.SetActive(false);
+   // public void Hide() => gameObject.SetActive(false);
 
 }

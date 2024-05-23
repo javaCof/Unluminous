@@ -11,6 +11,8 @@ public class Trader : MonoBehaviour, IPoolObject
     public List<ItemData> randomItemSlot2;
     public List<ItemData> randomItemSlot3;
 
+    public GameObject trade_UI;
+
     private int[] itemIdxs = new int[3];
 
     private void Awake()
@@ -41,7 +43,7 @@ public class Trader : MonoBehaviour, IPoolObject
     }
     [PunRPC] void Trade_Master()
     {
-        
+        trade_UI.SetActive(true);
     }
 
     [PunRPC] public void OnPoolCreate(int id)

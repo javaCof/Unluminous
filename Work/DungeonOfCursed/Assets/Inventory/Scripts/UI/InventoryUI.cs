@@ -14,8 +14,8 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private int _verticalSlotCount = 8;      // 슬롯 세로 개수
     [SerializeField] private float _slotMargin = 8f;          // 한 슬롯의 상하좌우 여백
     [SerializeField] private float _contentAreaPadding = 20f; // 인벤토리 영역의 내부 여백
-    [Range(32, 64)]
-    [SerializeField] private float _slotSize = 64f;      // 각 슬롯의 크기
+    [Range(32, 170)]
+    [SerializeField] private float _slotSize = 120f;      // 각 슬롯의 크기
 
     [Space]
     [SerializeField] private bool _showTooltip = true;
@@ -236,8 +236,8 @@ public class InventoryUI : MonoBehaviour
             UpdateTooltipUI(_pointerOverSlot);
             _itemTooltip.Show();
         }
-        else
-            _itemTooltip.Hide();
+        //else
+        //   // _itemTooltip.Hide();
     }
 
     private void OnPointerDown()
