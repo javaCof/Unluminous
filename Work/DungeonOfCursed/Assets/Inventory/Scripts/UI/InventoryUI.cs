@@ -83,12 +83,11 @@ public class InventoryUI : MonoBehaviour
 
     private void Update()
     {
-
+        //vr모드일때
         if (GameManager.Instance.VrEnable)
         {
             // 히트된 지점으로 _ped의 위치를 설정
             interactor.TryGetCurrentUIRaycastResult(out hit);
-
             _ped.position = hit.screenPosition;
             
 
@@ -97,10 +96,6 @@ public class InventoryUI : MonoBehaviour
         {
             _ped.position = Input.mousePosition;
         }
-
-
-
-
 
         OnPointerEnterAndExit();
         if (_showTooltip) ShowOrHideItemTooltip();
@@ -549,6 +544,7 @@ public class InventoryUI : MonoBehaviour
     private bool __prevShow = false;
     private bool __prevMouseReversed = false;
 
+    /*
     private void OnValidate()
     {
         if (__prevMouseReversed != _mouseReversed)
@@ -699,7 +695,7 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
-
+    */
     private class PreviewItemSlot : MonoBehaviour { }
 
     [UnityEditor.InitializeOnLoad]
