@@ -13,7 +13,10 @@ public class ItemTooltipUI : MonoBehaviour
     private Text _contentText;
 
     [SerializeField]
-    private Text _PriceText;
+    private Text _priceText;
+
+    [SerializeField]
+    private Image _iconImg;
 
     private RectTransform _rt;
     private CanvasScaler _canvasScaler;
@@ -25,7 +28,7 @@ public class ItemTooltipUI : MonoBehaviour
 
     private void Awake()
     {
-        Init();
+        //Init();
     }
     private void Init()
     {
@@ -53,8 +56,18 @@ public class ItemTooltipUI : MonoBehaviour
 
     public void SetItemInfo(ItemData data)
     {
-        _titleText.text = data.Name;
-        _contentText.text = data.Tooltip;
+        if (data != null)
+        {
+            int price = data.Price;
+            string name = data.Icon;
+
+            _titleText.text = data.Name;
+            _contentText.text = data.Tooltip;
+            _priceText.text = "Price:" + price.ToString();
+            _iconImg.sprite = Resources.Load<Sprite>(name);
+        }
+        else
+            Debug.Log("데이터 없음");
     }
 
     public void SetRectPosition(RectTransform slotRect)

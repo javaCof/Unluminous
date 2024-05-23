@@ -415,7 +415,7 @@ public class InventoryUI : MonoBehaviour
             return;
 
         _itemTooltip.SetItemInfo(_inventory.GetItemData(slot.Index));
-        _itemTooltip.SetRectPosition(slot.SlotRect);
+        //_itemTooltip.SetRectPosition(slot.SlotRect);
     }
 
     public void SetInventoryReference(Inventory inventory)
