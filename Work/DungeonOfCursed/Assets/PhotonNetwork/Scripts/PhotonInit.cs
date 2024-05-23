@@ -45,12 +45,14 @@ public class PhotonInit : MonoBehaviour
 
     public void JoinRandom()
     {
+        SoundManager.instance.PlaySfx("menu");
         UpdateUserId();
         PhotonNetwork.player.NickName = userIdInput.text;
         PhotonNetwork.JoinRandomRoom();
     }
     public void CreateRoom()
     {
+        SoundManager.instance.PlaySfx("menu");
         UpdateUserId();
         UpdateRoomName();
 
@@ -65,6 +67,7 @@ public class PhotonInit : MonoBehaviour
     }
     public void JoinRoom(string roomName)
     {
+        SoundManager.instance.PlaySfx("menu");
         UpdateUserId();
         PhotonNetwork.player.NickName = userIdInput.text;
         PhotonNetwork.JoinRoom(roomName);
@@ -96,6 +99,7 @@ public class PhotonInit : MonoBehaviour
     }
     public void BackToMenu()
     {
+        SoundManager.instance.PlaySfx("menu");
         if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
         GameManager.Instance.LoadingScene("MenuScene");
     }

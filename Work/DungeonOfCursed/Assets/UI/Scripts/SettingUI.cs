@@ -92,5 +92,6 @@ public class SettingUI : MonoBehaviour
     {
         GameManager.Instance.VrOnOff();
         vrBtn.GetComponentInChildren<Text>().text = GameManager.Instance.VrEnable ? "PC" : "VR";
+        SoundManager.instance.PlaySfx("menu");
     }
 }

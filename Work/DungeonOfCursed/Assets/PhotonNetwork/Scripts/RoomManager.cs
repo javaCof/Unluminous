@@ -50,12 +50,14 @@ public class RoomManager : MonoBehaviour
 
     public void OnReady()
     {
+        SoundManager.instance.PlaySfx("menu");
         readyBtn.SetActive(false);
         readyCancelBtn.SetActive(true);
         pr.Ready();
     }
     public void OnReadyCancel()
     {
+        SoundManager.instance.PlaySfx("menu");
         readyBtn.SetActive(true);
         readyCancelBtn.SetActive(false);
         pr.ReadyCancel();
@@ -63,6 +65,7 @@ public class RoomManager : MonoBehaviour
 
     public void BackToLobby()
     {
+        SoundManager.instance.PlaySfx("menu");
         if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
         GameManager.Instance.LoadingScene("LobbyScene");
     }
