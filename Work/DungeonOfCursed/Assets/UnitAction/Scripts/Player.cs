@@ -61,7 +61,6 @@ public class Player : UnitObject
 
     private void Awake()
     {
-        
         anim = GetComponentInChildren<Animator>();
         ctl = GetComponent<CharacterController>();
         cam = FindObjectOfType<MapGenerator>().mainCam.transform;
@@ -155,6 +154,7 @@ public class Player : UnitObject
     {
         curHP = stat.HP;
         isDead = false;
+        inpAction = false;
         controllable = true;
         anim.applyRootMotion = false;
     }
@@ -398,7 +398,15 @@ public class Player : UnitObject
     void UpdateAnimMove(bool isMove)
     {
         animMove = isMove;
-        if (isMove) SoundManager.instance.PlayRun(audioSource);
+        if (!PhotonNetwork.inRoom || pv.isMine) { }
+        else anim.SetBool("move", isMove);
+
+        if (isMove)
+        {
+            inpAction = false;
+            SoundManager.instance.PlayRun(audioSource);
+        }
+            
         //weapon.gameObject.SetActive(!isMove);
     }
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
