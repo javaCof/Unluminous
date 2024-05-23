@@ -12,6 +12,9 @@ public class ItemTooltipUI : MonoBehaviour
     [SerializeField]
     private Text _contentText;
 
+    [SerializeField]
+    private Text _PriceText;
+
     private RectTransform _rt;
     private CanvasScaler _canvasScaler;
 

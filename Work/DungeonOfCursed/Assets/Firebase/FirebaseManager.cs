@@ -26,8 +26,10 @@ public class FirebaseManager
     public class Item
     {
         public int price;
+        public string icon;
         public string dec;
         public string name;
+        public string res;
     }
     public class Equip
     {
@@ -39,6 +41,8 @@ public class FirebaseManager
         public int price;
         public string dec;
         public string name;
+        public string res;
+        public string icon;
     }
 
     public static Dictionary<int, Unit> units = new Dictionary<int, Unit>();
@@ -65,8 +69,6 @@ public class FirebaseManager
                     value = "\"" + value + "\"";
 
                 json += "\"" + dataValue.Key + "\":" + value + ",";
-
-                Debug.Log(dataValue.Key + "\":" + value);
             }
             json = json.Substring(0, json.Length - 1) + "}";
 
