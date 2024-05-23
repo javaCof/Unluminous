@@ -66,6 +66,14 @@ public class InventoryUI : MonoBehaviour
     public XRRayInteractor interactor;
     RaycastResult hit;
 
+    private bool r_trigger;
+    private bool r_grip;
+
+    private bool l_grip;
+
+    [SerializeField] XRController m_leftCon;
+    [SerializeField] XRController m_rightCon;
+
     private enum FilterOption
     {
         All, Equipment, Portion
@@ -79,6 +87,8 @@ public class InventoryUI : MonoBehaviour
         InitButtonEvents();
         InitToggleEvents();
         interactor = GameObject.FindObjectOfType<XRRayInteractor>();
+        m_rightCon = interactor.GetComponent<XRController>();
+        m_leftCon = m_rightCon.transform.parent.GetChild(2).GetComponent<XRController>();
     }
 
     private void Update()
@@ -86,10 +96,11 @@ public class InventoryUI : MonoBehaviour
         //vr모드일때
         if (GameManager.Instance.VrEnable)
         {
+            VrInput();
             // 히트된 지점으로 _ped의 위치를 설정
             interactor.TryGetCurrentUIRaycastResult(out hit);
             _ped.position = hit.screenPosition;
-            
+
 
         }
         else
@@ -104,6 +115,18 @@ public class InventoryUI : MonoBehaviour
         OnPointerUp();
     }
 
+    //vr 인풋 감지 함수
+    void VrInput()
+    {
+        //오른컨 트리거
+        m_rightCon.inputDevice.TryGetFeatureValue(CommonUsages.triggerButton, out r_trigger);
+        //오른컨 그립
+        m_rightCon.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out r_grip);
+
+        //왼컨 그립
+        m_leftCon.inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out l_grip);
+
+    }
     private void Init()
     {
         TryGetComponent(out _gr);
@@ -263,72 +286,153 @@ public class InventoryUI : MonoBehaviour
     private void OnPointerDown()
     {
 
-        if (Input.GetMouseButtonDown(_leftClick))
+        //VR버전
+        if (GameManager.Instance.VrEnable)
         {
-            _beginDragSlot = RaycastAndGetFirstComponent<ItemSlotUI>();
-
-
-            if (_beginDragSlot != null && _beginDragSlot.HasItem && _beginDragSlot.IsAccessible)
+            if (r_trigger)
             {
-                EditorLog($"Drag Begin : Slot [{_beginDragSlot.Index}]");
+                _beginDragSlot = RaycastAndGetFirstComponent<ItemSlotUI>();
 
-                _beginDragIconTransform = _beginDragSlot.IconRect.transform;
-                _beginDragIconPoint = _beginDragIconTransform.position;
-                _beginDragCursorPoint = Input.mousePosition;
 
-                _beginDragSlotSiblingIndex = _beginDragSlot.transform.GetSiblingIndex();
-                _beginDragSlot.transform.SetAsLastSibling();
+                if (_beginDragSlot != null && _beginDragSlot.HasItem && _beginDragSlot.IsAccessible)
+                {
+                    EditorLog($"Drag Begin : Slot [{_beginDragSlot.Index}]");
 
-                _beginDragSlot.SetHighlightOnTop(false);
+                    _beginDragIconTransform = _beginDragSlot.IconRect.transform;
+                    _beginDragIconPoint = _beginDragIconTransform.position;
+                    _beginDragCursorPoint = _ped.position;
+
+                    _beginDragSlotSiblingIndex = _beginDragSlot.transform.GetSiblingIndex();
+                    _beginDragSlot.transform.SetAsLastSibling();
+
+                    _beginDragSlot.SetHighlightOnTop(false);
+                }
+                else
+                {
+                    _beginDragSlot = null;
+                }
             }
-            else
+            else if (r_grip)
             {
-                _beginDragSlot = null;
+                ItemSlotUI slot = RaycastAndGetFirstComponent<ItemSlotUI>();
+
+                if (slot != null && slot.HasItem && slot.IsAccessible)
+                {
+                    TryUseItem(slot.Index);
+                }
             }
         }
 
-        else if (Input.GetMouseButtonDown(_rightClick))
+        //PC버전
+        else
         {
-            ItemSlotUI slot = RaycastAndGetFirstComponent<ItemSlotUI>();
-
-            if (slot != null && slot.HasItem && slot.IsAccessible)
+            if (Input.GetMouseButtonDown(_leftClick))
             {
-                TryUseItem(slot.Index);
+                _beginDragSlot = RaycastAndGetFirstComponent<ItemSlotUI>();
+
+
+                if (_beginDragSlot != null && _beginDragSlot.HasItem && _beginDragSlot.IsAccessible)
+                {
+                    EditorLog($"Drag Begin : Slot [{_beginDragSlot.Index}]");
+
+                    _beginDragIconTransform = _beginDragSlot.IconRect.transform;
+                    _beginDragIconPoint = _beginDragIconTransform.position;
+                    _beginDragCursorPoint = Input.mousePosition;
+
+                    _beginDragSlotSiblingIndex = _beginDragSlot.transform.GetSiblingIndex();
+                    _beginDragSlot.transform.SetAsLastSibling();
+
+                    _beginDragSlot.SetHighlightOnTop(false);
+                }
+                else
+                {
+                    _beginDragSlot = null;
+                }
+            }
+
+            else if (Input.GetMouseButtonDown(_rightClick))
+            {
+                ItemSlotUI slot = RaycastAndGetFirstComponent<ItemSlotUI>();
+
+                if (slot != null && slot.HasItem && slot.IsAccessible)
+                {
+                    TryUseItem(slot.Index);
+                }
             }
         }
+
+
     }
 
     private void OnPointerDrag()
     {
         if (_beginDragSlot == null) return;
 
-        if (Input.GetMouseButton(_leftClick))
+        //VR버전
+        if (GameManager.Instance.enabled)
         {
+            if (r_trigger)
+            {
+                _beginDragIconTransform.position =
+                    _beginDragIconPoint + (hit.worldNormal - _beginDragCursorPoint); //안되면 hit.월드포지션
+            }
+        }
+        //PC버전
+        else
+        {
+            if (Input.GetMouseButton(_leftClick))
+            {
 
-            _beginDragIconTransform.position =
-                _beginDragIconPoint + (Input.mousePosition - _beginDragCursorPoint);
+                _beginDragIconTransform.position =
+                    _beginDragIconPoint + (Input.mousePosition - _beginDragCursorPoint);
+            }
         }
     }
 
     private void OnPointerUp()
     {
-        if (Input.GetMouseButtonUp(_leftClick))
+        //VR버전
+        if (GameManager.Instance.enabled)
         {
-
-            if (_beginDragSlot != null)
+            if (r_trigger)
             {
-                _beginDragIconTransform.position = _beginDragIconPoint;
+                if (_beginDragSlot != null)
+                {
+                    _beginDragIconTransform.position = _beginDragIconPoint;
 
-                _beginDragSlot.transform.SetSiblingIndex(_beginDragSlotSiblingIndex);
+                    _beginDragSlot.transform.SetSiblingIndex(_beginDragSlotSiblingIndex);
 
-                EndDrag();
+                    EndDrag();
 
-                _beginDragSlot.SetHighlightOnTop(true);
+                    _beginDragSlot.SetHighlightOnTop(true);
 
-                _beginDragSlot = null;
-                _beginDragIconTransform = null;
+                    _beginDragSlot = null;
+                    _beginDragIconTransform = null;
+                }
             }
         }
+        //PC버전
+        else
+        {
+            if (Input.GetMouseButtonUp(_leftClick))
+            {
+
+                if (_beginDragSlot != null)
+                {
+                    _beginDragIconTransform.position = _beginDragIconPoint;
+
+                    _beginDragSlot.transform.SetSiblingIndex(_beginDragSlotSiblingIndex);
+
+                    EndDrag();
+
+                    _beginDragSlot.SetHighlightOnTop(true);
+
+                    _beginDragSlot = null;
+                    _beginDragIconTransform = null;
+                }
+            }
+        }
+        
     }
 
     private void EndDrag()
@@ -337,10 +441,21 @@ public class InventoryUI : MonoBehaviour
 
         if (endDragSlot != null && endDragSlot.IsAccessible)
         {
-
-            bool isSeparatable =
+            bool isSeparatable;
+            //VR버전
+            if (GameManager.Instance.enabled)
+            {
+                isSeparatable =
+                (l_grip)&&
+                (_inventory.IsCountableItem(_beginDragSlot.Index) && !_inventory.HasItem(endDragSlot.Index));
+            }
+            else
+            {
+                isSeparatable =
                 (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftShift)) &&
                 (_inventory.IsCountableItem(_beginDragSlot.Index) && !_inventory.HasItem(endDragSlot.Index));
+            }
+           
 
             bool isSeparation = false;
             int currentAmount = 0;
@@ -544,7 +659,7 @@ public class InventoryUI : MonoBehaviour
     private bool __prevShow = false;
     private bool __prevMouseReversed = false;
 
-    /*
+
     private void OnValidate()
     {
         if (__prevMouseReversed != _mouseReversed)
@@ -695,7 +810,7 @@ public class InventoryUI : MonoBehaviour
             }
         }
     }
-    */
+
     private class PreviewItemSlot : MonoBehaviour { }
 
     [UnityEditor.InitializeOnLoad]
