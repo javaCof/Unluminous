@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction;
+using UnityEngine.XR.Interaction.Toolkit;
+
 
 public class InventoryUI : MonoBehaviour
 {
@@ -59,6 +63,9 @@ public class InventoryUI : MonoBehaviour
     private Vector3 _beginDragCursorPoint; // 드래그 시작 시 커서의 위치
     private int _beginDragSlotSiblingIndex;
 
+    public XRRayInteractor interactor;
+    RaycastResult hit;
+
     private enum FilterOption
     {
         All, Equipment, Portion
@@ -71,11 +78,29 @@ public class InventoryUI : MonoBehaviour
         InitSlots();
         InitButtonEvents();
         InitToggleEvents();
+        interactor = GameObject.FindObjectOfType<XRRayInteractor>();
     }
 
     private void Update()
     {
-        _ped.position = Input.mousePosition;
+
+        if (GameManager.Instance.VrEnable)
+        {
+            // 히트된 지점으로 _ped의 위치를 설정
+            interactor.TryGetCurrentUIRaycastResult(out hit);
+
+            _ped.position = hit.screenPosition;
+            
+
+        }
+        else
+        {
+            _ped.position = Input.mousePosition;
+        }
+
+
+
+
 
         OnPointerEnterAndExit();
         if (_showTooltip) ShowOrHideItemTooltip();
