@@ -65,10 +65,10 @@ public class InventoryUI : MonoBehaviour
     public XRRayInteractor interactor;
     RaycastResult hit;
 
-    private bool r_trigger;
-    private bool r_grip;
+    public bool r_trigger;
+    public bool r_grip;
 
-    private bool l_grip;
+    public bool l_grip;
 
     [SerializeField] XRController m_leftCon;
     [SerializeField] XRController m_rightCon;
@@ -378,52 +378,52 @@ public class InventoryUI : MonoBehaviour
             return;
         }
 
-        //    //VR버전
-        //    if (GameManager.Instance.enabled)
-        //{
-        //    if (r_trigger)
-        //    {
-        //        _beginDragIconTransform.position =
-        //            _beginDragIconPoint + (hit.worldNormal - _beginDragCursorPoint); //안되면 hit.월드포지션
-        //    }
-        //}
+        //VR버전
+        if (GameManager.Instance.VrEnable)
+        {
+            if (r_trigger)
+            {
+                _beginDragIconTransform.position =
+                    _beginDragIconPoint + (hit.worldNormal - _beginDragCursorPoint); //안되면 hit.월드포지션
+            }
+        }
         //PC버전
-        //else
-        //{
-        if (Input.GetMouseButton(_leftClick))
+        else
+        {
+            if (Input.GetMouseButton(_leftClick))
             {   
                 _beginDragIconTransform.position =
                     _beginDragIconPoint + (Input.mousePosition - _beginDragCursorPoint);
             }
-        //}
+        }
     }
 
     private void OnPointerUp()
     {
         //VR버전
-        //if (GameManager.Instance.enabled)
-        //{
-        //    if (r_trigger)
-        //    {
-        //        if (_beginDragSlot != null)
-        //        {
-        //            _beginDragIconTransform.position = _beginDragIconPoint;
+        if (GameManager.Instance.VrEnable)
+        {
+            if (r_trigger)
+            {
+                if (_beginDragSlot != null)
+                {
+                    _beginDragIconTransform.position = _beginDragIconPoint;
 
-        //            _beginDragSlot.transform.SetSiblingIndex(_beginDragSlotSiblingIndex);
+                    _beginDragSlot.transform.SetSiblingIndex(_beginDragSlotSiblingIndex);
 
-        //            EndDrag();
+                    EndDrag();
 
-        //            _beginDragSlot.SetHighlightOnTop(true);
+                    _beginDragSlot.SetHighlightOnTop(true);
 
-        //            _beginDragSlot = null;
-        //            _beginDragIconTransform = null;
-        //        }
-        //    }
-        //}
+                    _beginDragSlot = null;
+                    _beginDragIconTransform = null;
+                }
+            }
+        }
         //PC버전
-        //else
-        //{
-            if (Input.GetMouseButtonUp(_leftClick))
+        else
+        {
+        if (Input.GetMouseButtonUp(_leftClick))
             {
 
                 if (_beginDragSlot != null)
@@ -441,7 +441,7 @@ public class InventoryUI : MonoBehaviour
                     _beginDragIconTransform = null;
                 }
             }
-        //}
+        }
         
     }
 
@@ -452,19 +452,19 @@ public class InventoryUI : MonoBehaviour
         if (endDragSlot != null && endDragSlot.IsAccessible)
         {
             bool isSeparatable;
-            ////VR버전
-            //if (GameManager.Instance.enabled)
-            //{
-            //    isSeparatable =
-            //    (l_grip)&&
-            //    (_inventory.IsCountableItem(_beginDragSlot.Index) && !_inventory.HasItem(endDragSlot.Index));
-            //}
-            //else
-            //{
+            //VR버전
+            if (GameManager.Instance.VrEnable)
+            {
+                isSeparatable =
+                (l_grip) &&
+                (_inventory.IsCountableItem(_beginDragSlot.Index) && !_inventory.HasItem(endDragSlot.Index));
+            }
+            else
+            {
                 isSeparatable =
                 (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.LeftShift)) &&
                 (_inventory.IsCountableItem(_beginDragSlot.Index) && !_inventory.HasItem(endDragSlot.Index));
-            //}
+            }
            
 
             bool isSeparation = false;
