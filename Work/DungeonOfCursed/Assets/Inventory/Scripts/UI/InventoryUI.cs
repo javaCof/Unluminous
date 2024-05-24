@@ -373,11 +373,10 @@ public class InventoryUI : MonoBehaviour
 
     private void OnPointerDrag()
     {
-        //if (_beginDragSlot == null)
-        //{
-        //    Debug.Log("엥 없는데?");
-        //    return;
-        //}
+        if (_beginDragSlot == null)
+        {
+            return;
+        }
 
         //    //VR버전
         //    if (GameManager.Instance.enabled)
@@ -391,9 +390,8 @@ public class InventoryUI : MonoBehaviour
         //PC버전
         //else
         //{
-            if (Input.GetMouseButton(_leftClick))
-            {
-                Debug.Log("드래그 중");
+        if (Input.GetMouseButton(_leftClick))
+            {   
                 _beginDragIconTransform.position =
                     _beginDragIconPoint + (Input.mousePosition - _beginDragCursorPoint);
             }
@@ -427,7 +425,6 @@ public class InventoryUI : MonoBehaviour
         //{
             if (Input.GetMouseButtonUp(_leftClick))
             {
-                Debug.Log("드래그 그만");
 
                 if (_beginDragSlot != null)
                 {
@@ -443,8 +440,6 @@ public class InventoryUI : MonoBehaviour
                     _beginDragSlot = null;
                     _beginDragIconTransform = null;
                 }
-                else
-                    Debug.Log("드래그 그만 안탄다");
             }
         //}
         
