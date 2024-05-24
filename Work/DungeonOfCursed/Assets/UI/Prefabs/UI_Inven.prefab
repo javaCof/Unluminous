@@ -1034,7 +1034,6 @@ GameObject:
   - component: {fileID: 3145062661560402798}
   - component: {fileID: 3145062661560402799}
   - component: {fileID: 7073611883329159757}
-  - component: {fileID: 8900554146791607098}
   - component: {fileID: 3145062661560402791}
   - component: {fileID: 3801468597405325924}
   - component: {fileID: 4126663043855182225}
@@ -1045,7 +1044,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3145062661560402784
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1121,20 +1120,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   popupEnable: 0
---- !u!114 &8900554146791607098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3145062661560402785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e8d554f637a5844289012b8ad242076, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  viewHeight: 1080
-  font: {fileID: 12800000, guid: a9c1c0e801eca8645b166cc420303844, type: 3}
 --- !u!114 &3145062661560402791
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1166,6 +1151,9 @@ MonoBehaviour:
   _toggleFilterPortions: {fileID: 6471319614707044169}
   _mouseReversed: 0
   interactor: {fileID: 0}
+  r_trigger: 0
+  r_grip: 0
+  l_grip: 0
   m_leftCon: {fileID: 0}
   m_rightCon: {fileID: 0}
   _showDebug: 1
@@ -2913,7 +2901,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7388418223270946159
 RectTransform:
   m_ObjectHideFlags: 0
