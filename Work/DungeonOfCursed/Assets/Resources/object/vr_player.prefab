@@ -1987,7 +1987,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 0.83137256, g: 0.350818, b: 0.12941177, a: 1}
-  m_Intensity: 1
+  m_Intensity: 2.5
   m_Range: 60
   m_SpotAngle: 90
   m_InnerSpotAngle: 3
@@ -7640,7 +7640,6 @@ GameObject:
   - component: {fileID: 8138547626511086424}
   - component: {fileID: 8138547626511086429}
   - component: {fileID: 8138547626511086431}
-  - component: {fileID: 1959211282256187852}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -7723,21 +7722,6 @@ MonoBehaviour:
   m_TrackingType: 0
   m_UpdateType: 0
   m_UseRelativeTransform: 0
---- !u!114 &1959211282256187852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8138547626511086425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0498dda279ef36e4fabac8ace694c6e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minLightIntensity: 2
-  maxLightIntensity: 3
-  deltaIntensity: 0.5
 --- !u!1 &8138547626708321251
 GameObject:
   m_ObjectHideFlags: 0
@@ -7811,7 +7795,7 @@ MonoBehaviour:
   m_OriginBaseGameObject: {fileID: 8138547626708321251}
   m_CameraFloorOffsetObject: {fileID: 8138547625360288483}
   m_RequestedTrackingOriginMode: 1
-  m_CameraYOffset: 2.2
+  m_CameraYOffset: 1.76
 --- !u!114 &3828865136187188957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8874,6 +8858,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8279067744260996651}
+  - component: {fileID: 4644576511503609357}
   m_Layer: 0
   m_Name: head
   m_TagString: Untagged
@@ -8898,6 +8883,21 @@ Transform:
   m_Father: {fileID: 9211992868624389066}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4644576511503609357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8869586636814526215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0498dda279ef36e4fabac8ace694c6e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minLightIntensity: 2
+  maxLightIntensity: 3
+  deltaIntensity: 0.5
 --- !u!1 &8879118676375259947
 GameObject:
   m_ObjectHideFlags: 0
