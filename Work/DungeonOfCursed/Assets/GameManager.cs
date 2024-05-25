@@ -83,7 +83,17 @@ public class GameManager : MonoBehaviour
 #endif
 
         if (player != null) player.controllable = !enablePopup && !Input.GetKey(KeyCode.LeftControl);
+
+        if (Input.GetKeyDown(KeyCode.F1)) Func1();
+        if (Input.GetKeyDown(KeyCode.F2)) Func2();
+        if (Input.GetKeyDown(KeyCode.F3)) Func3();
+        if (Input.GetKeyDown(KeyCode.F4)) Func4();
     }
+
+    void Func1() { }
+    void Func2() { }
+    void Func3() { }
+    void Func4() { }
 
     public IEnumerator MoveToScene(string scene)
     {

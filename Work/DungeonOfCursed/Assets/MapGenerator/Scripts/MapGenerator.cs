@@ -1,4 +1,4 @@
-//#define USE_DEBUG_ROOM_TYPE
+#define USE_DEBUG_ROOM_TYPE
 
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ public class MapGenerator : MonoBehaviour
 {
 #if USE_DEBUG_ROOM_TYPE
     public RoomType DEBUG_ROOM_TYPE;
+    public int DEBUG_ITEM_TYPE;
 #endif
 
     [Header("MAP SETTING")]
@@ -505,7 +506,9 @@ public class MapGenerator : MonoBehaviour
                         else
                             AddObjectCenter((int)DB_INFO.PLAYER_ID, i, combin, true);
 
-                        AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
+                        AddObjectsRandom((int)MapObjectID.CHEST, (int)MapObjectID.CHEST + 1, 4, i, combin);
+                        AddObjectsRandom((int)MapObjectID.TRADER, (int)MapObjectID.TRADER + 1, 4, i, combin);
+                        //AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
                 case RoomType.BATTLE:

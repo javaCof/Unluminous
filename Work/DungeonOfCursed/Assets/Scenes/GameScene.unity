@@ -1885,6 +1885,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca45815fb20ad2f48b748cfca77cb1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DEBUG_ROOM_TYPE: 1
+  DEBUG_ITEM_TYPE: 1000
   mainCam: {fileID: 951486410}
   mapPos: {fileID: 1897770998}
   mapTexture: {fileID: 2800000, guid: 3c4a14e0c1ede4241817ffb10b0936f3, type: 3}
