@@ -105,7 +105,7 @@ public class Trader : MonoBehaviour, IPoolObject
 
     public void OnBtnItem(int i)
     {
-        Debug.Log(btnItem[i]);
+        Debug.Log("on btn");
         _invetory.Add(btnItem[i]);
     }
 

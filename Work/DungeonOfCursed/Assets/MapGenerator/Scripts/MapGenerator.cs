@@ -44,9 +44,6 @@ public class MapGenerator : MonoBehaviour
     public string traderResName;
     public string potalResName;
 
-    [Header("ITEM OBJECTS")]
-    public string itemResName;               //TEST
-
     public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
     public enum TileID { FLOOR = 100, WALL, CORNER, PILLAR }                                //타일 ID
@@ -218,7 +215,7 @@ public class MapGenerator : MonoBehaviour
 
         yield return GameManager.Instance.UpdateLoadingText("맵 오브젝트 Pool 생성 중...");
 
-        CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 20, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+        CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 50, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 20, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(potalResName, (int)MapObjectID.POTAL, 1, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         
@@ -506,7 +503,7 @@ public class MapGenerator : MonoBehaviour
                         else
                             AddObjectCenter((int)DB_INFO.PLAYER_ID, i, combin, true);
 
-                        AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
+                        //AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
                 case RoomType.BATTLE:
@@ -517,7 +514,8 @@ public class MapGenerator : MonoBehaviour
                     break;
                 case RoomType.TREASURE:
                     {
-                        AddObjectCenter((int)MapObjectID.CHEST, i, combin);
+                        //AddObjectCenter((int)MapObjectID.CHEST, i, combin);
+                        AddObjectsRandom((int)MapObjectID.CHEST, chestCount, i, combin);
                         AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;

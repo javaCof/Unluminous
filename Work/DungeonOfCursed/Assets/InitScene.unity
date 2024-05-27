@@ -517,4 +517,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextScene: MenuScene
   curScene: 
+  enablePopup: 0
   player: {fileID: 0}
+  gameClear: 0

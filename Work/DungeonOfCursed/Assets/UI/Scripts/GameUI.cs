@@ -60,4 +60,9 @@ public class GameUI : MonoBehaviour
         popup.PopupOpen(invenPopup);
         SoundManager.instance.PlaySfx("inven");
     }
+    public void OpenTrade()
+    {
+        popup.PopupOpen(invenPopup);
+        SoundManager.instance.PlaySfx("inven");
+    }
 }

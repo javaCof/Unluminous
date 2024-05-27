@@ -293,7 +293,7 @@ public class Enemy : UnitObject
     }
     [PunRPC] void Hit_All()
     {
-        anim.SetTrigger("hit");
+        //anim.SetTrigger("hit");
     }
     [PunRPC] void Dead_All()
     {
