@@ -1,17 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Trader : MonoBehaviour, IPoolObject
 {
     private MapGenerator map;
     private PhotonView pv;
+    private Trade_UI trade_UI;
+    private Inventory _invetory;
 
-    public List<ItemData> randomItemSlot1;
-    public List<ItemData> randomItemSlot2;
-    public List<ItemData> randomItemSlot3;
+    public List<Item> randomItemSlot1;
+    public List<Item> randomItemSlot2;
+    public List<Item> randomItemSlot3;
 
-    public GameObject trade_UI;
+    public ItemData[] btnItem = new ItemData[3];
 
     private int[] itemIdxs = new int[3];
 
@@ -19,7 +21,15 @@ public class Trader : MonoBehaviour, IPoolObject
     {
         map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
+        trade_UI = FindObjectOfType<Trade_UI>();
+        _invetory = FindAnyObjectByType<Inventory>();
     }
+
+    void Start()
+    {
+       trade_UI.gameObject.SetActive(false);
+    }
+
     private void Reset()
     {
         itemIdxs[0] = Random.Range(0, randomItemSlot1.Count);
@@ -43,7 +53,66 @@ public class Trader : MonoBehaviour, IPoolObject
     }
     [PunRPC] void Trade_Master()
     {
-        trade_UI.SetActive(true);
+        Debug.Log("트레이드");
+
+        GameManager.Instance.player.controllable = false;
+        GameManager.Instance.enablePopup = true;
+        
+        trade_UI.gameObject.SetActive(true);
+        UpdateTradeUI();
+
+        
+    }
+
+    void UpdateTradeUI()
+    {
+        for (int i = 0; i < itemIdxs.Length; i++)
+        {
+            ItemData itemData = null;
+            Item item = null;
+            switch (i)
+            {
+                case 0:
+                    item = randomItemSlot1[itemIdxs[i]];
+                    itemData = randomItemSlot1[itemIdxs[i]].GetComponent<ItemData>();
+                    itemData = item.SetItemData(itemData, item.id);
+                    btnItem[i] = itemData;
+                    break;
+                case 1:
+                    item = randomItemSlot2[itemIdxs[i]];
+                    itemData = randomItemSlot2[itemIdxs[i]].GetComponent<ItemData>();
+                    itemData = item.SetItemData(itemData, item.id);
+                    btnItem[i] = itemData;
+                    break;
+                case 2:
+                    item = randomItemSlot3[itemIdxs[i]];
+                    itemData = randomItemSlot3[itemIdxs[i]].GetComponent<ItemData>();
+                    itemData = item.SetItemData(itemData, item.id);
+                    btnItem[i] = itemData;
+                    break;
+            }
+
+            if (item != null)
+            {
+                trade_UI.SetItemImg(Resources.Load<Sprite>(itemData.Icon), i);
+                trade_UI.SetGold(itemData, i);
+            }
+        }
+
+        for(int i =0; i < 3; i++)
+         Debug.Log(btnItem[i].Name);
+    }
+
+    public void OnBtnItem(int i)
+    {
+        Debug.Log(btnItem[i]);
+        _invetory.Add(btnItem[i]);
+    }
+
+    public void OnClose()
+    {
+        Debug.Log("닫기");
+        trade_UI.gameObject.SetActive(false);
     }
 
     [PunRPC] public void OnPoolCreate(int id)

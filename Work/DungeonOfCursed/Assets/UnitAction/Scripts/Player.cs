@@ -287,7 +287,7 @@ public class Player : UnitObject
     {
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
-            if (target != null && target.tag == "Trade")
+            if (target != null && target.tag == "Trader")
                 target.GetComponent<Trader>().Trade();
         }
     }

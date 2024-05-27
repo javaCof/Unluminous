@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Item : MonoBehaviour, IPoolObject
 {
-    [HideInInspector] public int id;
-    [HideInInspector] public int amount;
+    public int id;
+    public int amount;
     //[HideInInspector] public int price;
     //[HideInInspector] public string name;
     //[HideInInspector] public string dec;
@@ -65,6 +65,41 @@ public class Item : MonoBehaviour, IPoolObject
 
         RemoveObject();
     }
+
+    public ItemData SetItemData(ItemData itemData, int id)
+    {
+        ItemData lastItemData = null;
+        itemData.ID = id;
+
+        if (itemData is CountableItemData)
+        {
+            itemData.Name = FirebaseManager.items[id].name;
+            itemData.Price = FirebaseManager.items[id].price;
+            itemData.Tooltip = FirebaseManager.items[id].dec;
+            itemData.Res = FirebaseManager.items[id].res;
+            itemData.Icon = FirebaseManager.items[id].icon;
+
+            lastItemData = itemData;
+        }
+        else
+        {
+            ArmorItemData elseItemData = itemData as ArmorItemData;
+            elseItemData.Name = FirebaseManager.equips[id].name;
+            elseItemData.Price = FirebaseManager.equips[id].price;
+            elseItemData.Tooltip = FirebaseManager.equips[id].dec;
+            elseItemData.Res = FirebaseManager.equips[id].res;
+            elseItemData.Icon = FirebaseManager.equips[id].icon;
+            elseItemData.Atk = FirebaseManager.equips[id].atk;
+            elseItemData.Def = FirebaseManager.equips[id].def;
+            elseItemData.Speed = FirebaseManager.equips[id].speed;
+            elseItemData.Hp = FirebaseManager.equips[id].hp;
+            elseItemData.Set = FirebaseManager.equips[id].set;
+
+            lastItemData = elseItemData;
+        }
+        return lastItemData;
+    }
+
     [PunRPC] void RemoveObject()
     {
         map.RemoveObject(gameObject, id);

@@ -241,7 +241,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8431834523939947893}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6108043300895780559, guid: 4228ff64e88978249928ae0860ac9d1f, type: 3}
+        m_TargetAssemblyTypeName: Trader, Assembly-CSharp
+        m_MethodName: OnBtnItem
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4128073835488119207
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,9 +453,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3659289644818365111}
-        m_TargetAssemblyTypeName: PopupContent, Assembly-CSharp
-        m_MethodName: ClosePopup
+      - m_Target: {fileID: 6108043300895780559, guid: 4228ff64e88978249928ae0860ac9d1f, type: 3}
+        m_TargetAssemblyTypeName: Trader, Assembly-CSharp
+        m_MethodName: OnClose
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -651,7 +663,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5278544939921696625}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6108043300895780559, guid: 4228ff64e88978249928ae0860ac9d1f, type: 3}
+        m_TargetAssemblyTypeName: Trader, Assembly-CSharp
+        m_MethodName: OnBtnItem
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6707475819534435800
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,7 +954,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3376032717894132610}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6108043300895780559, guid: 4228ff64e88978249928ae0860ac9d1f, type: 3}
+        m_TargetAssemblyTypeName: Trader, Assembly-CSharp
+        m_MethodName: OnBtnItem
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8883189595695479707
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,13 +980,14 @@ GameObject:
   - component: {fileID: 8883189595695479701}
   - component: {fileID: 3659289644818365111}
   - component: {fileID: 7803986070150813097}
+  - component: {fileID: 1905504442}
   m_Layer: 5
   m_Name: UI_Trade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8883189595695479706
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1023,6 +1060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58477b8bf615933438f968cc893375d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popupEnable: 0
 --- !u!114 &7803986070150813097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1037,6 +1075,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewHeight: 1080
   font: {fileID: 12800000, guid: a9c1c0e801eca8645b166cc420303844, type: 3}
+--- !u!114 &1905504442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8883189595695479707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dc66c75a56011342a59375866620490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  t_ItemSlot:
+  - {fileID: 5278544939921696648}
+  - {fileID: 1886684293667231765}
+  - {fileID: 9088230621641476689}
+  txt:
+  - {fileID: 5984953148589026541}
+  - {fileID: 6728914785747789183}
+  - {fileID: 7747165784568805440}
 --- !u!1 &9022855055499825990
 GameObject:
   m_ObjectHideFlags: 0

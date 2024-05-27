@@ -69,7 +69,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxDurability: 0
-  _defence: 0
 --- !u!65 &8244421848135181179
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -95,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14431757409c07047b4edad852fa8262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  id: 2008
   amount: 0
 --- !u!1 &2326066375139082391
 GameObject:

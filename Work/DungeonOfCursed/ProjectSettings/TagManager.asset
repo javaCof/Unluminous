@@ -10,6 +10,8 @@ TagManager:
   - Chest
   - Item
   - VrInteracter
+  - UICamera
+  - Trade_UI
   layers:
   - Default
   - TransparentFX

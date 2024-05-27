@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14431757409c07047b4edad852fa8262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  id: 1003
   amount: 0
 --- !u!114 &461861740
 MonoBehaviour:
@@ -82,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b597242af57330945a22e8bf03013df0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxAmount: 0
+  MaxAmount: 0
   _value: 10
 --- !u!65 &3947261504322419162
 BoxCollider:

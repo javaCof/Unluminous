@@ -91,9 +91,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9066985799766535946}
   - component: {fileID: 4556020361548692057}
-  - component: {fileID: 693420882}
   - component: {fileID: 7507049374252693547}
   - component: {fileID: -4763375464650068057}
+  - component: {fileID: 6673027707884807076}
   m_Layer: 7
   m_Name: RebornScroll
   m_TagString: Item
@@ -137,19 +137,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &693420882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8487396700331078713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1971c5cefe151b44683b2606035af84e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxAmount: 0
 --- !u!65 &7507049374252693547
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -175,5 +162,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14431757409c07047b4edad852fa8262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  id: 1006
   amount: 0
+--- !u!114 &6673027707884807076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8487396700331078713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b597242af57330945a22e8bf03013df0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxAmount: 0
+  _value: 0
