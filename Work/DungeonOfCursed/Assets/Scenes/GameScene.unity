@@ -1398,6 +1398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingPopup: {fileID: 47337965}
   invenPopup: {fileID: 6263103055218382898}
+  tradePopup: {fileID: 2131859041}
   leftJoyStick: {fileID: 1930457097569433}
   actionButton: {fileID: 887395740}
   jumpButton: {fileID: 88369969}
@@ -1886,8 +1887,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca45815fb20ad2f48b748cfca77cb1af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DEBUG_ROOM_TYPE: 4
-  DEBUG_ITEM_TYPE: 0
   mainCam: {fileID: 951486410}
   mapPos: {fileID: 1897770998}
   mapTexture: {fileID: 2800000, guid: 3c4a14e0c1ede4241817ffb10b0936f3, type: 3}
@@ -1915,7 +1914,6 @@ MonoBehaviour:
   chestResName: map/Chest
   traderResName: map/Trader
   potalResName: map/Portal
-  itemResName: item/Item1
   tileColors:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
@@ -2379,7 +2377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8883189595695479707, guid: 02f60127918e13b4db82615fa12b504e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9088230621641476689, guid: 02f60127918e13b4db82615fa12b504e, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -2400,6 +2398,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8883189595695479706, guid: 02f60127918e13b4db82615fa12b504e, type: 3}
   m_PrefabInstance: {fileID: 2131859039}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2131859041 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3659289644818365111, guid: 02f60127918e13b4db82615fa12b504e, type: 3}
+  m_PrefabInstance: {fileID: 2131859039}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58477b8bf615933438f968cc893375d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1034362018798181
 GameObject:
   m_ObjectHideFlags: 0
@@ -2940,8 +2949,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 480, y: 540}
-  m_SizeDelta: {x: 960, y: 1080}
+  m_AnchoredPosition: {x: 960, y: 1080}
+  m_SizeDelta: {x: 1920, y: 2160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224668971691279501
 RectTransform:
@@ -2983,8 +2992,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -189.59998, y: -194.4}
-  m_SizeDelta: {x: 432, y: 432}
+  m_AnchoredPosition: {x: -379.19995, y: -388.8}
+  m_SizeDelta: {x: 864, y: 864}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224889228430680227
 RectTransform:
@@ -3131,6 +3140,10 @@ PrefabInstance:
     - target: {fileID: 3145062661560402785, guid: 8944c17851b74f7418174d127d40b89a, type: 3}
       propertyPath: m_Name
       value: UI_Inven
+      objectReference: {fileID: 0}
+    - target: {fileID: 3145062661560402785, guid: 8944c17851b74f7418174d127d40b89a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8944c17851b74f7418174d127d40b89a, type: 3}

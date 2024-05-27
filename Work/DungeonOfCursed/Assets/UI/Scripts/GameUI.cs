@@ -7,6 +7,7 @@ public class GameUI : MonoBehaviour
 {
     public PopupContent settingPopup;
     public PopupContent invenPopup;
+    public PopupContent tradePopup;
 
     public GameObject leftJoyStick;
     public Button actionButton;
@@ -62,7 +63,7 @@ public class GameUI : MonoBehaviour
     }
     public void OpenTrade()
     {
-        popup.PopupOpen(invenPopup);
+        popup.PopupOpen(tradePopup);
         SoundManager.instance.PlaySfx("inven");
     }
 }
