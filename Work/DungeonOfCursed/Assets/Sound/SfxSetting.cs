@@ -13,7 +13,7 @@ public class SfxSetting : MonoBehaviour
 
     private void Start()
     {
-        //audio.volume = SoundManager.instance.bgm;
+        audio.volume = GameManager.Instance.SfxVolume;
     }
 
     public void SetSfx(float volume)

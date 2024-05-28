@@ -13,7 +13,7 @@ public class BgmSetting : MonoBehaviour
 
     private void Start()
     {
-        //audio.volume = SoundManager.instance.bgm;
+        audio.volume = GameManager.Instance.BgmVolume;
     }
 
     public void SetBgm(float volume)

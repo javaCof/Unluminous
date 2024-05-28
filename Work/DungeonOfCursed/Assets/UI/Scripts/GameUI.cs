@@ -76,7 +76,7 @@ public class GameUI : MonoBehaviour
     public void DmgEffect(Vector3 pos, float dmg)
     {
         GameObject go = Instantiate(dmgEffect, Camera.main.WorldToScreenPoint(pos), Quaternion.identity, transform);
-        go.GetComponent<Text>().text = dmg.ToString();
+        go.GetComponent<Text>().text = ((int)dmg).ToString();
     }
     public void UpdateFocus(bool focus)
     {
