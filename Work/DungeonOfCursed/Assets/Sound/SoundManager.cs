@@ -105,4 +105,18 @@ public class SoundManager : MonoBehaviour
         player.Play();
     }
 
+    public void ChangeBgm(float volume)
+    {
+        foreach (var set in FindObjectsByType<BgmSetting>(FindObjectsSortMode.None))
+        {
+            set.SetBgm(volume);
+        }
+    }
+    public void ChangeSfx(float volume)
+    {
+        foreach (var set in FindObjectsByType<SfxSetting>(FindObjectsSortMode.None))
+        {
+            set.SetSfx(volume);
+        }
+    }
 }

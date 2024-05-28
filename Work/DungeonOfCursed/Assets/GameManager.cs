@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
     private bool now_loading;
 
     public float InputSensitivity { get { return _InputSensitivity; } set { _InputSensitivity = value; PlayerPrefs.SetFloat("INPUT_SENSITIVITY", value); } }
-    public float BgmVolume { get { return _BgmVolume; } set { _BgmVolume = value; PlayerPrefs.SetFloat("BGM_VOLUME", value); } }
-    public float SfxVolume { get { return _SfxVolume; } set { _SfxVolume = value; PlayerPrefs.SetFloat("SFX_VOLUME", value); } }
+    public float BgmVolume { get { return _BgmVolume; } set { _BgmVolume = value; SoundManager.instance.ChangeBgm(value); PlayerPrefs.SetFloat("BGM_VOLUME", value); } }
+    public float SfxVolume { get { return _SfxVolume; } set { _SfxVolume = value; SoundManager.instance.ChangeSfx(value); PlayerPrefs.SetFloat("SFX_VOLUME", value); } }
 
     private float _InputSensitivity;
     private float _BgmVolume;

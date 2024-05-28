@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1289107733446423337}
   - component: {fileID: 4978369776976980525}
+  - component: {fileID: 3614889598968211559}
   m_Layer: 0
   m_Name: sword
   m_TagString: Untagged
@@ -128,6 +129,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3614889598968211559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789179441033769600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625431eefa7b51c4d9d1c928b3bd6b56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2368639997400437041
 GameObject:
   m_ObjectHideFlags: 0
@@ -7061,6 +7074,7 @@ GameObject:
   - component: {fileID: 1395430224}
   - component: {fileID: 1395430225}
   - component: {fileID: 3815818276559725786}
+  - component: {fileID: 4219995553622179035}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -7256,6 +7270,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4219995553622179035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7931707577599125509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625431eefa7b51c4d9d1c928b3bd6b56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7931707579328238510
 GameObject:
   m_ObjectHideFlags: 0

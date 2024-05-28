@@ -11,6 +11,10 @@ public class GameUI : MonoBehaviour
 
     public GameObject dmgEffect;
 
+    public Image focusImg;
+    public Color focusColor;
+    public Color nonfocusColor;
+
     public GameObject leftJoyStick;
     public Button actionButton;
     public Button jumpButton;
@@ -73,5 +77,9 @@ public class GameUI : MonoBehaviour
     {
         GameObject go = Instantiate(dmgEffect, Camera.main.WorldToScreenPoint(pos), Quaternion.identity, transform);
         go.GetComponent<Text>().text = dmg.ToString();
+    }
+    public void UpdateFocus(bool focus)
+    {
+        focusImg.color = focus ? focusColor : nonfocusColor;
     }
 }

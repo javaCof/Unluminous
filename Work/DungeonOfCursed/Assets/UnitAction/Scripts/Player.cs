@@ -251,11 +251,15 @@ public class Player : UnitObject
     }
     void ShowLookTarget()
     {
-        ILookEvent look;
-        if (target != null && (look = target.GetComponent<ILookEvent>()) != null)
+        if (target != null)
         {
-            look.OnLook(this);
+            ILookEvent look;
+            if ((look = target.GetComponent<ILookEvent>()) != null)
+                look.OnLook(this);
+
+            ui.UpdateFocus(true);
         }
+        else ui.UpdateFocus(false);
     }
 
     [PunRPC] void Action_All()

@@ -1271,6 +1271,7 @@ GameObject:
   - component: {fileID: 935082987}
   - component: {fileID: 935082988}
   - component: {fileID: 935082986}
+  - component: {fileID: 935082990}
   - component: {fileID: 935082989}
   m_Layer: 5
   m_Name: GameUI
@@ -1400,6 +1401,9 @@ MonoBehaviour:
   invenPopup: {fileID: 6263103055218382898}
   tradePopup: {fileID: 0}
   dmgEffect: {fileID: 5093506522115634469, guid: 1aab25e72c80bb74382e1d0f08352a0d, type: 3}
+  focusImg: {fileID: 1731669824}
+  focusColor: {r: 0, g: 1, b: 0.013665199, a: 1}
+  nonfocusColor: {r: 1, g: 1, b: 1, a: 1}
   leftJoyStick: {fileID: 1930457097569433}
   actionButton: {fileID: 887395740}
   jumpButton: {fileID: 88369969}
@@ -1549,6 +1553,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
+--- !u!114 &935082990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935082979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e92c7d3500f4ae459cbc02955f3a429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &951486408
 GameObject:
   m_ObjectHideFlags: 0
