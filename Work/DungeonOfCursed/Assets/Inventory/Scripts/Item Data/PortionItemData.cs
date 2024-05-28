@@ -12,6 +12,4 @@ public class PortionItemData : CountableItemData
         return new PortionItem(this);
     }
 
-    public PortionItemData(int id) : base(id) { }
-
 }

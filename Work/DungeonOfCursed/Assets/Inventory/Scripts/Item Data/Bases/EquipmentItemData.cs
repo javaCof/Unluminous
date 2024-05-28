@@ -10,8 +10,6 @@ public class EquipmentItemData : ItemData
 
     [SerializeField] private int _maxDurability = 100;
 
-    public EquipmentItemData(int id) : base(id) { }
-
     public override Item2 CreateItem()
     {
         return new EquipmentItem(this);

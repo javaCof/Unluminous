@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxAmount: 0
-  _value: 10
+  _value: 0
 --- !u!65 &3947261504322419162
 BoxCollider:
   m_ObjectHideFlags: 0

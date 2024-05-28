@@ -104,11 +104,19 @@ public class Inventory : MonoBehaviour
             if (current == null)
                 continue;
 
-            if (current.Data == target && current is CountableItem ci)
+            if (current.Data.ID == target.ID && current is CountableItem ci)
             {
+                Debug.Log(current.Data);
+                Debug.Log(target);
                 if (!ci.IsMax)
                     return i;
             }
+            else
+            {
+                Debug.Log(current.Data);
+                Debug.Log(target);
+            }
+
         }
 
         return -1;
@@ -204,16 +212,19 @@ public class Inventory : MonoBehaviour
             {
                 if (findNextCountable)
                 {
+                    Debug.Log(ciData);
                     index = FindCountableItemSlotIndex(ciData, index + 1);
 
                     if (index == -1)
                     {
+                        Debug.Log("index - 1");
                         findNextCountable = false;
                     }
                     else
                     {
                         CountableItem ci = _items[index] as CountableItem;
                         amount = ci.AddAmountAndGetExcess(amount);
+                        Debug.Log(amount);
                         UpdateSlot(index);
                     }
                 }
@@ -230,9 +241,10 @@ public class Inventory : MonoBehaviour
                     {
                         CountableItem ci = ciData.CreateItem() as CountableItem;
                         ci.SetAmount(amount);
-                        
+                        Debug.Log(amount);  
                         _items[index] = ci;
                         amount = (amount > ciData.MaxAmount) ? (amount - ciData.MaxAmount) : 0;
+                        Debug.Log(amount);
                         UpdateSlot(index);
                     }
                 }
@@ -288,7 +300,7 @@ public class Inventory : MonoBehaviour
         Item2 itemB = _items[indexB];
 
         if (itemA != null && itemB != null &&
-            itemA.Data == itemB.Data &&
+            itemA.Data.ID == itemB.Data.ID &&
             itemA is CountableItem ciA && itemB is CountableItem ciB)
         {
             int maxAmount = ciB.MaxAmount;
