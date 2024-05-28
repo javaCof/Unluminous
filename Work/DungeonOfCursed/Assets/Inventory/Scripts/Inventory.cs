@@ -364,12 +364,7 @@ public class Inventory : MonoBehaviour
                         Debug.Log(player.curHP);
                         Debug.Log("회복 아이템 사용");
                         float healHp = player.stat.HP * 0.3f;
-                        player.curHP += healHp;
-                        Debug.Log(player.curHP);
-                        if (player.curHP > player.stat.HP)
-                        {
-                            player.curHP = player.stat.HP;
-                        }
+                        player.SetHP(player.curHP + healHp);
                         break;
 
                     case 1003:
