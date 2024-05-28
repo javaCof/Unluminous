@@ -56,8 +56,6 @@ public class ItemTooltipUI : MonoBehaviour
 
     public void SetItemInfo(ItemData data)
     {
-        Debug.Log(data.Name);
-
         if (data != null)
         {
             int price = data.Price;

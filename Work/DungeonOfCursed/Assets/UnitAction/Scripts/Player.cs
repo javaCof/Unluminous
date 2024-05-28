@@ -35,6 +35,7 @@ public class Player : UnitObject
     protected MapGenerator map;
     protected PhotonView pv;
     protected GameUI ui;
+    protected Inventory inven;
 
     private Renderer[] renderers;
     private Renderer[] weapon_renderers;
@@ -67,6 +68,7 @@ public class Player : UnitObject
         map = FindObjectOfType<MapGenerator>();
         pv = GetComponent<PhotonView>();
         ui = FindObjectOfType<GameUI>();
+        inven = FindObjectOfType<Inventory>();
 
         renderers = GetComponentsInChildren<Renderer>();
         weapon_renderers = weapon.GetComponentsInChildren<Renderer>();
@@ -451,6 +453,8 @@ public class Player : UnitObject
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             GameManager.Instance.player = this;
+            inven.player = this;
+
         }
     }
     [PunRPC] public override void OnPoolDisable()

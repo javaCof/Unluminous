@@ -23,6 +23,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Button _openInvenButton;
     [SerializeField] private Button _closeInvenButton;
     [SerializeField] private GameObject _inventory;
+    [HideInInspector] public Player player;
 
     private bool isOpen = false;
 
@@ -357,6 +358,37 @@ public class Inventory : MonoBehaviour
 
             if (succeeded)
             {
+                switch(_items[index].Data.ID)
+                {
+                    case 1002:
+                        Debug.Log(player.curHP);
+                        Debug.Log("회복 아이템 사용");
+                        float healHp = player.stat.HP * 0.3f;
+                        player.curHP += healHp;
+                        Debug.Log(player.curHP);
+                        if (player.curHP > player.stat.HP)
+                        {
+                            player.curHP = player.stat.HP;
+                        }
+                        break;
+
+                    case 1003:
+                        Debug.Log("공격력 버프 아이템 사용");
+                        Debug.Log(player.stat.ATK);
+                        float atk = player.stat.ATK * 0.3f;
+                        player.stat.ATK += atk;
+                        Debug.Log(player.stat.ATK);
+                        break;
+
+                    //case 1004:
+                    //    Debug.Log("방어력 버프 아이템 사용");
+                    //    break;
+
+                    //case 1005:
+                    //    Debug.Log("이동속도 버프 아이템 사용");
+                    //    break;
+                }
+
                 UpdateSlot(index);
             }
         }

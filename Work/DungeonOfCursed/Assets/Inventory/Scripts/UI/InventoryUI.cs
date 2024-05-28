@@ -558,11 +558,9 @@ public class InventoryUI : MonoBehaviour
     {
         if (!slot.IsAccessible || !slot.HasItem)
         {
-            Debug.Log("툴팁 정보 전달 실패");
             return;
         }  
         _itemTooltip.SetItemInfo(_inventory.GetItemData(slot.Index));
-        Debug.Log("툴팁 정보 전달");
         //_itemTooltip.SetRectPosition(slot.SlotRect);
     }
 
