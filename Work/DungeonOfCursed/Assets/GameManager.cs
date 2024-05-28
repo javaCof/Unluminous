@@ -90,10 +90,32 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F4)) Func4();
     }
 
-    void Func1() { }
-    void Func2() { }
-    void Func3() { }
-    void Func4() { }
+    void Func1() 
+    {
+        if (player != null)
+        {
+            player.stat.ATK *= 5;
+            player.stat.HP *= 5;
+            player.curHP = player.stat.HP;
+        }
+    }
+    void Func2() 
+    {
+        //인벤토리 치트
+    }
+    void Func3() 
+    {
+        MapGenerator map = FindObjectOfType<MapGenerator>();
+        if (map != null)
+        {
+            map.level = 2;
+            map.ResetLevel();
+        }
+    }
+    void Func4() 
+    {
+
+    }
 
     public IEnumerator MoveToScene(string scene)
     {

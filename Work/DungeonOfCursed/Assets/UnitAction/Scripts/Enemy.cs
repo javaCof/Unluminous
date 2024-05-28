@@ -306,8 +306,9 @@ public class Enemy : UnitObject
 
         if (isBoss)
         {
-            GameManager.Instance.gameClear = true;
-            yield return GameManager.Instance.MoveToScene("GameEndScene");
+            yield return new WaitForSeconds(1);
+
+            map.ClearGame();
         }
 
         map.RemoveObject(gameObject, id);

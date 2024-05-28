@@ -67,8 +67,13 @@ public class SettingUI : MonoBehaviour
         UpdateBtnUI(bgmBtn, bgmSlider.value > 0);
         UpdateBtnUI(sfxBtn, sfxSlider.value > 0);
 
-        homeBtn.onClick.AddListener(() => StartCoroutine(GoToMenu()));
-        exitBtn.onClick.AddListener(() => GameManager.Instance.ExitGame(true));
+        homeBtn.onClick.AddListener(() => {
+            StartCoroutine(GoToMenu());
+        });
+        exitBtn.onClick.AddListener(() => {
+            if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
+            GameManager.Instance.ExitGame(true);
+        });
         closeBtn.onClick.AddListener(() => {
             popup.ClosePopup();
             SoundManager.instance.PlaySfx("menu");

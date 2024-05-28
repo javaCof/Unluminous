@@ -374,6 +374,7 @@ public class Player : UnitObject
     {
         yield return new WaitForSeconds(delay);
 
+        if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
         yield return GameManager.Instance.MoveToScene("GameEndScene");
     }
 

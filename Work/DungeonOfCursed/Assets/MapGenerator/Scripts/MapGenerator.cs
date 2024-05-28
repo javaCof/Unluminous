@@ -44,13 +44,14 @@ public class MapGenerator : MonoBehaviour
     public string traderResName;
     public string potalResName;
 
-    public enum RoomType { START, BATTLE, ELITE, TREASURE, TRADER, POTAL, BOSS }            //방 타입
+    public enum RoomType { START, BATTLE, ELITE, TREASURE, POTAL, BOSS }            //방 타입
     public enum TileType { EMPTY, FLOOR, WALL, CORNER, PILLAR, PATH }                       //타일 타입
     public enum TileID { FLOOR = 100, WALL, CORNER, PILLAR }                                //타일 ID
     public enum MapObjectID { CHEST=300, TRADER, POTAL }
 
     public const int MapDecoID = 400;
 
+    [Header("MINIMAP")]
     [SerializeField] private Color[] tileColors = { Color.white, Color.white, Color.black, Color.black, Color.black, Color.black };
     [SerializeField] private Color myPlayerColor = Color.red;
     [SerializeField] private Color othPlayerColor = Color.blue;
@@ -138,7 +139,7 @@ public class MapGenerator : MonoBehaviour
     TileType[] mapTiles;                //맵 타일
     Texture2D tileTexture;              //타일 텍스쳐
 
-    int level = 1;
+    [HideInInspector] public int level = 1;
     int mapMatIdx = -1;
 
     Vector3 playerSpawnPoint;
@@ -459,7 +460,6 @@ public class MapGenerator : MonoBehaviour
         for (int i = 0; i < roomCount; i++) roomTypes.Add(RoomType.START);
         roomTypes[combin.GetRandom()] = RoomType.START; othRoomCount--;
         roomTypes[combin.GetRandom()] = (level == 3) ? RoomType.BOSS : RoomType.POTAL; othRoomCount--;
-        roomTypes[combin.GetRandom()] = RoomType.TRADER; othRoomCount--;
         int othCount = Random.Range(0, 3);
         for (int i = 0; i < othCount; i++)
         {
@@ -528,12 +528,6 @@ public class MapGenerator : MonoBehaviour
                 case RoomType.ELITE:
                     {
                         AddObjectCenter(Random.Range((int)DB_INFO.ELITE_MONSTER_BEGIN, (int)DB_INFO.ELITE_MONSTER_NEXT), i, combin);
-                        AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
-                    }
-                    break;
-                case RoomType.TRADER:
-                    {
-                        AddObjectCenter((int)MapObjectID.TRADER, i, combin);
                         AddObjectsRandom(MapDecoID, MapDecoID + decoPrefabs.Count, decoCount, i, combin);
                     }
                     break;
@@ -881,5 +875,18 @@ public class MapGenerator : MonoBehaviour
     public void RemoveObject(GameObject go, int id)
     {
         objectsPool[id].DisableObject(go);
+    }
+
+    [PunRPC] public void ClearGame()
+    {
+        if (PhotonNetwork.inRoom) pv.RPC("ClearGame", PhotonTargets.Others);
+
+        GameManager.Instance.gameClear = true;
+        StartCoroutine(GameManager.Instance.MoveToScene("GameEndScene"));
+    }
+
+    void OnMasterClientSwitched(Player newMasterClient)
+    {
+        ResetLevel();
     }
 }
