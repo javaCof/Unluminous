@@ -120,7 +120,7 @@ public class InventoryTester : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.F6))
         {
-            _inventory.Add(itemData3);
+            _inventory.Add(itemData2);
             Debug.Log("Ãß°¡");
         }
 
