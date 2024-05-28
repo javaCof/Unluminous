@@ -43,7 +43,7 @@ public class Chest : MonoBehaviour, IPoolObject
         int id = isItem ? Random.Range((int)DB_INFO.ITEM_BEGIN, (int)DB_INFO.ITEM_NEXT) :
             Random.Range((int)DB_INFO.EQUIP_BEGIN, (int)DB_INFO.EQUIP_NEXT);
         Item item = map.GenerateObject(id, transform.position, Quaternion.identity).GetComponent<Item>();
-        item.amount = (id == (int)DB_INFO.ITEM_GOLD) ? Random.Range(100, 400) : 1;
+        item.amount = (id == (int)DB_INFO.ITEM_GOLD) ? Random.Range(1, 4) : 1;
         targetItem = item;
     }
 

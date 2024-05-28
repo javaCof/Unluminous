@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private string nextScene;
-    [HideInInspector] public string curScene;
+     public string curScene;
 
     private bool now_loading;
 

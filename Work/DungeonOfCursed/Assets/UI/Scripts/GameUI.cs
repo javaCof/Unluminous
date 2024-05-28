@@ -9,6 +9,8 @@ public class GameUI : MonoBehaviour
     public PopupContent invenPopup;
     public PopupContent tradePopup;
 
+    public GameObject dmgEffect;
+
     public GameObject leftJoyStick;
     public Button actionButton;
     public Button jumpButton;
@@ -65,5 +67,11 @@ public class GameUI : MonoBehaviour
     {
         popup.PopupOpen(tradePopup);
         SoundManager.instance.PlaySfx("inven");
+    }
+
+    public void DmgEffect(Vector3 pos, float dmg)
+    {
+        GameObject go = Instantiate(dmgEffect, Camera.main.WorldToScreenPoint(pos), Quaternion.identity, transform);
+        go.GetComponent<Text>().text = dmg.ToString();
     }
 }

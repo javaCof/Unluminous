@@ -68,7 +68,9 @@ public class SettingUI : MonoBehaviour
         UpdateBtnUI(sfxBtn, sfxSlider.value > 0);
 
         homeBtn.onClick.AddListener(() => {
-            StartCoroutine(GoToMenu());
+            if (GameManager.Instance.curScene == "MenuScene") return;
+            if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
+            GameManager.Instance.LoadingScene("MenuScene");
         });
         exitBtn.onClick.AddListener(() => {
             if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
@@ -83,15 +85,6 @@ public class SettingUI : MonoBehaviour
         vrBtn.GetComponentInChildren<Text>().text = GameManager.Instance.VrEnable ? "PC" : "VR";
     }
 
-    IEnumerator GoToMenu()
-    {
-        if (GameManager.Instance.curScene == "MenuScene") yield break;
-
-        yield return GameManager.Instance.StartLoading();
-        if (PhotonNetwork.inRoom) PhotonNetwork.LeaveRoom();
-        yield return GameManager.Instance.ChangeScene(GameManager.Instance.curScene, "MenuScene");
-        yield return GameManager.Instance.EndLoading();
-    }
     void UpdateBtnUI(Button btn, bool on)
     {
         btn.GetComponent<Image>().color = on ? Color.white : Color.red;

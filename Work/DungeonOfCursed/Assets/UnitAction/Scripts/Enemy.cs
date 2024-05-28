@@ -7,6 +7,8 @@ public class Enemy : UnitObject
 {
     public enum EnemyState { Search, Trace, Attack, Repos, Dead }
 
+    public float upSpeed;
+
     public bool isBoss;
     public bool enableState = true;
     public float minAttackRange = 1.5f;
@@ -34,6 +36,8 @@ public class Enemy : UnitObject
     private bool animMove;
     private Vector3 curPos;
     private Quaternion curRot;
+
+    Item targetItem;
 
     private void Awake()
     {
@@ -66,6 +70,11 @@ public class Enemy : UnitObject
         {
             UpdatePos();
             UpdateAnimMove(animMove);
+        }
+
+        if (targetItem != null && targetItem.transform.position.y <= 1.5f)
+        {
+            targetItem.transform.Translate(Time.deltaTime * (new Vector3(0, 0, -upSpeed)));
         }
     }
     public void Reset()
@@ -309,6 +318,14 @@ public class Enemy : UnitObject
             yield return new WaitForSeconds(1);
 
             map.ClearGame();
+        }
+        else
+        {
+            Vector3 pos = transform.position;
+            pos.y = 1f;
+            Item item = map.GenerateObject((int)DB_INFO.ITEM_GOLD, pos, Quaternion.identity).GetComponent<Item>();
+            item.amount = Random.Range(1, 4);
+            targetItem = item;
         }
 
         map.RemoveObject(gameObject, id);

@@ -1399,6 +1399,7 @@ MonoBehaviour:
   settingPopup: {fileID: 47337965}
   invenPopup: {fileID: 6263103055218382898}
   tradePopup: {fileID: 0}
+  dmgEffect: {fileID: 5093506522115634469, guid: 1aab25e72c80bb74382e1d0f08352a0d, type: 3}
   leftJoyStick: {fileID: 1930457097569433}
   actionButton: {fileID: 887395740}
   jumpButton: {fileID: 88369969}
@@ -1747,7 +1748,7 @@ MonoBehaviour:
   _itemDataArray:
   - {fileID: -7788352134496847422, guid: 55e85248302909d438856dc56e075bd8, type: 3}
   - {fileID: -8419128766621492618, guid: 444495a4e46f0214d8cd45be8e44416b, type: 3}
-  - {fileID: 5561830826386527424, guid: 82dbc08e906bf0846960d2b05caf5577, type: 3}
+  - {fileID: -4254755556637483923, guid: 081cdb22b1ab6714a923ff901c385844, type: 3}
   _removeAllButton: {fileID: 0}
   _AddArmorA1: {fileID: 0}
   _AddArmorB1: {fileID: 0}

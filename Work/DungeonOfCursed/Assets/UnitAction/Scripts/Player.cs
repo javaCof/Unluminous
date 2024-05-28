@@ -339,8 +339,7 @@ public class Player : UnitObject
     {
         if (isDead) return;
 
-        curHP -= dmg;
-        FindObjectOfType<GameUI>().hpBar.fillAmount = curHP / stat.HP;
+        SetHP(curHP - dmg);
 
         //사운드 매니저의 플레이어히트 소리 재생 함수 실행
         SoundManager.instance.PlayHit(audioSource);
@@ -380,9 +379,16 @@ public class Player : UnitObject
         yield return GameManager.Instance.MoveToScene("GameEndScene");
     }
 
+    public void SetHP(float hp)
+    {
+        curHP = Mathf.Clamp(hp, 0, stat.HP);
+        FindObjectOfType<GameUI>().hpBar.fillAmount = curHP / stat.HP;
+    }
+
     protected void MakeEffect(Vector3 pos)
     {
         Instantiate(attackEffect, pos, Quaternion.identity);
+        ui.DmgEffect(pos, stat.ATK);
     }
 
     protected void UpdateRoomNum()

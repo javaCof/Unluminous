@@ -205,7 +205,7 @@ public class MapGenerator : MonoBehaviour
         yield return GameManager.Instance.UpdateLoadingText("아이템 Pool 생성 중...");
         foreach (var item in FirebaseManager.items)
         {
-            CreateObjectPool(item.Value.res, item.Key, 5, PhotonPool.PhotonInstantiateOption.LOCAL);
+            CreateObjectPool(item.Value.res, item.Key, 50, PhotonPool.PhotonInstantiateOption.LOCAL);
         }
 
         yield return GameManager.Instance.UpdateLoadingText("장비 Pool 생성 중...");
