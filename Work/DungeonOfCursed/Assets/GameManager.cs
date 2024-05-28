@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
             yield return new WaitUntil(() => XRGeneralSettings.Instance.Manager.isInitializationComplete);
         }
         VrEnable = XRSettings.enabled;
+#if UNITY_ANDROID
+        VrEnable = false;  
+#endif
 
         InputSensitivity = PlayerPrefs.GetFloat("INPUT_SENSITIVITY", 0.5f);
         BgmVolume = PlayerPrefs.GetFloat("BGM_VOLUME", 1f);
@@ -174,8 +177,10 @@ public class GameManager : MonoBehaviour
     {
         VrEnable = on;
 
+#if UNITY_STANDALONE_WIN || UNITY_EDITOR
         if (VrEnable) XRGeneralSettings.Instance.Manager.StartSubsystems();
         else XRGeneralSettings.Instance.Manager.StopSubsystems();
+#endif
 
         UpdateVRUI();
     }

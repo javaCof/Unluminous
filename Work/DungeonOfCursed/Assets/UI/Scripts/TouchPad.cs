@@ -6,19 +6,14 @@ using UnityEngine.EventSystems;
 public class TouchPad : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [HideInInspector] public Vector2 dTouchPoint;
-    int touchId = -1;
 
-    public void OnBeginDrag(PointerEventData eventData)
+    public void OnBeginDrag(PointerEventData eventData) { }
+    public void OnDrag(PointerEventData eventData) 
     {
-        if (touchId == -1) touchId = eventData.pointerId;
+        dTouchPoint = eventData.delta;
     }
-    public void OnDrag(PointerEventData eventData) { }
-    public void OnEndDrag(PointerEventData eventData) => touchId = -1;
-
-    private void Update()
+    public void OnEndDrag(PointerEventData eventData)
     {
-        if (touchId != -1)
-            dTouchPoint = Input.touches[touchId].deltaPosition;
-        else dTouchPoint = Vector2.zero;
+        dTouchPoint = Vector2.zero;
     }
 }
