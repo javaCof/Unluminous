@@ -52,7 +52,7 @@ public class Chest : MonoBehaviour, IPoolObject
     void Open_All()
     {
         isOpened = true;
-        anim.SetTrigger("Open");
+        anim.SetBool("open", true);
     }
 
     [PunRPC]
@@ -78,6 +78,7 @@ public class Chest : MonoBehaviour, IPoolObject
         }
 
         isOpened = false;
+        anim.SetBool("open", false);
     }
     [PunRPC]
     public void OnPoolDisable()
