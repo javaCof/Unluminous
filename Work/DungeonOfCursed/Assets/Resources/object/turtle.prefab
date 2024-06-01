@@ -1346,7 +1346,7 @@ GameObject:
   - component: {fileID: 6995820811867571136}
   - component: {fileID: 6995820811867571138}
   m_Layer: 7
-  m_Name: _turtle
+  m_Name: turtle
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 7258602436108516843}
   - component: {fileID: 7258602436108516840}
   m_Layer: 7
-  m_Name: _golem
+  m_Name: golem
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
