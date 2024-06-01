@@ -463,7 +463,9 @@ public class Player : UnitObject
         if (!PhotonNetwork.inRoom || pv.isMine)
         {
             GameManager.Instance.player = this;
-            inven.player = this;
+
+            if (!GameManager.Instance.VrEnable)
+                inven.player = this;
 
         }
     }

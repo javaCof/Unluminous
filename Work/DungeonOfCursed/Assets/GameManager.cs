@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         {
             player.stat.ATK *= 5;
             player.stat.HP *= 5;
-            player.curHP = player.stat.HP;
+            player.SetHP(player.stat.HP);
         }
     }
     void Func2() 

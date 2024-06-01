@@ -216,7 +216,7 @@ public class MapGenerator : MonoBehaviour
 
         yield return GameManager.Instance.UpdateLoadingText("맵 오브젝트 Pool 생성 중...");
 
-        CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 50, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
+        CreateObjectPool(chestResName, (int)MapObjectID.CHEST, 100, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(traderResName, (int)MapObjectID.TRADER, 20, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         CreateObjectPool(potalResName, (int)MapObjectID.POTAL, 1, PhotonPool.PhotonInstantiateOption.SCENE_OBJECT);
         
